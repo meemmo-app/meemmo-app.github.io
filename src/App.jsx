@@ -218,7 +218,10 @@ export default function App() {
       </main>
 
       {/* Footer Nav */}
-      <FooterNav></FooterNav>
+      <FooterNav
+        isModalOpen={isModalOpen}
+        isSettingsOpen={isSettingsOpen}
+      ></FooterNav>
 
       {/* Modale */}
       <Dialog isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
