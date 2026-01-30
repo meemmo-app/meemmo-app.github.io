@@ -1,13 +1,10 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { Plus, Keyboard, Eye, EyeOff } from "lucide-react";
+import { Settings, Keyboard, Eye, EyeOff } from "lucide-react";
 
 // Hook e Costanti
 import { useTasks } from "./hooks/useTasks";
-import {
-  SECTIONS,
-  ACCENT_COLOR,
-  getActiveSectionId,
-} from "./constants/sections";
+import { useSections } from "./hooks/useSections";
+import { ACCENT_COLOR } from "./constants/sections";
 
 // Componenti
 import { SectionCard } from "./components/SectionCard";
@@ -15,16 +12,28 @@ import { TaskItem } from "./components/TaskItem";
 import { TaskModal } from "./components/TaskModal";
 import { Dialog } from "./components/ui/Dialog";
 import { FooterNav } from "./components/footerNav";
+import { SettingsModal } from "./components/SettingsModal";
+import { Header } from "./components/Header";
 
 export default function App() {
   // Logic & State da Hook personalizzato
   const { tasks, createTask, deleteTask, toggleComplete, moveTask } =
     useTasks();
 
+  const {
+    sections,
+    setSections,
+    getActiveSectionId,
+    sectionCount,
+    isDynamicColumns,
+    setIsDynamicColumns,
+  } = useSections();
+
   // State UI locale
   const [activeQuarterIndex, setActiveQuarterIndex] = useState(0);
   const [focusedTaskIndex, setFocusedTaskIndex] = useState(-1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [showCompleted, setShowCompleted] = useState(true);
   const [newTask, setNewTask] = useState({
     title: "",
@@ -37,14 +46,14 @@ export default function App() {
 
   // Inizializzazione sezione attiva al caricamento
   useEffect(() => {
-    const index = SECTIONS.findIndex((s) => s.id === currentSectionId);
+    const index = sections.findIndex((s) => s.id === currentSectionId);
     setActiveQuarterIndex(index !== -1 ? index : 0);
-  }, [currentSectionId]);
+  }, [sections, currentSectionId]);
 
   // Gestione scroll automatico quando cambia focusedTaskIndex
   useEffect(() => {
     if (focusedTaskIndex !== -1) {
-      const currentSectionId = SECTIONS[activeQuarterIndex].id;
+      const currentSectionId = sections[activeQuarterIndex].id;
       const filteredTasks = tasks.filter(
         (t) =>
           t.sectionId === currentSectionId && (showCompleted || !t.completed),
@@ -69,7 +78,7 @@ export default function App() {
       );
       return;
     }
-    createTask(newTask, SECTIONS[activeQuarterIndex].id);
+    createTask(newTask, sections[activeQuarterIndex].id);
     console.log("Created the task " + newTask.title);
     setNewTask({ title: "", note: "", priority: false });
     setIsModalOpen(false);
@@ -102,7 +111,7 @@ export default function App() {
 
       const visibleTasks = tasks.filter(
         (t) =>
-          t.sectionId === SECTIONS[activeQuarterIndex].id &&
+          t.sectionId === sections[activeQuarterIndex].id &&
           (showCompleted || !t.completed),
       );
 
@@ -112,11 +121,11 @@ export default function App() {
           setIsModalOpen(true);
           break;
         case "h":
-          setActiveQuarterIndex((prev) => (prev > 0 ? prev - 1 : 3));
+          setActiveQuarterIndex((prev) => (prev > 0 ? prev - 1 : sectionCount));
           setFocusedTaskIndex(-1);
           break;
         case "l":
-          setActiveQuarterIndex((prev) => (prev < 3 ? prev + 1 : 0));
+          setActiveQuarterIndex((prev) => (prev < sectionCount ? prev + 1 : 0));
           setFocusedTaskIndex(-1);
           break;
         case "j":
@@ -151,50 +160,30 @@ export default function App() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isModalOpen, activeQuarterIndex, focusedTaskIndex, tasks, showCompleted]);
+  }, [
+    isSettingsOpen,
+    isModalOpen,
+    activeQuarterIndex,
+    focusedTaskIndex,
+    tasks,
+    showCompleted,
+  ]);
 
   return (
     <div className="min-h-screen bg-[#fff9f5] text-slate-900 font-sans selection:bg-orange-200">
       {/* Header */}
-      <header className="p-6 flex justify-between items-center max-w-7xl mx-auto">
-        <div className="flex items-center gap-3">
-          <div className="bg-white p-2 rounded-2xl shadow-sm border border-orange-100 rotate-12 text-3xl">
-            🦐
-          </div>
-          <div>
-            <h1
-              className="text-3xl font-black tracking-tight"
-              style={{ color: ACCENT_COLOR }}
-            >
-              MEEMMO
-            </h1>
-            <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">
-              Organizza la giornata del gambero
-            </p>
-          </div>
-        </div>
-
-        <div className="flex gap-3 items-center">
-          <button
-            onClick={() => setShowCompleted(!showCompleted)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all font-bold text-xs uppercase tracking-wider ${
-              showCompleted
-                ? "bg-white border-orange-200 text-orange-600"
-                : "bg-orange-500 text-white shadow-lg shadow-orange-200"
-            }`}
-          >
-            {showCompleted ? <Eye size={14} /> : <EyeOff size={14} />}
-            {showCompleted ? "Nascondi completati" : "Mostra completati"}
-          </button>
-          <div className="hidden md:flex items-center gap-2 bg-white p-2 px-4 rounded-full shadow-sm border border-slate-100 text-xs text-slate-400 font-bold uppercase">
-            <Keyboard size={14} /> Scorciatoie attive
-          </div>
-        </div>
-      </header>
+      <Header
+        ACCENT_COLOR={ACCENT_COLOR}
+        showCompleted={showCompleted}
+        setShowCompleted={setShowCompleted}
+        isSettingsModalOpen={isSettingsOpen}
+        setIsSettingsModalOpen={setIsSettingsOpen}
+      ></Header>
 
       {/* Main Grid */}
-      <main className="max-w-7xl mx-auto p-4 md:p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-[calc(100vh-160px)]">
-        {SECTIONS.map((section, idx) => {
+      {/*<main className="max-w-7xl mx-auto p-4 md:p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-[calc(100vh-160px)]"> */}
+      <main className="max-w-7xl mx-auto p-4 md:p-6 flex flex-row overflow-x-scroll gap-6 h-[calc(100vh-160px)]">
+        {sections.map((section, idx) => {
           const isFocused = activeQuarterIndex === idx;
           const sectionTasks = tasks.filter(
             (t) =>
@@ -209,6 +198,7 @@ export default function App() {
               isCurrentTime={section.id === currentSectionId}
               onFocus={() => setActiveQuarterIndex(idx)}
               onDrop={(e) => onDrop(e, section.id)}
+              isDynamicColumns={isDynamicColumns}
             >
               {sectionTasks.map((task, tIdx) => (
                 <TaskItem
@@ -235,7 +225,18 @@ export default function App() {
           newTask={newTask}
           setNewTask={setNewTask}
           onSave={handleCreateTask}
-          sectionLabel={SECTIONS[activeQuarterIndex].label}
+          sectionLabel={sections[activeQuarterIndex].label}
+        />
+      </Dialog>
+
+      {/* Settings Modal */}
+      <Dialog isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)}>
+        <SettingsModal
+          sections={sections}
+          setSections={setSections}
+          isDynamicColumns={isDynamicColumns}
+          setIsDynamicColumns={setIsDynamicColumns}
+          onClose={() => setIsSettingsOpen(false)}
         />
       </Dialog>
     </div>
