@@ -14,6 +14,7 @@ import { SectionCard } from "./components/SectionCard";
 import { TaskItem } from "./components/TaskItem";
 import { TaskModal } from "./components/TaskModal";
 import { Dialog } from "./components/ui/Dialog";
+import { FooterNav } from "./components/footerNav";
 
 export default function App() {
   // Logic & State da Hook personalizzato
@@ -226,32 +227,7 @@ export default function App() {
       </main>
 
       {/* Footer Nav */}
-      <footer className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-full shadow-2xl flex gap-6 text-xs font-medium z-40 border border-slate-700 whitespace-nowrap">
-        <div className="flex gap-2 items-center">
-          <span className="bg-slate-700 px-1.5 py-0.5 rounded text-[10px] font-bold">
-            SPACE
-          </span>{" "}
-          Crea 🦐
-        </div>
-        <div className="flex gap-2 items-center">
-          <span className="bg-slate-700 px-1.5 py-0.5 rounded text-[10px] font-bold text-orange-400">
-            J/K
-          </span>{" "}
-          Task
-        </div>
-        <div className="flex gap-2 items-center">
-          <span className="bg-slate-700 px-1.5 py-0.5 rounded text-[10px] font-bold text-orange-400">
-            H/L
-          </span>{" "}
-          Quarti
-        </div>
-        <div className="flex gap-2 items-center">
-          <span className="bg-slate-700 px-1.5 py-0.5 rounded text-[10px] font-bold text-red-400">
-            X
-          </span>{" "}
-          Elimina
-        </div>
-      </footer>
+      <FooterNav></FooterNav>
 
       {/* Modale */}
       <Dialog isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
