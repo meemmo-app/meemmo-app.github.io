@@ -1,5 +1,5 @@
 import React from "react";
-import { Clock, Layout } from "lucide-react";
+import { Clock, Layout, Hash } from "lucide-react";
 import { ACCENT_COLOR } from "../constants/sections";
 
 export const SectionCard = ({
@@ -10,6 +10,7 @@ export const SectionCard = ({
   onFocus,
   onDrop,
   isDynamicColumns,
+  taskCounter,
 }) => {
   return (
     <div
@@ -37,6 +38,9 @@ export const SectionCard = ({
           <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1">
             <Clock size={12} /> {section.hours[0]}:00 -{" "}
             {section.hours[section.hours.length - 1]}:59
+          </span>
+          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1">
+            <Hash size={12} /> {taskCounter}
           </span>
         </div>
         {isCurrentTime && (

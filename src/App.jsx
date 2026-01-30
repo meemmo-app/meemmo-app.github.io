@@ -199,6 +199,7 @@ export default function App() {
               onFocus={() => setActiveQuarterIndex(idx)}
               onDrop={(e) => onDrop(e, section.id)}
               isDynamicColumns={isDynamicColumns}
+              taskCounter={sectionTasks.length}
             >
               {sectionTasks.map((task, tIdx) => (
                 <TaskItem
