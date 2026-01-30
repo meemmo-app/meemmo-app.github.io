@@ -50,7 +50,7 @@ export const SettingsModal = ({
           onClick={onClose}
           className="p-2 hover:bg-slate-100 rounded-full transition-colors"
         >
-          <X size={24} className="text-slate-400" />
+          <X size={22} className="text-slate-400" />
         </button>
       </div>
 
