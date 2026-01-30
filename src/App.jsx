@@ -227,6 +227,7 @@ export default function App() {
           setNewTask={setNewTask}
           onSave={handleCreateTask}
           sectionLabel={sections[activeQuarterIndex].label}
+          onClose={() => setIsModalOpen(false)}
         />
       </Dialog>
 

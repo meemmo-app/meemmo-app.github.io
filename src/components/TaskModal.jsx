@@ -1,6 +1,13 @@
 import React from "react";
+import { X } from "lucide-react";
 
-export const TaskModal = ({ newTask, setNewTask, onSave, sectionLabel }) => {
+export const TaskModal = ({
+  newTask,
+  setNewTask,
+  onSave,
+  sectionLabel,
+  onClose,
+}) => {
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -15,12 +22,20 @@ export const TaskModal = ({ newTask, setNewTask, onSave, sectionLabel }) => {
   };
   return (
     <div className="p-8 relative" onKeyDown={handleKeyDown}>
-      <div className="absolute top-8 right-8 text-4xl animate-bounce">🦐</div>
+      <div className="absolute z-50 -top-2 -left-2 text-4xl animate-[bounce_2s_ease-in-out_infinite]">
+        🦐
+      </div>
 
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-black text-slate-800 tracking-tight">
           Cosa bolle in pentola?
         </h2>
+        <button
+          onClick={onClose}
+          className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+        >
+          <X size={22} className="text-slate-400" />
+        </button>
       </div>
 
       <p className="text-xs font-bold text-slate-400 mb-4 uppercase">

@@ -35,7 +35,7 @@ export const SettingsModal = ({
   };
 
   return (
-    <div className="p-8 max-h-[85vh] overflow-y-auto custom-scrollbar">
+    <div className="p-8 max-h-[85vh] overflow-y-scroll overflow-x-hidden custom-scrollbar">
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
