@@ -21,7 +21,6 @@ export const SectionCard = ({
         relative flex flex-col min-w-3xs rounded-3xl transition-all duration-500 overflow-hidden cursor-pointer
         ${isDynamicColumns ? "h-fit" : ""}
         ${isFocused ? "ring-3 scale-[1.02] shadow-2xl shadow-slate-300 z-10 ring-orange-200" : "ring-1 ring-slate-200 opacity-80 scale-100"}
-        ${isCurrentTime ? "bg-white" : "bg-slate-50/50"}
       `}
       style={{ borderColor: isFocused ? ACCENT_COLOR : "transparent" }}
     >
