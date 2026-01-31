@@ -278,6 +278,7 @@ export default function App() {
             setIsModalOpen(false);
             setEditingTask(null);
           }}
+          editingTask={editingTask}
         />
       </Dialog>
       {/* Settings Modal */}
