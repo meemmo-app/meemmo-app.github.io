@@ -21,7 +21,7 @@ export const Header = ({
             MEEMMO
           </h1>
           <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">
-            Organizza la giornata del gambero
+            Organizza la tua giornata
           </p>
         </div>
       </div>
@@ -38,9 +38,6 @@ export const Header = ({
           {showCompleted ? <Eye size={14} /> : <EyeOff size={14} />}
           {showCompleted ? "Nascondi completati" : "Mostra completati"}
         </button>
-        <div className="hidden md:flex items-center gap-2 bg-white p-2 px-4 rounded-full shadow-sm border border-slate-100 text-xs text-slate-400 font-bold uppercase">
-          <Keyboard size={14} /> Scorciatoie attive
-        </div>
         <button
           name="Settings"
           className="p-2 hover:bg-slate-100 rounded-full transition-colors"

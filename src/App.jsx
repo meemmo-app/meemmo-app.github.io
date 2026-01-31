@@ -182,7 +182,7 @@ export default function App() {
 
       {/* Main Grid */}
       {/*<main className="max-w-7xl mx-auto p-4 md:p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-[calc(100vh-160px)]"> */}
-      <main className="max-w-7xl mx-auto p-4 md:p-6 flex flex-row overflow-x-scroll gap-6 h-[calc(100vh-160px)]">
+      <main className="max-w-7xl mx-auto p-4 md:p-6 flex flex-col md:flex-row overflow-x-scroll gap-6 h-[calc(100vh-160px)]">
         {sections.map((section, idx) => {
           const isFocused = activeQuarterIndex === idx;
           const sectionTasks = tasks.filter(

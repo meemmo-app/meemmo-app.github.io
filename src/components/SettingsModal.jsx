@@ -67,7 +67,7 @@ export const SettingsModal = ({
               Sezioni Dinamiche
             </p>
             <p className="text-[10px] text-orange-600 font-bold uppercase tracking-tight">
-              Focus automatico sull'ora attuale
+              Altezza delle sezioni in base ai task
             </p>
           </div>
         </div>
