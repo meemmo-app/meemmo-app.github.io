@@ -17,7 +17,7 @@ import { Header } from "./components/Header";
 
 export default function App() {
   // Logic & State da Hook personalizzato
-  const { tasks, createTask, deleteTask, toggleComplete, moveTask } =
+  const { tasks, createTask, deleteTask, toggleComplete, moveTask, setTasks } =
     useTasks();
 
   const {
@@ -40,6 +40,20 @@ export default function App() {
     note: "",
     priority: false,
   });
+  const [editingTask, setEditingTask] = useState(null);
+
+  const handleEditOpen = (task) => {
+    setEditingTask(task);
+    setIsModalOpen(true);
+  };
+  // Funzione per salvare le modifiche (nell'hook useTasks o App)
+  const updateTask = (updatedData) => {
+    setTasks((prev) =>
+      prev.map((t) => (t.id === editingTask.id ? { ...t, ...updatedData } : t)),
+    );
+    setIsModalOpen(false);
+    setEditingTask(null);
+  };
 
   const taskRefs = useRef({});
   const currentSectionId = getActiveSectionId();
@@ -105,7 +119,18 @@ export default function App() {
         ) {
           setNewTask((prev) => ({ ...prev, priority: !prev.priority }));
         }
-        if (e.key === "Escape") setIsModalOpen(false);
+        if (e.key === "Escape") {
+          e.stopPropagation();
+          setIsModalOpen(false);
+        }
+        return;
+      }
+
+      if (isSettingsOpen) {
+        if (e.key === "Escape") {
+          e.stopPropagation();
+          setIsSettingsOpen(false);
+        }
         return;
       }
 
@@ -153,6 +178,11 @@ export default function App() {
             toggleComplete(visibleTasks[focusedTaskIndex].id);
           }
           break;
+        case "m":
+          if (visibleTasks[focusedTaskIndex]) {
+            handleEditOpen(visibleTasks[focusedTaskIndex]);
+          }
+          break;
         default:
           break;
       }
@@ -160,14 +190,7 @@ export default function App() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [
-    isSettingsOpen,
-    isModalOpen,
-    activeQuarterIndex,
-    focusedTaskIndex,
-    tasks,
-    showCompleted,
-  ]);
+  });
 
   return (
     <div className="min-h-screen bg-[#fff9f5] text-slate-900 font-sans selection:bg-orange-200">
@@ -207,6 +230,7 @@ export default function App() {
                   task={task}
                   isFocused={isFocused && focusedTaskIndex === tIdx}
                   onToggle={toggleComplete}
+                  onEdit={handleEditOpen}
                   onDelete={deleteTask}
                   onDragStart={onDragStart}
                   innerRef={(el) => (taskRefs.current[task.id] = el)}
@@ -224,16 +248,29 @@ export default function App() {
       ></FooterNav>
 
       {/* Modale */}
-      <Dialog isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <Dialog
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setEditingTask(null);
+        }}
+      >
         <TaskModal
-          newTask={newTask}
-          setNewTask={setNewTask}
-          onSave={handleCreateTask}
-          sectionLabel={sections[activeQuarterIndex].label}
-          onClose={() => setIsModalOpen(false)}
+          // Se stiamo modificando, passiamo editingTask, altrimenti il nuovo task vuoto
+          newTask={editingTask || newTask}
+          setNewTask={editingTask ? setEditingTask : setNewTask}
+          onSave={
+            editingTask ? () => updateTask(editingTask) : handleCreateTask
+          }
+          sectionLabel={
+            editingTask ? "Modifica Task" : sections[activeQuarterIndex].label
+          }
+          onClose={() => {
+            setIsModalOpen(false);
+            setEditingTask(null);
+          }}
         />
       </Dialog>
-
       {/* Settings Modal */}
       <Dialog isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)}>
         <SettingsModal

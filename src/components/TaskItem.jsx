@@ -6,6 +6,7 @@ export const TaskItem = ({
   isFocused,
   onToggle,
   onDelete,
+  onEdit,
   onDragStart,
   innerRef,
 }) => (
@@ -13,6 +14,7 @@ export const TaskItem = ({
     ref={innerRef}
     draggable
     onDragStart={(e) => onDragStart(e, task.id)}
+    onDoubleClick={() => onEdit(task)}
     className={`group relative p-4 rounded-2xl transition-all duration-200 cursor-grab active:cursor-grabbing
       ${task.completed ? "bg-slate-100 opacity-60" : "bg-white shadow-sm border border-slate-100"}
       ${isFocused ? "translate-x-1 ring-2 ring-orange-200 border-orange-300" : ""}`}

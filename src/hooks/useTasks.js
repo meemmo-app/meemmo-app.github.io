@@ -52,5 +52,5 @@ export function useTasks() {
     );
   };
 
-  return { tasks, createTask, deleteTask, toggleComplete, moveTask };
+  return { tasks, createTask, deleteTask, toggleComplete, moveTask, setTasks };
 }
