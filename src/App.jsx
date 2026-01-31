@@ -178,7 +178,7 @@ export default function App() {
             toggleComplete(visibleTasks[focusedTaskIndex].id);
           }
           break;
-        case "m":
+        case "e":
           if (visibleTasks[focusedTaskIndex]) {
             handleEditOpen(visibleTasks[focusedTaskIndex]);
           }
