@@ -52,13 +52,10 @@ export const TaskModal = ({
       <div className="space-y-5">
         {/* Input Titolo - Contrasto Aumentato */}
         <div className="space-y-1">
-          <label className="text-[10px] font-bold text-white/30 ml-2 uppercase">
-            Titolo Missione
-          </label>
           <input
             autoFocus
-            className="w-full text-xl font-bold bg-black/40 border border-white/10 rounded-2xl p-4 text-white focus:ring-2 focus:ring-orange-500 focus:bg-black/60 outline-none placeholder:text-white/10 transition-all shadow-inner"
-            placeholder="Esempio: Conquistare il mondo..."
+            className="w-full text-xl font-bold bg-black/40 border border-white/10 rounded-2xl p-4 text-white focus:ring-2 focus:ring-orange-500 focus:bg-black/60 outline-none placeholder:text-white/40 transition-all shadow-inner"
+            placeholder="Titolo della missione"
             value={newTask.title}
             onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
           />
@@ -66,11 +63,8 @@ export const TaskModal = ({
 
         {/* Textarea Note - Contrasto Aumentato */}
         <div className="space-y-1">
-          <label className="text-[10px] font-bold text-white/30 ml-2 uppercase">
-            Note e dettagli
-          </label>
           <textarea
-            className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 text-white focus:ring-2 focus:ring-orange-500 focus:bg-black/60 outline-none placeholder:text-white/10 resize-none h-28 transition-all shadow-inner"
+            className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 text-white focus:ring-2 focus:ring-orange-500 focus:bg-black/60 outline-none placeholder:text-white/40 resize-none h-28 transition-all shadow-inner"
             placeholder="Aggiungi dettagli extra..."
             value={newTask.note}
             onChange={(e) => setNewTask({ ...newTask, note: e.target.value })}
