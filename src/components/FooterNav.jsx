@@ -18,7 +18,12 @@ const FooterItem = ({ keys, description, onHover, onClick }) => {
   );
 };
 
-export const FooterNav = ({ isModalOpen, setIsModalOpen, isSettingsOpen }) => {
+export const FooterNav = ({
+  isModalOpen,
+  setIsModalOpen,
+  isSettingsOpen,
+  isBacklogOpen,
+}) => {
   const [isOpen, setIsOpen] = useState(true);
 
   // Listener per il tasto "?"
@@ -36,7 +41,7 @@ export const FooterNav = ({ isModalOpen, setIsModalOpen, isSettingsOpen }) => {
 
   return (
     <div
-      className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 ${isModalOpen || isSettingsOpen ? "hidden" : ""}`}
+      className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-3 ${isModalOpen || isSettingsOpen || isBacklogOpen ? "hidden" : ""}`}
     >
       {/* Container Principale con Transizione Fluida */}
       <div

@@ -15,6 +15,7 @@ import { FooterNav } from "./components/footerNav";
 import { SettingsModal } from "./components/SettingsModal";
 import { Header } from "./components/Header";
 import { ConfirmModal } from "./components/ConfirmModal";
+import Backlog, { BacklogIcon } from "./components/Backlog";
 
 export default function App() {
   // Logic & State da Hook personalizzato
@@ -104,12 +105,83 @@ export default function App() {
     e.dataTransfer.setData("taskId", id);
   };
 
+  /*
   const onDrop = (e, sectionId) => {
     const id = e.dataTransfer.getData("taskId");
     moveTask(id, sectionId);
-  };
+  };*/
 
   const [taskToDelete, setTaskToDelete] = useState(null);
+
+  // Backlog state and logic
+  const [isBacklogOpen, setIsBacklogOpen] = useState(false);
+  const [isBacklogOver, setIsBacklogOver] = useState(false);
+
+  // Filter tasks that are in backlog (sectionId is null or undefined)
+  const backlogTasks = tasks.filter((task) => task.sectionId === null);
+
+  // Handle backlog drag and drop
+  const handleBacklogDrop = (e) => {
+    e.preventDefault();
+    setIsBacklogOver(false);
+
+    const id = e.dataTransfer.getData("taskId");
+    // Move task to backlog by setting sectionId to null
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === id ? { ...task, sectionId: null } : task,
+      ),
+    );
+  };
+
+  const handleBacklogDragOver = (e) => {
+    e.preventDefault();
+    setIsBacklogOver(true);
+  };
+
+  const handleBacklogDragLeave = () => {
+    setIsBacklogOver(false);
+  };
+
+  const openBacklog = () => {
+    setIsBacklogOpen(true);
+  };
+
+  const closeBacklog = () => {
+    setIsBacklogOpen(false);
+  };
+
+  // Handle drop from sections to backlog icon
+  const handleIconDrop = (e) => {
+    e.preventDefault();
+    setIsBacklogOver(false);
+
+    const id = e.dataTransfer.getData("taskId");
+    // Move task to backlog by setting sectionId to null
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === id ? { ...task, sectionId: null } : task,
+      ),
+    );
+
+    // Open backlog after drop
+    //setIsBacklogOpen(true);
+  };
+
+  // Update onDrop function to handle both section and backlog drops
+  const onDrop = (e, sectionId) => {
+    const id = e.dataTransfer.getData("taskId");
+    if (sectionId === "backlog") {
+      // Move task to backlog by setting sectionId to null
+      setTasks((prev) =>
+        prev.map((task) =>
+          task.id === id ? { ...task, sectionId: null } : task,
+        ),
+      );
+    } else {
+      moveTask(id, sectionId);
+    }
+  };
 
   // Questa funzione ora si limita ad aprire la modale di conferma
   const requestDelete = (id) => {
@@ -254,7 +326,42 @@ export default function App() {
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
         isSettingsOpen={isSettingsOpen}
+        isBacklogOpen={isBacklogOpen}
       ></FooterNav>
+
+      {/* Backlog Icon */}
+      <BacklogIcon
+        onDrop={handleIconDrop}
+        onDragOver={handleBacklogDragOver}
+        onDragLeave={handleBacklogDragLeave}
+        isOver={isBacklogOver}
+        onClick={openBacklog}
+      />
+
+      {/* Backlog Drawer */}
+      <Backlog
+        isOpen={isBacklogOpen}
+        onClose={closeBacklog}
+        onDrop={handleBacklogDrop}
+        onDragOver={handleBacklogDragOver}
+        onDragLeave={handleBacklogDragLeave}
+        isOver={isBacklogOver}
+      >
+        {backlogTasks.map((task) => {
+          return (
+            <TaskItem
+              key={task.id}
+              task={task}
+              isFocused={false}
+              onToggle={toggleComplete}
+              onEdit={handleEditOpen}
+              onDelete={requestDelete}
+              onDragStart={onDragStart}
+              innerRef={(el) => (taskRefs.current[task.id] = el)}
+            />
+          );
+        })}
+      </Backlog>
 
       {/* Modale */}
       <Dialog
