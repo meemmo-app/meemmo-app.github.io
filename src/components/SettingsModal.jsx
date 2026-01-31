@@ -1,6 +1,7 @@
 import React from "react";
 import { X, Plus, Trash2, Clock, Zap, ZapOff } from "lucide-react";
 import { GLASSBASE } from "../constants/styles";
+import ModalHeader from "./ui/ModalHeader";
 
 export const SettingsModal = ({
   sections,
@@ -37,26 +38,14 @@ export const SettingsModal = ({
 
   return (
     <div
-      className={`
-              ${GLASSBASE} rounded-3xl p-8 max-h-[85vh] overflow-y-scroll overflow-x-hidden`}
+      className={`${GLASSBASE} rounded-3xl p-8 max-h-[85vh] overflow-y-scroll overflow-x-hidden`}
     >
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h2 className="text-2xl font-black text-white tracking-tight">
-            Impostazioni
-          </h2>
-          <p className="text-xs font-bold text-white/50 uppercase">
-            Configura la tua giornata
-          </p>
-        </div>
-        <button
-          onClick={onClose}
-          className="p-2 hover:bg-white/10 rounded-full transition-all active:scale-90 group"
-        >
-          <X size={22} className="text-white/60 group-hover:text-white" />
-        </button>
-      </div>
+      <ModalHeader
+        title={"Impostazioni"}
+        subtitle={"Configura la tua ggiornata"}
+        onClose={onClose}
+      ></ModalHeader>
 
       {/* Switch Sezioni Dinamiche */}
       <div className="bg-black/50 p-4 rounded-3xl border border-white/10 mb-8 flex items-center justify-between">

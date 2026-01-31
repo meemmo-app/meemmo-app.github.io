@@ -1,6 +1,7 @@
 import React from "react";
 import { X } from "lucide-react";
 import { GLASSBASE } from "../constants/styles";
+import ModalHeader from "./ui/ModalHeader";
 
 export const TaskModal = ({
   title,
@@ -33,17 +34,7 @@ export const TaskModal = ({
         🦐
       </div>
 
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-black text-white tracking-tight">
-          {title}
-        </h2>
-        <button
-          onClick={onClose}
-          className="p-2 hover:bg-white/10 rounded-full transition-all active:scale-90 group"
-        >
-          <X size={22} className="text-white/60 group-hover:text-white" />
-        </button>
-      </div>
+      <ModalHeader title={title} onClose={onClose}></ModalHeader>
 
       <p className="text-[10px] font-black text-white/50 mb-4 uppercase tracking-widest flex items-center gap-2">
         Sezione:{" "}
