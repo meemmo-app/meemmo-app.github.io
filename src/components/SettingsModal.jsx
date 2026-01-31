@@ -12,6 +12,10 @@ import {
 import { GLASSBASE } from "../constants/styles";
 import ModalHeader from "./ui/ModalHeader";
 import { ButtonPrimary, ButtonSecondary } from "./ui/Button";
+import {
+  exportLocalStorageData,
+  importLocalStorageData,
+} from "../constants/utils";
 
 const Switch = ({ option, setOption, iconOn, iconOff, title, subtitle }) => {
   return (
@@ -163,11 +167,22 @@ export const SettingsModal = ({
         <ButtonSecondary
           text={"Scarica dati"}
           icon={<Download size={16} />}
+          onClick={exportLocalStorageData}
         ></ButtonSecondary>
-        <ButtonSecondary
-          text={"Carica dati"}
-          icon={<Upload size={16} />}
-        ></ButtonSecondary>
+        <div className="relative">
+          <input
+            type="file"
+            accept=".json"
+            onChange={importLocalStorageData}
+            className="hidden"
+            id="import-file"
+          />
+          <ButtonSecondary
+            text={"Carica dati"}
+            icon={<Upload size={16} />}
+            onClick={() => document.getElementById("import-file").click()}
+          ></ButtonSecondary>
+        </div>
       </div>
     </div>
   );
