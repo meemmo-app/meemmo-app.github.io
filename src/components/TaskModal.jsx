@@ -1,5 +1,6 @@
 import React from "react";
 import { X } from "lucide-react";
+import { GLASSBASE } from "../constants/styles";
 
 export const TaskModal = ({
   title,
@@ -26,11 +27,7 @@ export const TaskModal = ({
   };
 
   return (
-    <div
-      className="p-8 relative bg-slate-900/60 backdrop-blur-3xl -webkit-backdrop-blur-3xl border border-white/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)]
-                 transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1)"
-      onKeyDown={handleKeyDown}
-    >
+    <div className={`${GLASSBASE} rounded-3xl p-8`} onKeyDown={handleKeyDown}>
       {/* Badge Gambero Animato */}
       <div className="absolute z-50 -top-5 -left-5 text-6xl animate-[bounce_3s_ease-in-out_infinite] drop-shadow-2xl">
         🦐

@@ -1,5 +1,6 @@
 import React from "react";
 import { X, Plus, Trash2, Clock, Zap, ZapOff } from "lucide-react";
+import { GLASSBASE } from "../constants/styles";
 
 export const SettingsModal = ({
   sections,
@@ -36,8 +37,8 @@ export const SettingsModal = ({
 
   return (
     <div
-      className="p-8 max-h-[85vh] overflow-y-scroll overflow-x-hidden  bg-slate-900/60 backdrop-blur-3xl -webkit-backdrop-blur-3xl border border-white/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)]
-                     transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1)"
+      className={`
+              ${GLASSBASE} rounded-3xl p-8 max-h-[85vh] overflow-y-scroll overflow-x-hidden`}
     >
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
