@@ -2,6 +2,31 @@ import React from "react";
 import { Clock, Layout, Hash } from "lucide-react";
 import { ACCENT_COLOR } from "../constants/sections";
 
+const TaskCount = ({ count }) => {
+  return (
+    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1">
+      <Hash size={12} /> {count}
+    </span>
+  );
+};
+
+const SectionHours = ({ sectionHours }) => {
+  return (
+    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1">
+      <Clock size={12} /> {sectionHours[0]}:00 -{" "}
+      {sectionHours[sectionHours.length - 1]}:59
+    </span>
+  );
+};
+
+const CurrentSectionMarker = () => {
+  return (
+    <span className="bg-orange-500 text-white text-[10px] px-2 py-1 rounded-full font-black animate-pulse">
+      ORA
+    </span>
+  );
+};
+
 export const SectionCard = ({
   section,
   isFocused,
@@ -34,19 +59,10 @@ export const SectionCard = ({
           >
             {section.label}
           </h2>
-          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1">
-            <Clock size={12} /> {section.hours[0]}:00 -{" "}
-            {section.hours[section.hours.length - 1]}:59
-          </span>
-          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1">
-            <Hash size={12} /> {taskCounter}
-          </span>
+          <SectionHours sectionHours={section.hours}></SectionHours>
+          <TaskCount count={taskCounter}></TaskCount>
         </div>
-        {isCurrentTime && (
-          <span className="bg-orange-500 text-white text-[10px] px-2 py-1 rounded-full font-black animate-pulse">
-            ORA
-          </span>
-        )}
+        {isCurrentTime && <CurrentSectionMarker></CurrentSectionMarker>}
       </div>
 
       {/* Lista Task (Children) */}

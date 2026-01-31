@@ -4,7 +4,6 @@ export const Header = ({
   ACCENT_COLOR,
   showCompleted,
   setShowCompleted,
-  isSettingsModalOpen,
   setIsSettingsModalOpen,
 }) => {
   return (

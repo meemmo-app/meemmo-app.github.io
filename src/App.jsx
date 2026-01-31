@@ -208,7 +208,6 @@ export default function App() {
         ACCENT_COLOR={ACCENT_COLOR}
         showCompleted={showCompleted}
         setShowCompleted={setShowCompleted}
-        isSettingsModalOpen={isSettingsOpen}
         setIsSettingsModalOpen={setIsSettingsOpen}
       ></Header>
 
