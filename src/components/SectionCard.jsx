@@ -31,7 +31,7 @@ export const SectionCard = ({
       >
         <div>
           <h2
-            className={`text-xl font-bold ${isFocused ? "text-orange-600" : "text-slate-700"}`}
+            className={`text-xl font-bold ${isFocused ? "text-orange-600/90" : "text-slate-700"}`}
           >
             {section.label}
           </h2>

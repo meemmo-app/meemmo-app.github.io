@@ -14,6 +14,7 @@ import { Dialog } from "./components/ui/Dialog";
 import { FooterNav } from "./components/footerNav";
 import { SettingsModal } from "./components/SettingsModal";
 import { Header } from "./components/Header";
+import { ConfirmModal } from "./components/ConfirmModal";
 
 export default function App() {
   // Logic & State da Hook personalizzato
@@ -108,6 +109,21 @@ export default function App() {
     moveTask(id, sectionId);
   };
 
+  const [taskToDelete, setTaskToDelete] = useState(null);
+
+  // Questa funzione ora si limita ad aprire la modale di conferma
+  const requestDelete = (id) => {
+    setTaskToDelete(id);
+  };
+
+  // Questa è la funzione che esegue l'eliminazione effettiva
+  const confirmDelete = () => {
+    if (taskToDelete) {
+      setTasks((prev) => prev.filter((t) => t.id !== taskToDelete));
+      setTaskToDelete(null); // Chiude la modale
+    }
+  };
+
   // Keyboard Shortcuts
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -162,7 +178,7 @@ export default function App() {
           break;
         case "x":
           if (focusedTaskIndex !== -1 && visibleTasks[focusedTaskIndex]) {
-            deleteTask(visibleTasks[focusedTaskIndex].id);
+            requestDelete(visibleTasks[focusedTaskIndex].id);
             setFocusedTaskIndex(-1);
           }
           break;
@@ -224,7 +240,7 @@ export default function App() {
                   isFocused={isFocused && focusedTaskIndex === tIdx}
                   onToggle={toggleComplete}
                   onEdit={handleEditOpen}
-                  onDelete={deleteTask}
+                  onDelete={requestDelete}
                   onDragStart={onDragStart}
                   innerRef={(el) => (taskRefs.current[task.id] = el)}
                 />
@@ -272,6 +288,16 @@ export default function App() {
           isDynamicColumns={isDynamicColumns}
           setIsDynamicColumns={setIsDynamicColumns}
           onClose={() => setIsSettingsOpen(false)}
+        />
+      </Dialog>
+      {/* Modale di Conferma Eliminazione */}
+      <Dialog isOpen={!!taskToDelete} onClose={() => setTaskToDelete(null)}>
+        <ConfirmModal
+          title="Elimina Task?"
+          message="Questa azione è irreversibile. Non potrai più recuperare questa missione!"
+          onConfirm={confirmDelete}
+          onCancel={() => setTaskToDelete(null)}
+          confirmLabel="Sì, elimina"
         />
       </Dialog>
     </div>
