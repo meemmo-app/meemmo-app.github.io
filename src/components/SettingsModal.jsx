@@ -35,27 +35,30 @@ export const SettingsModal = ({
   };
 
   return (
-    <div className="p-8 max-h-[85vh] overflow-y-scroll overflow-x-hidden custom-scrollbar">
+    <div
+      className="p-8 max-h-[85vh] overflow-y-scroll overflow-x-hidden  bg-slate-900/60 backdrop-blur-3xl -webkit-backdrop-blur-3xl border border-white/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)]
+                     transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1)"
+    >
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h2 className="text-2xl font-black text-slate-800 tracking-tight">
+          <h2 className="text-2xl font-black text-white tracking-tight">
             Impostazioni
           </h2>
-          <p className="text-xs font-bold text-slate-400 uppercase">
+          <p className="text-xs font-bold text-white/50 uppercase">
             Configura la tua giornata
           </p>
         </div>
         <button
           onClick={onClose}
-          className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+          className="p-2 hover:bg-white/10 rounded-full transition-all active:scale-90 group"
         >
-          <X size={22} className="text-slate-400" />
+          <X size={22} className="text-white/60 group-hover:text-white" />
         </button>
       </div>
 
       {/* Switch Sezioni Dinamiche */}
-      <div className="bg-orange-50 p-4 rounded-3xl border border-orange-100 mb-8 flex items-center justify-between">
+      <div className="bg-black/50 p-4 rounded-3xl border border-white/10 mb-8 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div
             className={`p-2 rounded-xl ${isDynamicColumns ? "bg-orange-500 text-white" : "bg-slate-200 text-slate-500"}`}
@@ -63,17 +66,15 @@ export const SettingsModal = ({
             {isDynamicColumns ? <Zap size={20} /> : <ZapOff size={20} />}
           </div>
           <div>
-            <p className="font-bold text-slate-800 text-sm">
-              Sezioni Dinamiche
-            </p>
-            <p className="text-[10px] text-orange-600 font-bold uppercase tracking-tight">
+            <p className="font-bold text-white text-sm">Sezioni Dinamiche</p>
+            <p className="text-xs text-white/90 tracking-tight">
               Altezza delle sezioni in base ai task
             </p>
           </div>
         </div>
         <button
           onClick={() => setIsDynamicColumns(!isDynamicColumns)}
-          className={`w-12 h-6 rounded-full transition-all relative ${isDynamicColumns ? "bg-orange-500" : "bg-slate-300"}`}
+          className={`cursor-pointer w-12 h-6 rounded-full transition-all relative ${isDynamicColumns ? "bg-orange-500" : "bg-slate-300"}`}
         >
           <div
             className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${isDynamicColumns ? "left-7" : "left-1"}`}
@@ -84,12 +85,12 @@ export const SettingsModal = ({
       {/* Lista Sezioni */}
       <div className="space-y-4">
         <div className="flex justify-between items-center px-2">
-          <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">
+          <h3 className="text-xs font-black text-white/60 uppercase tracking-widest">
             I tuoi Quarti
           </h3>
           <button
             onClick={addSection}
-            className="flex items-center gap-1 text-[10px] font-black text-orange-500 hover:text-orange-600 uppercase"
+            className="cursor-pointer flex items-center gap-1 text-xs font-black text-orange-500 hover:text-orange-600 uppercase transition-all"
           >
             <Plus size={14} /> Aggiungi
           </button>
@@ -98,27 +99,27 @@ export const SettingsModal = ({
         {sections.map((section) => (
           <div
             key={section.id}
-            className="p-4 bg-white border border-slate-100 rounded-2xl shadow-sm space-y-3"
+            className="p-4 bg-black/40 border border-white/10 rounded-2xl shadow-sm space-y-3"
           >
             <div className="flex gap-2">
               <input
-                className="flex-1 font-bold text-slate-800 outline-none focus:text-orange-500"
+                className="flex-1 font-bold text-white outline-none focus:text-orange-500"
                 value={section.label}
                 onChange={(e) => updateSectionLabel(section.id, e.target.value)}
                 placeholder="Nome sezione..."
               />
               <button
                 onClick={() => removeSection(section.id)}
-                className="text-slate-300 hover:text-red-500 transition-colors"
+                className="text-white/50 hover:text-red-500 cursor-pointer transition-colors"
               >
                 <Trash2 size={16} />
               </button>
             </div>
 
-            <div className="flex items-center gap-2 bg-slate-50 p-2 px-3 rounded-xl">
-              <Clock size={14} className="text-slate-400" />
+            <div className="flex items-center gap-2 bg-black/50 p-2 px-3 rounded-xl">
+              <Clock size={14} className="text-white/90" />
               <input
-                className="bg-transparent text-[11px] font-mono text-slate-600 w-full outline-none"
+                className="bg-transparent text-[11px] font-mono text-white/90 w-full outline-none"
                 value={section.hours.join(", ")}
                 onChange={(e) => updateSectionHours(section.id, e.target.value)}
                 placeholder="Ore (es: 9, 10, 11)"
@@ -130,7 +131,7 @@ export const SettingsModal = ({
 
       <button
         onClick={onClose}
-        className="w-full mt-8 py-4 bg-slate-900 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-slate-800 transition-all"
+        className="cursor-pointer w-full mt-8 py-4 bg-black/90 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-black/70 transition-all"
       >
         Salva e Chiudi
       </button>
