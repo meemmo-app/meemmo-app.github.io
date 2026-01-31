@@ -18,7 +18,11 @@ export const TaskItem = ({
       ${isFocused ? "translate-x-1 ring-2 ring-orange-200 border-orange-300" : ""}`}
   >
     <div className="flex gap-3">
-      <div className="mt-1" onClick={() => onToggle(task.id)}>
+      <div
+        className="mt-1 cursor-pointer"
+        title="Mark the task as completed"
+        onClick={() => onToggle(task.id)}
+      >
         {task.completed ? (
           <CheckCircle2 size={18} className="text-emerald-500" />
         ) : (
