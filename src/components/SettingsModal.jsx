@@ -3,6 +3,73 @@ import { X, Plus, Trash2, Clock, Zap, ZapOff } from "lucide-react";
 import { GLASSBASE } from "../constants/styles";
 import ModalHeader from "./ui/ModalHeader";
 
+const Switch = ({ option, setOption, iconOn, iconOff, title, subtitle }) => {
+  return (
+    <div className="bg-black/50 p-4 rounded-3xl border border-white/10 mb-8 flex items-center justify-between">
+      <div className="flex items-center gap-3">
+        <div
+          className={`p-2 rounded-xl ${option ? "bg-orange-500 text-white" : "bg-slate-200 text-slate-500"}`}
+        >
+          {option ? iconOn : iconOff}
+        </div>
+        <div>
+          <p className="font-bold text-white text-sm">{title}</p>
+          {subtitle && (
+            <p className="text-xs text-white/90 tracking-tight">{subtitle}</p>
+          )}
+        </div>
+      </div>
+      <button
+        onClick={() => setOption(!option)}
+        className={`cursor-pointer w-12 h-6 rounded-full transition-all relative ${option ? "bg-orange-500" : "bg-slate-300"}`}
+      >
+        <div
+          className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${option ? "left-7" : "left-1"}`}
+        />
+      </button>
+    </div>
+  );
+};
+
+const Section = ({
+  section,
+  updateSectionHours,
+  updateSectionLabel,
+  removeSection,
+}) => {
+  return (
+    <div
+      key={section.id}
+      className="p-4 bg-black/40 border border-white/10 rounded-2xl shadow-sm space-y-3"
+    >
+      <div className="flex gap-2">
+        <input
+          className="flex-1 font-bold text-white outline-none focus:text-orange-500"
+          value={section.label}
+          onChange={(e) => updateSectionLabel(section.id, e.target.value)}
+          placeholder="Nome sezione..."
+        />
+        <button
+          onClick={() => removeSection(section.id)}
+          className="text-white/50 hover:text-red-500 cursor-pointer transition-colors"
+        >
+          <Trash2 size={16} />
+        </button>
+      </div>
+
+      <div className="flex items-center gap-2 bg-black/50 p-2 px-3 rounded-xl">
+        <Clock size={14} className="text-white/90" />
+        <input
+          className="bg-transparent text-[11px] font-mono text-white/90 w-full outline-none"
+          value={section.hours.join(", ")}
+          onChange={(e) => updateSectionHours(section.id, e.target.value)}
+          placeholder="Ore (es: 9, 10, 11)"
+        />
+      </div>
+    </div>
+  );
+};
+
 export const SettingsModal = ({
   sections,
   setSections,
@@ -48,29 +115,14 @@ export const SettingsModal = ({
       ></ModalHeader>
 
       {/* Switch Sezioni Dinamiche */}
-      <div className="bg-black/50 p-4 rounded-3xl border border-white/10 mb-8 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div
-            className={`p-2 rounded-xl ${isDynamicColumns ? "bg-orange-500 text-white" : "bg-slate-200 text-slate-500"}`}
-          >
-            {isDynamicColumns ? <Zap size={20} /> : <ZapOff size={20} />}
-          </div>
-          <div>
-            <p className="font-bold text-white text-sm">Sezioni Dinamiche</p>
-            <p className="text-xs text-white/90 tracking-tight">
-              Altezza delle sezioni in base ai task
-            </p>
-          </div>
-        </div>
-        <button
-          onClick={() => setIsDynamicColumns(!isDynamicColumns)}
-          className={`cursor-pointer w-12 h-6 rounded-full transition-all relative ${isDynamicColumns ? "bg-orange-500" : "bg-slate-300"}`}
-        >
-          <div
-            className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${isDynamicColumns ? "left-7" : "left-1"}`}
-          />
-        </button>
-      </div>
+      <Switch
+        option={isDynamicColumns}
+        setOption={setIsDynamicColumns}
+        iconOn={<Zap size={20} />}
+        iconOff={<ZapOff size={20} />}
+        title={"Sezioni Dinamiche"}
+        subtitle={"Altezza delle sezioni in base ai task"}
+      ></Switch>
 
       {/* Lista Sezioni */}
       <div className="space-y-4">
@@ -87,35 +139,11 @@ export const SettingsModal = ({
         </div>
 
         {sections.map((section) => (
-          <div
-            key={section.id}
-            className="p-4 bg-black/40 border border-white/10 rounded-2xl shadow-sm space-y-3"
-          >
-            <div className="flex gap-2">
-              <input
-                className="flex-1 font-bold text-white outline-none focus:text-orange-500"
-                value={section.label}
-                onChange={(e) => updateSectionLabel(section.id, e.target.value)}
-                placeholder="Nome sezione..."
-              />
-              <button
-                onClick={() => removeSection(section.id)}
-                className="text-white/50 hover:text-red-500 cursor-pointer transition-colors"
-              >
-                <Trash2 size={16} />
-              </button>
-            </div>
-
-            <div className="flex items-center gap-2 bg-black/50 p-2 px-3 rounded-xl">
-              <Clock size={14} className="text-white/90" />
-              <input
-                className="bg-transparent text-[11px] font-mono text-white/90 w-full outline-none"
-                value={section.hours.join(", ")}
-                onChange={(e) => updateSectionHours(section.id, e.target.value)}
-                placeholder="Ore (es: 9, 10, 11)"
-              />
-            </div>
-          </div>
+          <Section
+            section={section}
+            updateSectionLabel={updateSectionLabel}
+            updateSectionHours={updateSectionHours}
+          ></Section>
         ))}
       </div>
 
