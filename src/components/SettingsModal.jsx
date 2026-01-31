@@ -1,7 +1,17 @@
 import React from "react";
-import { X, Plus, Trash2, Clock, Zap, ZapOff } from "lucide-react";
+import {
+  X,
+  Plus,
+  Trash2,
+  Clock,
+  Zap,
+  ZapOff,
+  Download,
+  Upload,
+} from "lucide-react";
 import { GLASSBASE } from "../constants/styles";
 import ModalHeader from "./ui/ModalHeader";
+import { ButtonPrimary, ButtonSecondary } from "./ui/Button";
 
 const Switch = ({ option, setOption, iconOn, iconOff, title, subtitle }) => {
   return (
@@ -147,12 +157,18 @@ export const SettingsModal = ({
         ))}
       </div>
 
-      <button
-        onClick={onClose}
-        className="cursor-pointer w-full mt-8 py-4 bg-black/90 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-black/70 transition-all"
-      >
-        Salva e Chiudi
-      </button>
+      <div className="mt-8"></div>
+      <ButtonPrimary text={"Salva e Chiudi"} onClick={onClose}></ButtonPrimary>
+      <div className="flex gap-2 w-full justify-between">
+        <ButtonSecondary
+          text={"Scarica dati"}
+          icon={<Download size={16} />}
+        ></ButtonSecondary>
+        <ButtonSecondary
+          text={"Carica dati"}
+          icon={<Upload size={16} />}
+        ></ButtonSecondary>
+      </div>
     </div>
   );
 };
