@@ -48,6 +48,7 @@ export const BacklogIcon = ({
   onDragLeave,
   isOver,
   onClick,
+  count,
 }) => {
   return (
     <div
@@ -60,6 +61,11 @@ export const BacklogIcon = ({
       onDragLeave={onDragLeave}
       onClick={onClick}
     >
+      {count !== 0 && (
+        <div className="absolute -top-1 -right-1 py-1 px-2 text-xs font-bold bg-orange-500 text-white/90 rounded-full">
+          {count}
+        </div>
+      )}
       <div
         className={`
         bg-white p-4 rounded-2xl shadow-lg border-2 transition-all duration-200

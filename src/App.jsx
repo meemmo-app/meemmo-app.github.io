@@ -336,6 +336,7 @@ export default function App() {
         onDragLeave={handleBacklogDragLeave}
         isOver={isBacklogOver}
         onClick={openBacklog}
+        count={backlogTasks.length}
       />
 
       {/* Backlog Drawer */}
