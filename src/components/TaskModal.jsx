@@ -2,6 +2,7 @@ import React from "react";
 import { X } from "lucide-react";
 
 export const TaskModal = ({
+  title,
   newTask,
   setNewTask,
   onSave,
@@ -13,7 +14,11 @@ export const TaskModal = ({
       e.preventDefault();
       onSave();
     }
-    if ((e.key === "p" || e.key === "P") && e.altKey) {
+    if (
+      (e.key === "p" || e.key === "P") &&
+      document.activeElement.tagName !== "INPUT" &&
+      document.activeElement.tagName !== "TEXTAREA"
+    ) {
       e.preventDefault();
       setNewTask((prev) => ({ ...prev, priority: !prev.priority }));
     }
@@ -32,7 +37,7 @@ export const TaskModal = ({
 
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-black text-white tracking-tight">
-          Cosa bolle in pentola?
+          {title}
         </h2>
         <button
           onClick={onClose}
@@ -84,7 +89,7 @@ export const TaskModal = ({
                 : "bg-white/5 text-white/50 border-white/10 hover:border-white/30 focus:bg-white/4"
             }`}
           >
-            {newTask.priority ? "Priorità Alta" : "Priorità Normale (P)"}
+            {newTask.priority ? "Priorità Alta (P)" : "Priorità Normale (P)"}
           </button>
           <span className="text-xs text-white/40 font-bold uppercase tracking-tighter">
             INVIO per salvare

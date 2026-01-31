@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Keyboard, X } from "lucide-react";
 
-export const FooterNav = ({ isModalOpen, isSettingsOpen }) => {
+export const FooterNav = ({ isModalOpen, setIsModalOpen, isSettingsOpen }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   // Listener per il tasto "?"
@@ -40,11 +40,14 @@ export const FooterNav = ({ isModalOpen, isSettingsOpen }) => {
       `}
       >
         <div className="flex gap-6 items-center whitespace-nowrap text-white/90 text-xs font-medium">
-          <div className="flex gap-2 items-center">
+          <div
+            className="flex gap-2 items-center cursor-pointer hover:text-white hover:scale-105 transition-all"
+            onClick={() => setIsModalOpen(true)}
+          >
             <span className="bg-white/10 px-1.5 py-0.5 rounded text-[10px] font-black text-slate-300 border border-white/10">
               space
             </span>
-            crea
+            Crea
           </div>
           <div className="flex gap-2 items-center">
             <span className="bg-white/10 px-1.5 py-0.5 rounded text-[10px] font-black text-slate-300 border border-white/10">

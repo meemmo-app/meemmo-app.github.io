@@ -112,13 +112,6 @@ export default function App() {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (isModalOpen) {
-        if (
-          (e.key === "p" || e.key === "P") &&
-          document.activeElement.tagName !== "INPUT" &&
-          document.activeElement.tagName !== "TEXTAREA"
-        ) {
-          setNewTask((prev) => ({ ...prev, priority: !prev.priority }));
-        }
         if (e.key === "Escape") {
           e.stopPropagation();
           setIsModalOpen(false);
@@ -244,6 +237,7 @@ export default function App() {
       {/* Footer Nav */}
       <FooterNav
         isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
         isSettingsOpen={isSettingsOpen}
       ></FooterNav>
 
@@ -257,14 +251,13 @@ export default function App() {
       >
         <TaskModal
           // Se stiamo modificando, passiamo editingTask, altrimenti il nuovo task vuoto
+          title={editingTask ? "Modifica Task" : "Cosa bolle in pentola?"}
           newTask={editingTask || newTask}
           setNewTask={editingTask ? setEditingTask : setNewTask}
           onSave={
             editingTask ? () => updateTask(editingTask) : handleCreateTask
           }
-          sectionLabel={
-            editingTask ? "Modifica Task" : sections[activeQuarterIndex].label
-          }
+          sectionLabel={sections[activeQuarterIndex].label}
           onClose={() => {
             setIsModalOpen(false);
             setEditingTask(null);
