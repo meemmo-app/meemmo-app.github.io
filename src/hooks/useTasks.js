@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import confetti from "canvas-confetti";
 
 export function useTasks() {
   const [tasks, setTasks] = useState(() => {
@@ -26,7 +27,22 @@ export function useTasks() {
 
   const toggleComplete = (id) => {
     setTasks((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)),
+      prev.map((t) => {
+        if (t.id === id) {
+          // Spariamo i coriandoli solo se il task sta per essere completato
+          if (!t.completed) {
+            confetti({
+              particleCount: 60,
+              spread: 70,
+              origin: { y: 1.2 },
+              colors: ["#ff6347", "#ffa500", "#ffffff"],
+              zIndex: 9999, // Assicura che siano sopra le modali
+            });
+          }
+          return { ...t, completed: !t.completed };
+        }
+        return t;
+      }),
     );
   };
 
