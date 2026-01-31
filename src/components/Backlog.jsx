@@ -1,38 +1,29 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Layout, Plus } from "lucide-react";
 import ModalHeader from "./ui/ModalHeader";
+import { GLASSBASE } from "../constants/styles";
 
 const Backlog = ({ isOpen, onClose, onDrop, children, isOver }) => {
   return (
     <div
       className={`
+        ${GLASSBASE} p-8 rounded-3xl rounded-b-none
       fixed bottom-0 left-50 right-50 w-2/3 z-40 transition-all duration-300
       ${isOpen ? "h-[40vh] translate-y-0" : "h-16 translate-y-[calc(40vh-4rem)]"}
-      bg-white/95 backdrop-blur-lg border-t border-slate-200 rounded-t-3xl
-      shadow-2xl shadow-slate-900/20
     `}
     >
       {/* Backlog Header */}
-      <div className="flex items-center justify-between p-6 border-b border-slate-200">
-        <div className="flex items-center gap-3">
-          <div className="bg-orange-500 text-white p-2 rounded-xl">
-            <Layout size={20} />
-          </div>
-          <div>
-            <h2 className="text-xl font-bold text-slate-800">Backlog</h2>
-            <p className="text-sm text-slate-500">Task in attesa</p>
-          </div>
-        </div>
-        <button
-          onClick={onClose}
-          className="text-slate-400 hover:text-slate-600 transition-colors"
-        >
-          ✕
-        </button>
+      <div className="px-0">
+        <ModalHeader
+          title={"Backlog"}
+          subtitle={"Task in attesa..."}
+          onClose={onClose}
+          icon={<Layout size={42} className="text-white/90" />}
+        ></ModalHeader>
       </div>
 
       {/* Backlog Content */}
-      <div className="flex-1 overflow-y-scroll h-[30vh] p-6">
+      <div className="flex-1 overflow-y-scroll h-[30vh] pb-8">
         {React.Children.count(children) === 0 ? (
           <div className="flex flex-col items-center justify-center text-slate-300 space-y-4">
             <Layout size={60} strokeWidth={1} className="text-slate-300" />
