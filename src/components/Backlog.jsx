@@ -1,9 +1,23 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Layout, Plus } from "lucide-react";
+import React from "react";
+import { Layout } from "lucide-react";
 import ModalHeader from "./ui/ModalHeader";
 import { GLASSBASE } from "../constants/styles";
+import Badge from "./ui/Badge";
 
-const Backlog = ({ isOpen, onClose, onDrop, children, isOver }) => {
+const BacklogEmptyMessage = () => {
+  return (
+    <div className="flex flex-col items-center justify-center text-white/90 space-y-4">
+      <Layout size={60} strokeWidth={1} />
+      <p className="text-lg font-medium">Backlog vuoto</p>
+      <p className="text-sm text-white/80 max-w text-center">
+        Trascina i task sull'icona per metterli in attesa. Potrai riassegnarli
+        più tardi.
+      </p>
+    </div>
+  );
+};
+
+const Backlog = ({ isOpen, onClose, children }) => {
   return (
     <div
       className={`
@@ -25,14 +39,7 @@ const Backlog = ({ isOpen, onClose, onDrop, children, isOver }) => {
       {/* Backlog Content */}
       <div className="flex-1 overflow-y-scroll h-[30vh] pb-8">
         {React.Children.count(children) === 0 ? (
-          <div className="flex flex-col items-center justify-center text-slate-300 space-y-4">
-            <Layout size={60} strokeWidth={1} className="text-slate-300" />
-            <p className="text-lg font-medium text-slate-400">Backlog vuoto</p>
-            <p className="text-sm text-slate-500 max-w text-center">
-              Trascina i task qui per metterli in attesa. Potrai riassegnarli
-              più tardi.
-            </p>
-          </div>
+          <BacklogEmptyMessage />
         ) : (
           <div className="space-y-3">{children}</div>
         )}
@@ -64,13 +71,13 @@ export const BacklogIcon = ({
       title="Open the Backlog or Drag & Drop a Task to put it into the Backlog"
     >
       {count !== 0 && (
-        <div className="absolute -top-1 -right-1 py-1 px-2 text-xs font-bold bg-orange-500 rounded-full">
-          {count}
+        <div className="absolute -top-1 -right-1">
+          <Badge number={count} />
         </div>
       )}
       <div
         className={`
-        w-auto  py-2 px-4 rounded-full shadow-lg transition-all duration-200 flex flex-row items-center gap-2
+        w-auto py-2 px-4 rounded-full shadow-lg transition-all duration-200 flex flex-row items-center gap-2
       `}
       >
         <Layout size={28} className="transition-transform duration-500" />
