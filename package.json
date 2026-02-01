@@ -3,13 +3,14 @@
   "private": true,
   "version": "0.0.1",
   "type": "module",
+  "homepage": "https://meemmo-app.github.io",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",
