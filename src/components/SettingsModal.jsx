@@ -1,5 +1,88 @@
 import React from "react";
-import { X, Plus, Trash2, Clock, Zap, ZapOff } from "lucide-react";
+import {
+  X,
+  Plus,
+  Trash2,
+  Clock,
+  Zap,
+  ZapOff,
+  Download,
+  Upload,
+} from "lucide-react";
+import { GLASSBASE } from "../constants/styles";
+import ModalHeader from "./ui/ModalHeader";
+import { ButtonPrimary, ButtonSecondary } from "./ui/Button";
+import {
+  exportLocalStorageData,
+  importLocalStorageData,
+} from "../constants/utils";
+
+const Switch = ({ option, setOption, iconOn, iconOff, title, subtitle }) => {
+  return (
+    <div className="bg-black/50 p-4 rounded-3xl border border-white/10 mb-8 flex items-center justify-between">
+      <div className="flex items-center gap-3">
+        <div
+          className={`p-2 rounded-xl ${option ? "bg-orange-500 text-white" : "bg-slate-200 text-slate-500"}`}
+        >
+          {option ? iconOn : iconOff}
+        </div>
+        <div>
+          <p className="font-bold text-white text-sm">{title}</p>
+          {subtitle && (
+            <p className="text-xs text-white/90 tracking-tight">{subtitle}</p>
+          )}
+        </div>
+      </div>
+      <button
+        onClick={() => setOption(!option)}
+        className={`cursor-pointer w-12 h-6 rounded-full transition-all relative ${option ? "bg-orange-500" : "bg-slate-300"}`}
+      >
+        <div
+          className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${option ? "left-7" : "left-1"}`}
+        />
+      </button>
+    </div>
+  );
+};
+
+const Section = ({
+  section,
+  updateSectionHours,
+  updateSectionLabel,
+  removeSection,
+}) => {
+  return (
+    <div
+      key={section.id}
+      className="p-4 bg-black/40 border border-white/10 rounded-2xl shadow-sm space-y-3"
+    >
+      <div className="flex gap-2">
+        <input
+          className="flex-1 font-bold text-white outline-none focus:text-orange-500"
+          value={section.label}
+          onChange={(e) => updateSectionLabel(section.id, e.target.value)}
+          placeholder="Nome sezione..."
+        />
+        <button
+          onClick={() => removeSection(section.id)}
+          className="text-white/50 hover:text-red-500 cursor-pointer transition-colors"
+        >
+          <Trash2 size={16} />
+        </button>
+      </div>
+
+      <div className="flex items-center gap-2 bg-black/50 p-2 px-3 rounded-xl">
+        <Clock size={14} className="text-white/90" />
+        <input
+          className="bg-transparent text-[11px] font-mono text-white/90 w-full outline-none"
+          value={section.hours.join(", ")}
+          onChange={(e) => updateSectionHours(section.id, e.target.value)}
+          placeholder="Ore (es: 9, 10, 11)"
+        />
+      </div>
+    </div>
+  );
+};
 
 export const SettingsModal = ({
   sections,
@@ -36,51 +119,24 @@ export const SettingsModal = ({
 
   return (
     <div
-      className="p-8 max-h-[85vh] overflow-y-scroll overflow-x-hidden  bg-slate-900/60 backdrop-blur-3xl -webkit-backdrop-blur-3xl border border-white/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)]
-                     transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1)"
+      className={`${GLASSBASE} rounded-3xl p-8 max-h-[85vh] overflow-y-scroll overflow-x-hidden`}
     >
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h2 className="text-2xl font-black text-white tracking-tight">
-            Impostazioni
-          </h2>
-          <p className="text-xs font-bold text-white/50 uppercase">
-            Configura la tua giornata
-          </p>
-        </div>
-        <button
-          onClick={onClose}
-          className="p-2 hover:bg-white/10 rounded-full transition-all active:scale-90 group"
-        >
-          <X size={22} className="text-white/60 group-hover:text-white" />
-        </button>
-      </div>
+      <ModalHeader
+        title={"Impostazioni"}
+        subtitle={"Configura la tua ggiornata"}
+        onClose={onClose}
+      ></ModalHeader>
 
       {/* Switch Sezioni Dinamiche */}
-      <div className="bg-black/50 p-4 rounded-3xl border border-white/10 mb-8 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div
-            className={`p-2 rounded-xl ${isDynamicColumns ? "bg-orange-500 text-white" : "bg-slate-200 text-slate-500"}`}
-          >
-            {isDynamicColumns ? <Zap size={20} /> : <ZapOff size={20} />}
-          </div>
-          <div>
-            <p className="font-bold text-white text-sm">Sezioni Dinamiche</p>
-            <p className="text-xs text-white/90 tracking-tight">
-              Altezza delle sezioni in base ai task
-            </p>
-          </div>
-        </div>
-        <button
-          onClick={() => setIsDynamicColumns(!isDynamicColumns)}
-          className={`cursor-pointer w-12 h-6 rounded-full transition-all relative ${isDynamicColumns ? "bg-orange-500" : "bg-slate-300"}`}
-        >
-          <div
-            className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${isDynamicColumns ? "left-7" : "left-1"}`}
-          />
-        </button>
-      </div>
+      <Switch
+        option={isDynamicColumns}
+        setOption={setIsDynamicColumns}
+        iconOn={<Zap size={20} />}
+        iconOff={<ZapOff size={20} />}
+        title={"Sezioni Dinamiche"}
+        subtitle={"Altezza delle sezioni in base ai task"}
+      ></Switch>
 
       {/* Lista Sezioni */}
       <div className="space-y-4">
@@ -97,44 +153,37 @@ export const SettingsModal = ({
         </div>
 
         {sections.map((section) => (
-          <div
-            key={section.id}
-            className="p-4 bg-black/40 border border-white/10 rounded-2xl shadow-sm space-y-3"
-          >
-            <div className="flex gap-2">
-              <input
-                className="flex-1 font-bold text-white outline-none focus:text-orange-500"
-                value={section.label}
-                onChange={(e) => updateSectionLabel(section.id, e.target.value)}
-                placeholder="Nome sezione..."
-              />
-              <button
-                onClick={() => removeSection(section.id)}
-                className="text-white/50 hover:text-red-500 cursor-pointer transition-colors"
-              >
-                <Trash2 size={16} />
-              </button>
-            </div>
-
-            <div className="flex items-center gap-2 bg-black/50 p-2 px-3 rounded-xl">
-              <Clock size={14} className="text-white/90" />
-              <input
-                className="bg-transparent text-[11px] font-mono text-white/90 w-full outline-none"
-                value={section.hours.join(", ")}
-                onChange={(e) => updateSectionHours(section.id, e.target.value)}
-                placeholder="Ore (es: 9, 10, 11)"
-              />
-            </div>
-          </div>
+          <Section
+            section={section}
+            updateSectionLabel={updateSectionLabel}
+            updateSectionHours={updateSectionHours}
+          ></Section>
         ))}
       </div>
 
-      <button
-        onClick={onClose}
-        className="cursor-pointer w-full mt-8 py-4 bg-black/90 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-black/70 transition-all"
-      >
-        Salva e Chiudi
-      </button>
+      <div className="mt-8"></div>
+      <ButtonPrimary text={"Salva e Chiudi"} onClick={onClose}></ButtonPrimary>
+      <div className="flex gap-2 w-full justify-between">
+        <ButtonSecondary
+          text={"Scarica dati"}
+          icon={<Download size={16} />}
+          onClick={exportLocalStorageData}
+        ></ButtonSecondary>
+        <div className="relative">
+          <input
+            type="file"
+            accept=".json"
+            onChange={importLocalStorageData}
+            className="hidden"
+            id="import-file"
+          />
+          <ButtonSecondary
+            text={"Carica dati"}
+            icon={<Upload size={16} />}
+            onClick={() => document.getElementById("import-file").click()}
+          ></ButtonSecondary>
+        </div>
+      </div>
     </div>
   );
 };

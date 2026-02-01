@@ -208,7 +208,6 @@ export default function App() {
         ACCENT_COLOR={ACCENT_COLOR}
         showCompleted={showCompleted}
         setShowCompleted={setShowCompleted}
-        isSettingsModalOpen={isSettingsOpen}
         setIsSettingsModalOpen={setIsSettingsOpen}
       ></Header>
 
@@ -270,6 +269,7 @@ export default function App() {
           title={editingTask ? "Modifica Task" : "Cosa bolle in pentola?"}
           newTask={editingTask || newTask}
           setNewTask={editingTask ? setEditingTask : setNewTask}
+          editingTask={editingTask}
           onSave={
             editingTask ? () => updateTask(editingTask) : handleCreateTask
           }
@@ -278,7 +278,6 @@ export default function App() {
             setIsModalOpen(false);
             setEditingTask(null);
           }}
-          editingTask={editingTask}
         />
       </Dialog>
       {/* Settings Modal */}

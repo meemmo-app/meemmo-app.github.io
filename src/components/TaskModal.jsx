@@ -1,5 +1,7 @@
 import React from "react";
 import { X } from "lucide-react";
+import { GLASSBASE } from "../constants/styles";
+import ModalHeader from "./ui/ModalHeader";
 
 export const TaskModal = ({
   title,
@@ -26,27 +28,13 @@ export const TaskModal = ({
   };
 
   return (
-    <div
-      className="p-8 relative bg-slate-900/60 backdrop-blur-3xl -webkit-backdrop-blur-3xl border border-white/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)]
-                 transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1)"
-      onKeyDown={handleKeyDown}
-    >
+    <div className={`${GLASSBASE} rounded-3xl p-8`} onKeyDown={handleKeyDown}>
       {/* Badge Gambero Animato */}
       <div className="absolute z-50 -top-5 -left-5 text-6xl animate-[bounce_3s_ease-in-out_infinite] drop-shadow-2xl">
         🦐
       </div>
 
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-black text-white tracking-tight">
-          {title}
-        </h2>
-        <button
-          onClick={onClose}
-          className="p-2 hover:bg-white/10 rounded-full transition-all active:scale-90 group"
-        >
-          <X size={22} className="text-white/60 group-hover:text-white" />
-        </button>
-      </div>
+      <ModalHeader title={title} onClose={onClose}></ModalHeader>
 
       <p className="text-[10px] font-black text-white/50 mb-4 uppercase tracking-widest flex items-center gap-2">
         Sezione:{" "}

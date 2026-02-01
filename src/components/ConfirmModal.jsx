@@ -1,5 +1,6 @@
 import React from "react";
 import { AlertTriangle } from "lucide-react";
+import { GLASSBASE } from "../constants/styles";
 
 export const ConfirmModal = ({
   title,
@@ -11,8 +12,8 @@ export const ConfirmModal = ({
 }) => {
   return (
     <div
-      className="p-8 relative bg-slate-900/60 backdrop-blur-3xl -webkit-backdrop-blur-3xl border border-white/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)]
-                       transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1)"
+      className={`
+        ${GLASSBASE} rounded-3xl p-8 relative`}
     >
       <div className="flex flex-col items-center text-center space-y-4">
         {/* Icona di Avviso */}

@@ -1,5 +1,22 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Keyboard, X } from "lucide-react";
+import { GLASSBASE } from "../constants/styles";
+
+const FooterItem = ({ keys, description, onHover, onClick }) => {
+  return (
+    <div
+      className={`flex gap-2 items-center
+      ${onHover ? "cursor-pointer hover:text-white hover:scale-105 transition-all" : ""}
+      `}
+      onClick={onClick}
+    >
+      <span className="bg-white/10 px-1.5 py-0.5 rounded text-[10px] font-black text-slate-300 border border-white/10">
+        {keys}
+      </span>
+      {description}
+    </div>
+  );
+};
 
 export const FooterNav = ({ isModalOpen, setIsModalOpen, isSettingsOpen }) => {
   const [isOpen, setIsOpen] = useState(true);
@@ -17,12 +34,6 @@ export const FooterNav = ({ isModalOpen, setIsModalOpen, isSettingsOpen }) => {
     }
   });
 
-  // Stile base del vetro scuro
-  const glassBase = `
-    bg-slate-900/60 backdrop-blur-xl -webkit-backdrop-blur-xl
-    border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.3)]
-  `;
-
   return (
     <div
       className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 ${isModalOpen || isSettingsOpen ? "hidden" : ""}`}
@@ -30,7 +41,7 @@ export const FooterNav = ({ isModalOpen, setIsModalOpen, isSettingsOpen }) => {
       {/* Container Principale con Transizione Fluida */}
       <div
         className={`
-        ${glassBase}
+        ${GLASSBASE}
         flex items-center overflow-hidden transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1)
         ${
           isOpen
@@ -40,45 +51,17 @@ export const FooterNav = ({ isModalOpen, setIsModalOpen, isSettingsOpen }) => {
       `}
       >
         <div className="flex gap-6 items-center whitespace-nowrap text-white/90 text-xs font-medium">
-          <div
-            className="flex gap-2 items-center cursor-pointer hover:text-white hover:scale-105 transition-all"
+          <FooterItem
+            keys={"Space"}
+            description={"Crea"}
+            onHover={true}
             onClick={() => setIsModalOpen(true)}
-          >
-            <span className="bg-white/10 px-1.5 py-0.5 rounded text-[10px] font-black text-slate-300 border border-white/10">
-              space
-            </span>
-            Crea
-          </div>
-          <div className="flex gap-2 items-center">
-            <span className="bg-white/10 px-1.5 py-0.5 rounded text-[10px] font-black text-slate-300 border border-white/10">
-              J/K
-            </span>
-            Tasks
-          </div>
-          <div className="flex gap-2 items-center">
-            <span className="bg-white/10 px-1.5 py-0.5 rounded text-[10px] font-black text-slate-300 border border-white/10">
-              H/L
-            </span>
-            Quarti
-          </div>
-          <div className="flex gap-2 items-center">
-            <span className="bg-white/10 px-1.5 py-0.5 rounded text-[10px] font-black text-slate-300 border border-white/10">
-              E
-            </span>
-            Modifica
-          </div>
-          <div className="flex gap-2 items-center">
-            <span className="bg-white/10 px-1.5 py-0.5 rounded text-[10px] font-black text-slate-300 border border-white/10">
-              D
-            </span>
-            Completa
-          </div>
-          <div className="flex gap-2 items-center">
-            <span className="bg-red-500/20 px-1.5 py-0.5 rounded text-[10px] font-black text-red-400 border border-red-500/30">
-              X
-            </span>
-            Elimina
-          </div>
+          ></FooterItem>
+          <FooterItem keys={"J/K"} description={"Scorri Tasks"}></FooterItem>
+          <FooterItem keys={"H/L"} description={"Scorri Quarti"}></FooterItem>
+          <FooterItem keys={"E"} description={"Modifica"}></FooterItem>
+          <FooterItem keys={"D"} description={"Completa"}></FooterItem>
+          <FooterItem keys={"X"} description={"Elimina"}></FooterItem>
         </div>
       </div>
 
@@ -86,7 +69,7 @@ export const FooterNav = ({ isModalOpen, setIsModalOpen, isSettingsOpen }) => {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`
-          ${glassBase}
+          ${GLASSBASE}
           rounded-full flex items-center justify-center
           cursor-pointer
           transition-all duration-300 hover:scale-105 active:scale-90
