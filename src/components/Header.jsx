@@ -3,6 +3,18 @@ import { Keyboard, Eye, EyeOff, Settings, Trash } from "lucide-react";
 import { ConfirmModal } from "./ConfirmModal";
 import { Dialog } from "./ui/Dialog";
 
+const HeaderIcon = ({ icon, onClick, title }) => {
+  return (
+    <button
+      name={title}
+      className="p-2 hover:bg-slate-100 rounded-full transition-all cursor-pointer"
+      onClick={onClick}
+    >
+      {icon}
+    </button>
+  );
+};
+
 export const Header = ({
   ACCENT_COLOR,
   showCompleted,
@@ -48,20 +60,16 @@ export const Header = ({
           {showCompleted ? <Eye size={14} /> : <EyeOff size={14} />}
           {showCompleted ? "Nascondi completati" : "Mostra completati"}
         </button>
-        <button
-          name="Settings"
-          className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+        <HeaderIcon
+          icon={<Trash size={22} className="text-slate-400" />}
           onClick={() => setDeleteCompleted(true)}
-        >
-          <Trash size={22} className="text-slate-400" />
-        </button>
-        <button
-          name="Settings"
-          className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+          title="Delete completed tasks"
+        ></HeaderIcon>
+        <HeaderIcon
+          icon={<Settings size={22} className="text-slate-400" />}
           onClick={() => setIsSettingsModalOpen(true)}
-        >
-          <Settings size={22} className="text-slate-400" />
-        </button>
+          title="Settings"
+        ></HeaderIcon>
       </div>
       <Dialog
         isOpen={!!deleteCompleted}
