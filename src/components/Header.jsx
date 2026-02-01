@@ -1,11 +1,22 @@
-import { Keyboard, Eye, EyeOff, Settings } from "lucide-react";
+import { useState } from "react";
+import { Keyboard, Eye, EyeOff, Settings, Trash } from "lucide-react";
+import { ConfirmModal } from "./ConfirmModal";
+import { Dialog } from "./ui/Dialog";
 
 export const Header = ({
   ACCENT_COLOR,
   showCompleted,
   setShowCompleted,
   setIsSettingsModalOpen,
+  deleteCompletedTasks,
 }) => {
+  const [deleteCompleted, setDeleteCompleted] = useState(false);
+
+  const confirmDeleteCompleted = () => {
+    deleteCompletedTasks();
+    setDeleteCompleted(false);
+  };
+
   return (
     <header className="p-6 flex justify-between items-center max-w-7xl mx-auto">
       <div className="flex items-center gap-3">
@@ -40,11 +51,30 @@ export const Header = ({
         <button
           name="Settings"
           className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+          onClick={() => setDeleteCompleted(true)}
+        >
+          <Trash size={22} className="text-slate-400" />
+        </button>
+        <button
+          name="Settings"
+          className="p-2 hover:bg-slate-100 rounded-full transition-colors"
           onClick={() => setIsSettingsModalOpen(true)}
         >
           <Settings size={22} className="text-slate-400" />
         </button>
       </div>
+      <Dialog
+        isOpen={!!deleteCompleted}
+        onClose={() => setDeleteCompleted(false)}
+      >
+        <ConfirmModal
+          title="Eliminare i Task completati?"
+          message="Questa azione è irreversibile. Saranno eliminati tutti i Task completati."
+          onConfirm={confirmDeleteCompleted}
+          onCancel={() => setDeleteCompleted(false)}
+          confirmLabel="Elimina tutti"
+        />
+      </Dialog>
     </header>
   );
 };

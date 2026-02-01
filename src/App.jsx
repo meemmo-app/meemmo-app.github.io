@@ -19,8 +19,14 @@ import Backlog, { BacklogIcon } from "./components/Backlog";
 
 export default function App() {
   // Logic & State da Hook personalizzato
-  const { tasks, createTask, deleteTask, toggleComplete, moveTask, setTasks } =
-    useTasks();
+  const {
+    tasks,
+    createTask,
+    toggleComplete,
+    moveTask,
+    setTasks,
+    deleteCompletedTasks,
+  } = useTasks();
 
   const {
     sections,
@@ -289,6 +295,7 @@ export default function App() {
         showCompleted={showCompleted}
         setShowCompleted={setShowCompleted}
         setIsSettingsModalOpen={setIsSettingsOpen}
+        deleteCompletedTasks={deleteCompletedTasks}
       ></Header>
 
       {/* Main Grid */}

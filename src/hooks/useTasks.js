@@ -25,6 +25,10 @@ export function useTasks() {
   const deleteTask = (id) =>
     setTasks((prev) => prev.filter((t) => t.id !== id));
 
+  const deleteCompletedTasks = () => {
+    setTasks((prev) => prev.filter((t) => t.completed == false));
+  };
+
   const toggleComplete = (id) => {
     setTasks((prev) =>
       prev.map((t) => {
@@ -52,5 +56,13 @@ export function useTasks() {
     );
   };
 
-  return { tasks, createTask, deleteTask, toggleComplete, moveTask, setTasks };
+  return {
+    tasks,
+    createTask,
+    deleteTask,
+    toggleComplete,
+    moveTask,
+    setTasks,
+    deleteCompletedTasks,
+  };
 }

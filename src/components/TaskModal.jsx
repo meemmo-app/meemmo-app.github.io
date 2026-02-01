@@ -87,7 +87,7 @@ export const TaskModal = ({
 
         {/* Pulsante Salva */}
         <button
-          onClick={onSave}
+          onClick={() => onSave()}
           tabIndex="0"
           className="w-full py-5 bg-orange-500 hover:bg-orange-400 text-white rounded-2xl font-black text-xl transition-all shadow-2xl shadow-orange-500/30 focus:ring-2 focus:ring-orange-500 focus:bg-orange-600 outline-none active:scale-95 border-t border-white/20"
         >
