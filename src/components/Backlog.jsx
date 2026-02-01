@@ -16,7 +16,7 @@ const Backlog = ({ isOpen, onClose, onDrop, children, isOver }) => {
       <div className="px-0">
         <ModalHeader
           title={"Backlog"}
-          subtitle={"Task in attesa..."}
+          subtitle={"Task in attesa...trascinali nelle varie sezioni"}
           onClose={onClose}
           icon={<Layout size={42} className="text-white/90" />}
         ></ModalHeader>
@@ -53,36 +53,28 @@ export const BacklogIcon = ({
   return (
     <div
       className={`
-        fixed bottom-4 right-4 z-40 transition-all duration-200 cursor-pointer
-        ${isOver ? "scale-110 rotate-12" : ""}
+        ${GLASSBASE} rounded-full
+        fixed bottom-6 right-4 z-40 transition-all duration-300 cursor-pointer hover:scale-105 active:scale-95 text-white/90 hover:text-white
+        ${isOver ? "scale-115 rotate-12 border border-white/30" : ""}
       `}
       onDrop={onDrop}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onClick={onClick}
+      title="Open the Backlog or Drag & Drop a Task to put it into the Backlog"
     >
       {count !== 0 && (
-        <div className="absolute -top-1 -right-1 py-1 px-2 text-xs font-bold bg-orange-500 text-white/90 rounded-full">
+        <div className="absolute -top-1 -right-1 py-1 px-2 text-xs font-bold bg-orange-500 rounded-full">
           {count}
         </div>
       )}
       <div
         className={`
-        bg-white p-4 rounded-2xl shadow-lg border-2 transition-all duration-200
-        ${isOver ? "border-orange-500 bg-orange-50" : "border-slate-200"}
+        w-auto  py-2 px-4 rounded-full shadow-lg transition-all duration-200 flex flex-row items-center gap-2
       `}
       >
-        <div className="flex flex-col items-center gap-2">
-          <div
-            className={`
-            bg-orange-500 text-white p-3 rounded-xl transition-all duration-200
-            ${isOver ? "bg-orange-600 scale-110" : ""}
-          `}
-          >
-            <Layout size={24} />
-          </div>
-          <span className="text-xs font-medium text-slate-600">Backlog</span>
-        </div>
+        <Layout size={28} className="transition-transform duration-500" />
+        <span className="text-sm font-medium ">Backlog</span>
       </div>
     </div>
   );

@@ -21,7 +21,7 @@ function ModalHeader({ title, subtitle, onClose, icon }) {
         </div>
         <button
           onClick={onClose}
-          className="p-2 hover:bg-white/10 rounded-full transition-all active:scale-90 group"
+          className="p-2 hover:bg-white/10 rounded-full transition-all cursor-pointer active:scale-90 group"
         >
           <X size={22} className="text-white/60 group-hover:text-white" />
         </button>
