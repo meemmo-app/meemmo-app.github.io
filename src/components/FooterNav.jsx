@@ -20,6 +20,55 @@ const FooterItem = ({ keys, description, onHover, onClick }) => {
   );
 };
 
+const ToggleButton = ({ isOpen, setIsOpen }) => {
+  return (
+    <button
+      onClick={() => setIsOpen(!isOpen)}
+      className={`
+        ${GLASSBASE}
+        rounded-full flex items-center justify-center
+        cursor-pointer
+        transition-all duration-300 hover:scale-105 active:scale-90
+        text-white/80 hover:text-white
+        ${isOpen ? "w-11 h-11" : "w-12 h-12"}
+      `}
+    >
+      {isOpen ? (
+        <X size={20} className="transition-transform duration-500 rotate-0" />
+      ) : (
+        <div
+          className="flex items-center gap-1"
+          title="Digita ? per aprire le scorciatoie"
+        >
+          <Keyboard size={22} className="transition-transform duration-500" />
+        </div>
+      )}
+    </button>
+  );
+};
+
+const TextToSpeechButton = ({ startListening, isListening }) => {
+  return (
+    <>
+      <button
+        onMouseDown={startListening} // Tieni premuto per parlare
+        title="Hold down to speech a task"
+        className={`
+        ${GLASSBASE}
+        rounded-full flex flex-row items-center justify-center gap-2 p-3 h-12 cursor-pointer transition-all duration-300
+         text-white/80 hover:text-white ${isListening ? "scale-90" : "hover:scale-105 active:scale-90"}`}
+      >
+        <Mic size={22} className={isListening ? "animate-pulse" : ""} />
+        {isListening && (
+          <div className="relative">
+            <VoiceWaveform />
+          </div>
+        )}
+      </button>
+    </>
+  );
+};
+
 export const FooterNav = ({
   isModalOpen,
   setIsModalOpen,
@@ -44,9 +93,6 @@ export const FooterNav = ({
         if (e.key === "?") {
           setIsOpen((prev) => !prev);
         }
-        if (e.key.toLowerCase() === "v") {
-          startListening();
-        }
       };
       window.addEventListener("keydown", handleKeyDown);
       return () => window.removeEventListener("keydown", handleKeyDown);
@@ -54,12 +100,13 @@ export const FooterNav = ({
   });
 
   return (
-    <div
-      className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-3 ${isModalOpen || isSettingsOpen || isBacklogOpen ? "hidden" : ""}`}
-    >
-      {/* Container Principale con Transizione Fluida */}
+    <>
       <div
-        className={`
+        className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-3 ${isModalOpen || isSettingsOpen || isBacklogOpen ? "hidden" : ""}`}
+      >
+        {/* Container Principale con Transizione Fluida */}
+        <div
+          className={`
         ${GLASSBASE}
         flex items-center overflow-hidden transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1)
         ${
@@ -68,68 +115,31 @@ export const FooterNav = ({
             : "max-w-0 px-0 py-3 rounded-3xl opacity-0 pointer-events-none border-none"
         }
       `}
-      >
-        {/* Se sta ascoltando, mostriamo la forma d'onda dietro il vetro */}
-        {isListening && (
-          <div className="absolute inset-0 flex items-center justify-center bg-orange-500/10 animate-pulse">
-            <VoiceWaveform />
+        >
+          <div className="flex gap-6 items-center whitespace-nowrap text-white/90 text-xs font-medium">
+            <FooterItem
+              keys={"Space"}
+              description={"Crea"}
+              onHover={true}
+              onClick={() => setIsModalOpen(true)}
+            ></FooterItem>
+            <FooterItem keys={"J/K"} description={"Scorri Tasks"}></FooterItem>
+            <FooterItem keys={"H/L"} description={"Scorri Quarti"}></FooterItem>
+            <FooterItem keys={"E"} description={"Modifica"}></FooterItem>
+            <FooterItem keys={"D"} description={"Completa"}></FooterItem>
+            <FooterItem keys={"X"} description={"Elimina"}></FooterItem>
           </div>
-        )}
-        <div className="flex gap-6 items-center whitespace-nowrap text-white/90 text-xs font-medium">
-          <FooterItem
-            keys={"Space"}
-            description={"Crea"}
-            onHover={true}
-            onClick={() => setIsModalOpen(true)}
-          ></FooterItem>
-          <FooterItem keys={"J/K"} description={"Scorri Tasks"}></FooterItem>
-          <FooterItem keys={"H/L"} description={"Scorri Quarti"}></FooterItem>
-          <FooterItem keys={"E"} description={"Modifica"}></FooterItem>
-          <FooterItem keys={"D"} description={"Completa"}></FooterItem>
-          <FooterItem keys={"X"} description={"Elimina"}></FooterItem>
         </div>
+
+        {/* Bolla Indipendente (Pulsante Toggle) */}
+        <ToggleButton isOpen={isOpen} setIsOpen={setIsOpen} />
+
+        {/* Speech control */}
+        <TextToSpeechButton
+          startListening={startListening}
+          isListening={isListening}
+        />
       </div>
-
-      {/* Bolla Indipendente (Pulsante Toggle) */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className={`
-          ${GLASSBASE}
-          rounded-full flex items-center justify-center
-          cursor-pointer
-          transition-all duration-300 hover:scale-105 active:scale-90
-          text-white/80 hover:text-white
-          ${isOpen ? "w-11 h-11" : "w-12 h-12"}
-        `}
-      >
-        {isOpen ? (
-          <X size={20} className="transition-transform duration-500 rotate-0" />
-        ) : (
-          <div
-            className="flex items-center gap-1"
-            title="Digita ? per aprire le scorciatoie"
-          >
-            <Keyboard size={20} className="transition-transform duration-500" />
-          </div>
-        )}
-      </button>
-
-      {/* Speech control */}
-      <button
-        onMouseDown={startListening} // Tieni premuto per parlare
-        className={`
-          ${GLASSBASE}
-          rounded-full flex items-center justify-center w-12 h-12
-                    cursor-pointer
-                    transition-all duration-300 hover:scale-105 active:scale-90
-                    text-white/80 hover:text-white ${
-                      isListening
-                        ? "scale-110 shadow-[0_0_20px_rgba(249,115,22,0.5)]"
-                        : " text-white/60"
-                    }`}
-      >
-        <Mic size={24} className={isListening ? "animate-pulse" : ""} />
-      </button>
-    </div>
+    </>
   );
 };
