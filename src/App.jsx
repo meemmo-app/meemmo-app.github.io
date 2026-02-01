@@ -87,15 +87,23 @@ export default function App() {
   });
 
   // Gestione Salvataggio Task (wrapper per l'hook)
-  const handleCreateTask = () => {
-    if (!newTask.title.trim()) {
-      console.log(
-        "WARN Task not created, the title was empty: " + newTask.title,
-      );
+  const handleCreateTask = (voiceTask = null) => {
+    // Se passiamo un voiceTask usiamo quello, altrimenti usiamo lo stato newTask
+    const taskToSave = voiceTask || newTask;
+
+    if (!taskToSave.title.trim()) {
+      console.log("WARN Task not created, title empty");
       return;
     }
-    createTask(newTask, sections[activeQuarterIndex].id);
-    console.log("Created the task " + newTask.title);
+
+    // Usiamo la sezione attiva
+    const targetSectionId = sections[activeQuarterIndex].id;
+
+    createTask(taskToSave, targetSectionId);
+
+    console.log("Created task:", taskToSave.title);
+
+    // Reset e chiusura
     setNewTask({ title: "", note: "", priority: false });
     setIsModalOpen(false);
   };
@@ -327,6 +335,9 @@ export default function App() {
         setIsModalOpen={setIsModalOpen}
         isSettingsOpen={isSettingsOpen}
         isBacklogOpen={isBacklogOpen}
+        handleCreateTask={handleCreateTask}
+        setNewTask={setNewTask}
+        newTask={newTask}
       ></FooterNav>
 
       {/* Backlog Icon */}

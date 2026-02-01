@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-import { Keyboard, X } from "lucide-react";
+import { Keyboard, X, Mic } from "lucide-react";
 import { GLASSBASE } from "../constants/styles";
+import { VoiceWaveform } from "./ui/VoiceWaveform";
+import { useSpeechToText } from "../hooks/useSpeechToText";
 
 const FooterItem = ({ keys, description, onHover, onClick }) => {
   return (
@@ -23,8 +25,17 @@ export const FooterNav = ({
   setIsModalOpen,
   isSettingsOpen,
   isBacklogOpen,
+  handleCreateTask,
+  newTask,
+  setNewTask,
 }) => {
   const [isOpen, setIsOpen] = useState(true);
+
+  const { isListening, startListening } = useSpeechToText(
+    newTask,
+    setNewTask,
+    handleCreateTask,
+  );
 
   // Listener per il tasto "?"
   useEffect(() => {
@@ -32,6 +43,9 @@ export const FooterNav = ({
       const handleKeyDown = (e) => {
         if (e.key === "?") {
           setIsOpen((prev) => !prev);
+        }
+        if (e.key.toLowerCase() === "v") {
+          startListening();
         }
       };
       window.addEventListener("keydown", handleKeyDown);
@@ -55,6 +69,12 @@ export const FooterNav = ({
         }
       `}
       >
+        {/* Se sta ascoltando, mostriamo la forma d'onda dietro il vetro */}
+        {isListening && (
+          <div className="absolute inset-0 flex items-center justify-center bg-orange-500/10 animate-pulse">
+            <VoiceWaveform />
+          </div>
+        )}
         <div className="flex gap-6 items-center whitespace-nowrap text-white/90 text-xs font-medium">
           <FooterItem
             keys={"Space"}
@@ -92,6 +112,23 @@ export const FooterNav = ({
             <Keyboard size={20} className="transition-transform duration-500" />
           </div>
         )}
+      </button>
+
+      {/* Speech control */}
+      <button
+        onMouseDown={startListening} // Tieni premuto per parlare
+        className={`
+          ${GLASSBASE}
+          rounded-full flex items-center justify-center w-12 h-12
+                    cursor-pointer
+                    transition-all duration-300 hover:scale-105 active:scale-90
+                    text-white/80 hover:text-white ${
+                      isListening
+                        ? "scale-110 shadow-[0_0_20px_rgba(249,115,22,0.5)]"
+                        : " text-white/60"
+                    }`}
+      >
+        <Mic size={24} className={isListening ? "animate-pulse" : ""} />
       </button>
     </div>
   );
