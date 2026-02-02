@@ -30,6 +30,7 @@ export const ConfirmModal = ({
           <button
             onClick={onConfirm}
             tabIndex={0}
+            data-testid="confirm-modal-ok"
             className={`w-full py-4 ${confirmColor} hover:brightness-110 text-white rounded-2xl font-black text-sm uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-red-500/20`}
           >
             {confirmLabel}
@@ -38,6 +39,7 @@ export const ConfirmModal = ({
           <button
             onClick={onCancel}
             tabIndex={0}
+            data-testid="confirm-modal-discard"
             className="w-full py-4 bg-white/5 hover:bg-white/10 text-white/60 rounded-2xl font-black text-sm uppercase tracking-widest transition-all border border-white/10"
           >
             Annulla

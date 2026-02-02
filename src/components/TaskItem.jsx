@@ -41,7 +41,7 @@ export const TaskItem = ({
   return (
     <div
       className="relative overflow-hidden rounded-2xl mb-2 group select-none"
-      data-testid="task-item"
+      data-testid={`task-item-${task.title}`}
     >
       {/* AZIONI SOTTO LA CARD (Vetro Scuro) */}
       <div className="absolute inset-0 flex justify-end items-center gap-2 px-4 bg-white/80 backdrop-blur-sm">
@@ -51,6 +51,7 @@ export const TaskItem = ({
             onEdit(task);
             closeSwipe();
           }}
+          data-testid="task-item-edit-button"
           className="p-2.5 bg-white/80 hover:bg-white text-slate-600 rounded-xl transition-all shadow-sm"
         >
           <Edit3 size={18} />
@@ -61,6 +62,7 @@ export const TaskItem = ({
             onDelete(task.id);
             closeSwipe();
           }}
+          data-testid="task-item-delete-button"
           className="p-2.5 bg-red-500 hover:bg-red-600 text-white rounded-xl transition-all shadow-lg shadow-red-500/30"
         >
           <Trash2 size={18} />
@@ -98,6 +100,7 @@ export const TaskItem = ({
               e.stopPropagation();
               onToggle(task.id);
             }}
+            data-testid="task-item-complete-toggle"
           >
             {task.completed ? (
               <CheckCircle2 size={18} className="text-emerald-500" />
