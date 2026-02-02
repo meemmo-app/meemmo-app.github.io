@@ -19,7 +19,7 @@ const TagFilter = ({ selectedTag, setSelectedTag, tags }) => {
   return (
     <div
       className={`flex items-center px-3 py-1.5 rounded-full border
-      ${selectedTag === "" ? "bg-white border-orange-200 text-orange-600" : "bg-orange-500 text-white shadow-lg shadow-orange-200"}
+      ${selectedTag === "" || selectedTag === null ? "bg-white border-orange-200 text-orange-600" : "bg-orange-500 text-white shadow-lg shadow-orange-200"}
       `}
     >
       <Filter size={16} className="mr-2" />

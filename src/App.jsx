@@ -307,7 +307,6 @@ export default function App() {
       }
     });
     let uniq = [...fetched];
-    console.log("FETCHED FROM GET ALL TAGS " + uniq);
     return uniq;
   };
   const getAllTags = () => {
@@ -318,7 +317,6 @@ export default function App() {
     // Set rimuove i duplicati, poi convertiamo di nuovo in array
     const uniq = [...new Set(allTags)];
 
-    console.log("FETCHED FROM GET ALL TAGS:", uniq);
     return uniq;
   };
 

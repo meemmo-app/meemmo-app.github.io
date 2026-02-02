@@ -27,7 +27,6 @@ export function useTasks() {
     const titleResult = extractTags(newTask.title || "");
     const noteResult = extractTags(newTask.note || "");
     const combinedTags = [...titleResult.tags, ...noteResult.tags];
-    console.log("TAGS: " + combinedTags);
     const task = {
       ...newTask,
       title: titleResult.clean,
