@@ -17,12 +17,16 @@ const HeaderIcon = ({ icon, onClick, title }) => {
 
 const TagFilter = ({ selectedTag, setSelectedTag, tags }) => {
   return (
-    <div className="flex items-center bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
-      <Filter size={16} className="text-slate-400 mr-2" />
+    <div
+      className={`flex items-center px-3 py-1.5 rounded-full border
+      ${selectedTag === "" ? "bg-white border-orange-200 text-orange-600" : "bg-orange-500 text-white shadow-lg shadow-orange-200"}
+      `}
+    >
+      <Filter size={16} className="mr-2" />
       <select
         value={selectedTag || ""}
         onChange={(e) => setSelectedTag(e.target.value)}
-        className="bg-transparent border-none outline-none text-sm font-bold text-slate-600 cursor-pointer focus:ring-0"
+        className="bg-transparent border-none uppercase outline-none text-xs font-bold cursor-pointer focus:ring-0"
       >
         <option value="">Tutti i tag</option>
         {tags.map((tag) => (
