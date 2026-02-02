@@ -28,7 +28,11 @@ export const TaskModal = ({
   };
 
   return (
-    <div className={`${GLASSBASE} rounded-3xl p-8`} onKeyDown={handleKeyDown}>
+    <div
+      className={`${GLASSBASE} rounded-3xl p-8`}
+      onKeyDown={handleKeyDown}
+      data-testid="new-task-modal"
+    >
       {/* Badge Gambero Animato */}
       <div className="absolute z-50 -top-5 -left-5 text-6xl animate-[bounce_3s_ease-in-out_infinite] drop-shadow-2xl">
         🦐
@@ -50,6 +54,7 @@ export const TaskModal = ({
             autoFocus={!editingTask}
             className="w-full text-xl font-bold bg-black/40 border border-white/10 rounded-2xl p-4 text-white focus:ring-2 focus:ring-orange-500 focus:bg-black/60 outline-none placeholder:text-white/40 transition-all shadow-inner"
             placeholder="Titolo della missione"
+            data-testid="new-task-title"
             value={newTask.title}
             onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
           />
@@ -60,6 +65,7 @@ export const TaskModal = ({
           <textarea
             className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 text-white focus:ring-2 focus:ring-orange-500 focus:bg-black/60 outline-none placeholder:text-white/40 resize-none h-28 transition-all shadow-inner"
             placeholder="Aggiungi dettagli extra..."
+            data-testid="new-task-note"
             value={newTask.note}
             onChange={(e) => setNewTask({ ...newTask, note: e.target.value })}
           />
@@ -69,6 +75,7 @@ export const TaskModal = ({
           <button
             type="button"
             tabIndex="0"
+            data-testid="new-task-priority"
             onClick={() =>
               setNewTask({ ...newTask, priority: !newTask.priority })
             }
@@ -89,6 +96,7 @@ export const TaskModal = ({
         <button
           onClick={() => onSave()}
           tabIndex="0"
+          data-testid="new-task-save"
           className="w-full py-5 bg-orange-500 hover:bg-orange-400 text-white rounded-2xl font-black text-xl transition-all shadow-2xl shadow-orange-500/30 focus:ring-2 focus:ring-orange-500 focus:bg-orange-600 outline-none active:scale-95 border-t border-white/20"
         >
           SALVA TASK 🦐

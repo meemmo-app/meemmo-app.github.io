@@ -4,9 +4,10 @@ import { GLASSBASE } from "../constants/styles";
 import { VoiceWaveform } from "./ui/VoiceWaveform";
 import { useSpeechToText } from "../hooks/useSpeechToText";
 
-const FooterItem = ({ keys, description, onHover, onClick }) => {
+const FooterItem = ({ keys, description, onHover, onClick, dataTestId }) => {
   return (
     <div
+      data-testid={dataTestId}
       className={`flex gap-2 items-center
       ${onHover ? "cursor-pointer hover:text-white hover:scale-105 transition-all" : ""}
       `}
@@ -122,6 +123,7 @@ export const FooterNav = ({
               description={"Crea"}
               onHover={true}
               onClick={() => setIsModalOpen(true)}
+              dataTestId={"create-new-task-button"}
             ></FooterItem>
             <FooterItem keys={"J/K"} description={"Scorri Tasks"}></FooterItem>
             <FooterItem keys={"H/L"} description={"Scorri Quarti"}></FooterItem>

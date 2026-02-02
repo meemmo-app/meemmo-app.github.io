@@ -39,7 +39,10 @@ export const TaskItem = ({
   };
 
   return (
-    <div className="relative overflow-hidden rounded-2xl mb-2 group select-none">
+    <div
+      className="relative overflow-hidden rounded-2xl mb-2 group select-none"
+      data-testid="task-item"
+    >
       {/* AZIONI SOTTO LA CARD (Vetro Scuro) */}
       <div className="absolute inset-0 flex justify-end items-center gap-2 px-4 bg-white/80 backdrop-blur-sm">
         <button
