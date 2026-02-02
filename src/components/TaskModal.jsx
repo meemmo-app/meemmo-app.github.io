@@ -2,8 +2,11 @@ import React from "react";
 import { X } from "lucide-react";
 import { GLASSBASE } from "../constants/styles";
 import ModalHeader from "./ui/ModalHeader";
+import { TagSection } from "./TagSection";
 
 export const TaskModal = ({
+  // New props can be added later if needed
+
   title,
   newTask,
   setNewTask,
@@ -48,6 +51,8 @@ export const TaskModal = ({
       </p>
 
       <div className="space-y-5">
+        {/* Tag display */}
+        <TagSection tags={newTask.tags} />
         {/* Input Titolo - Contrasto Aumentato */}
         <div className="space-y-1">
           <input

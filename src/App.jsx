@@ -47,8 +47,10 @@ export default function App() {
     title: "",
     note: "",
     priority: false,
+    tags: [],
   });
   const [editingTask, setEditingTask] = useState(null);
+  const [selectedTag, setSelectedTag] = useState(null);
 
   const handleEditOpen = (task) => {
     setEditingTask(task);
@@ -291,10 +293,42 @@ export default function App() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   });
 
+  const getAllTagsOld = () => {
+    let fetched = new Set();
+    tasks.map((t) => {
+      if (t.tags && t.tags.length > 0) {
+        if (t.tags.length > 1) {
+          t.tags.map((tag) => {
+            fetched.add(tag);
+          });
+        } else {
+          fetched.add(t.tags);
+        }
+      }
+    });
+    let uniq = [...fetched];
+    console.log("FETCHED FROM GET ALL TAGS " + uniq);
+    return uniq;
+  };
+  const getAllTags = () => {
+    // flatMap estrae tutti i tag e crea un unico array piatto
+    // Se t.tags è undefined, ritorniamo un array vuoto [] per evitare errori
+    const allTags = tasks.flatMap((t) => t.tags || []);
+
+    // Set rimuove i duplicati, poi convertiamo di nuovo in array
+    const uniq = [...new Set(allTags)];
+
+    console.log("FETCHED FROM GET ALL TAGS:", uniq);
+    return uniq;
+  };
+
   return (
     <div className="min-h-screen bg-[#fff9f5] text-slate-900 font-sans selection:bg-orange-200">
       {/* Header */}
       <Header
+        selectedTag={selectedTag}
+        setSelectedTag={setSelectedTag}
+        allTags={getAllTags}
         ACCENT_COLOR={ACCENT_COLOR}
         showCompleted={showCompleted}
         setShowCompleted={setShowCompleted}
@@ -307,10 +341,21 @@ export default function App() {
       <main className="max-w-7xl mx-auto p-4 md:p-6 flex flex-col md:flex-row overflow-x-scroll gap-6 h-[calc(100vh-160px)]">
         {sections.map((section, idx) => {
           const isFocused = activeQuarterIndex === idx;
-          const sectionTasks = tasks.filter(
-            (t) =>
-              t.sectionId === section.id && (showCompleted || !t.completed),
-          );
+          const sectionTasks = tasks.filter((t) => {
+            // 1. Filtro per sezione
+            const isInSection = t.sectionId === section.id;
+
+            // 2. Filtro per completamento
+            const matchesCompletion = showCompleted || !t.completed;
+
+            // 3. Filtro per Tag selezionato
+            // Se selectedTag non è impostato, passa sempre (true)
+            // Se è impostato, controlla se t.tags esiste e include il tag
+            const matchesTag =
+              !selectedTag || (t.tags && t.tags.includes(selectedTag));
+
+            return isInSection && matchesCompletion && matchesTag;
+          });
 
           return (
             <SectionCard

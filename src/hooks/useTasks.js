@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import confetti from "canvas-confetti";
 
 export function useTasks() {
+  // Ensure each task can have tags (array of strings)
+
   const [tasks, setTasks] = useState(() => {
     const saved = localStorage.getItem("meemmo-tasks");
     return saved ? JSON.parse(saved) : [];
@@ -12,14 +14,32 @@ export function useTasks() {
   }, [tasks]);
 
   const createTask = (newTask, sectionId) => {
+    // Ensure tags array exists and extract tags from title and note
+    const extractTags = (text) => {
+      const tagRegex = /#(\w+)/g;
+      const tags = [];
+      let clean = text.replace(tagRegex, (match, p1) => {
+        tags.push(p1);
+        return "";
+      });
+      return { clean: clean.trim(), tags };
+    };
+    const titleResult = extractTags(newTask.title || "");
+    const noteResult = extractTags(newTask.note || "");
+    const combinedTags = [...titleResult.tags, ...noteResult.tags];
+    console.log("TAGS: " + combinedTags);
     const task = {
       ...newTask,
+      title: titleResult.clean,
+      note: noteResult.clean,
+      tags: combinedTags,
       id: Date.now().toString(),
       sectionId,
       completed: false,
       createdAt: new Date().toISOString(),
     };
     setTasks((prev) => [...prev, task]);
+    return;
   };
 
   const deleteTask = (id) =>

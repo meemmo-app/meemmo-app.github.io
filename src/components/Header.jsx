@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Keyboard, Eye, EyeOff, Settings, Trash } from "lucide-react";
+import { Keyboard, Eye, EyeOff, Settings, Trash, Filter } from "lucide-react";
 import { ConfirmModal } from "./ConfirmModal";
 import { Dialog } from "./ui/Dialog";
 
@@ -15,7 +15,31 @@ const HeaderIcon = ({ icon, onClick, title }) => {
   );
 };
 
+const TagFilter = ({ selectedTag, setSelectedTag, tags }) => {
+  return (
+    <div className="flex items-center bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
+      <Filter size={16} className="text-slate-400 mr-2" />
+      <select
+        value={selectedTag || ""}
+        onChange={(e) => setSelectedTag(e.target.value)}
+        className="bg-transparent border-none outline-none text-sm font-bold text-slate-600 cursor-pointer focus:ring-0"
+      >
+        <option value="">Tutti i tag</option>
+        {tags.map((tag) => (
+          <option key={tag} value={tag}>
+            {tag}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+};
+
 export const Header = ({
+  selectedTag,
+  setSelectedTag,
+  allTags,
+
   ACCENT_COLOR,
   showCompleted,
   setShowCompleted,
@@ -28,6 +52,8 @@ export const Header = ({
     deleteCompletedTasks();
     setDeleteCompleted(false);
   };
+
+  const tags = allTags();
 
   return (
     <header className="p-6 flex justify-between items-center max-w-7xl mx-auto">
@@ -49,6 +75,11 @@ export const Header = ({
       </div>
 
       <div className="flex gap-3 items-center">
+        <TagFilter
+          selectedTag={selectedTag}
+          setSelectedTag={setSelectedTag}
+          tags={tags}
+        />
         <button
           title={`${showCompleted ? "Hide completed tasks" : "Show completed tasks"}`}
           onClick={() => setShowCompleted(!showCompleted)}
