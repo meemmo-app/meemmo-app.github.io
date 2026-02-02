@@ -20,6 +20,7 @@ function ModalHeader({ title, subtitle, onClose, icon }) {
           )}
         </div>
         <button
+          data-testid="cypress-close-modal"
           onClick={onClose}
           className="p-2 hover:bg-white/10 rounded-full transition-all cursor-pointer active:scale-90 group"
         >
