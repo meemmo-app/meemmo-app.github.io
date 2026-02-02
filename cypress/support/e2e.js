@@ -17,3 +17,9 @@
 import "./commands";
 import "./taskManagementCommands";
 import "./confirmModalCommands";
+
+Cypress.Commands.add("openWebApp", (title, completed) => {
+  cy.visit("http://localhost:5173/");
+  cy.clearLocalStorage();
+  cy.get("h1").should("exist");
+});

@@ -1,8 +1,6 @@
 describe("Create new task", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:5173/");
-    cy.clearLocalStorage();
-    cy.get("h1").should("exist").should("have.text", "MEEMMO");
+    cy.openWebApp();
   });
 
   it("Should create a new task using the keyboard shortcut", () => {

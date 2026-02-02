@@ -1,7 +1,6 @@
 describe("Settings modal", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:5173/");
-    cy.clearLocalStorage();
+    cy.openWebApp();
   });
 
   it("Should open the settings modal when the button is clicked", () => {

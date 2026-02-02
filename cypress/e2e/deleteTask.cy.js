@@ -1,8 +1,6 @@
 describe("Delete task", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:5173/");
-    cy.clearLocalStorage();
-    cy.get("h1").should("exist").should("have.text", "MEEMMO");
+    cy.openWebApp();
   });
 
   it("Should delete the task using the keyboard shortcut", () => {
