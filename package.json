@@ -8,6 +8,7 @@
     "dev": "vite --host",
     "build": "vite build",
     "lint": "eslint .",
+    "test": "npx cypress run",
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"

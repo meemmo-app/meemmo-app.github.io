@@ -12,8 +12,8 @@ describe("Create new task", () => {
     cy.get("[data-testid='new-task-note']").type("Task notes");
     cy.get(newTaskModal).type("{enter}");
     // check if task is created
-    cy.get("[data-testid='task-item']").contains("Task title");
-    cy.get("[data-testid='task-item']").contains("Task notes");
+    cy.get("[data-testid*='task-item']").contains("Task title");
+    cy.get("[data-testid*='task-item']").contains("Task notes");
   });
 
   it("Should create a new task using the button", () => {
@@ -25,6 +25,6 @@ describe("Create new task", () => {
     cy.get("[data-testid='new-task-priority']").click();
     cy.get("[data-testid='new-task-save']").click();
     // check if task is created
-    cy.get("[data-testid='task-item']").contains("Create task with button");
+    cy.get("[data-testid*='task-item']").contains("Create task with button");
   });
 });
