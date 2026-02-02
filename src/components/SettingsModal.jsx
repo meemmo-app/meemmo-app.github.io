@@ -119,7 +119,7 @@ export const SettingsModal = ({
 
   return (
     <div
-      data-testid="cypress-settings-modal"
+      data-testid="settings-modal"
       className={`${GLASSBASE} rounded-3xl p-8 max-h-[85vh] overflow-y-scroll overflow-x-hidden`}
     >
       {/* Header */}
@@ -127,6 +127,7 @@ export const SettingsModal = ({
         title={"Impostazioni"}
         subtitle={"Configura la tua ggiornata"}
         onClose={onClose}
+        dataTestId={"close-settings-modal"}
       ></ModalHeader>
 
       {/* Switch Sezioni Dinamiche */}

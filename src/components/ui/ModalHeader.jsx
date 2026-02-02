@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 
-function ModalHeader({ title, subtitle, onClose, icon }) {
+function ModalHeader({ title, subtitle, onClose, icon, dataTestId }) {
   return (
     <div
       className={
@@ -20,7 +20,7 @@ function ModalHeader({ title, subtitle, onClose, icon }) {
           )}
         </div>
         <button
-          data-testid="cypress-close-modal"
+          data-testid={dataTestId}
           onClick={onClose}
           className="p-2 hover:bg-white/10 rounded-full transition-all cursor-pointer active:scale-90 group"
         >
