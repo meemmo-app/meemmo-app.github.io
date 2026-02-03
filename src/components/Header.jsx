@@ -6,7 +6,7 @@ import { Dialog } from "./ui/Dialog";
 const HeaderIcon = ({ icon, onClick, title }) => {
   return (
     <button
-      name={title}
+      title={title}
       className="p-2 hover:bg-slate-100 rounded-full transition-all cursor-pointer"
       onClick={onClick}
     >

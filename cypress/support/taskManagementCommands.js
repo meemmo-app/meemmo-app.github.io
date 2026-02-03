@@ -21,6 +21,11 @@ Cypress.Commands.add("deleteTask", (title) => {
   cy.confirmModal();
 });
 
+Cypress.Commands.add("deleteCompletedTasks", () => {
+  cy.get("[title*='Delete completed tasks']").click();
+  cy.confirmModal();
+});
+
 Cypress.Commands.add("completeTask", (title) => {
   const taskItem = "[data-testid='task-item-" + title + "']";
   cy.get(taskItem).within(() => {

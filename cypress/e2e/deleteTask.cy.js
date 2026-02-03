@@ -39,4 +39,24 @@ describe("Delete task", () => {
     cy.deleteTask("To be deleted");
     cy.get("[data-testid*='task-item']").should("not.exist");
   });
+
+  it("Should delete all the completed tasks with the delete all button", () => {
+    cy.createTask("Completed 1", "Notes");
+    cy.createTask("Completed 2", "");
+    cy.createTask("Task 3", "");
+    cy.createTask("Completed 4", "Notes");
+    cy.createTask("Task 5", "Notes");
+
+    cy.completeTask("Completed 1");
+    cy.completeTask("Completed 2");
+    cy.completeTask("Completed 4");
+
+    cy.deleteCompletedTasks();
+    cy.get("[data-testid='task-item-Completed 1']").should("not.exist");
+    cy.get("[data-testid='task-item-Completed 2']").should("not.exist");
+    cy.get("[data-testid='task-item-Completed 4']").should("not.exist");
+
+    cy.get("[data-testid='task-item-Task 3']").should("exist");
+    cy.get("[data-testid='task-item-Task 5']").should("exist");
+  });
 });
