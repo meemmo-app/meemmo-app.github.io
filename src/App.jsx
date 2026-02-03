@@ -241,14 +241,17 @@ export default function App() {
           setIsModalOpen(true);
           break;
         case "h":
+        case "arrowleft":
           setActiveQuarterIndex((prev) => (prev > 0 ? prev - 1 : sectionCount));
           setFocusedTaskIndex(-1);
           break;
         case "l":
+        case "arrowright":
           setActiveQuarterIndex((prev) => (prev < sectionCount ? prev + 1 : 0));
           setFocusedTaskIndex(-1);
           break;
         case "j":
+        case "arrowdown":
           if (visibleTasks.length > 0) {
             setFocusedTaskIndex((prev) =>
               prev < visibleTasks.length - 1 ? prev + 1 : 0,
@@ -256,6 +259,7 @@ export default function App() {
           }
           break;
         case "k":
+        case "arrowup":
           if (visibleTasks.length > 0) {
             setFocusedTaskIndex((prev) =>
               prev > 0 ? prev - 1 : visibleTasks.length - 1,
