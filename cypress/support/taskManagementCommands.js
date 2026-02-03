@@ -3,7 +3,9 @@ Cypress.Commands.add("createTask", (title, note = "", priority = false) => {
   cy.get("body").type(" "); // keyboard shortcut for "space"
   cy.get(newTaskModal).should("exist");
   cy.get("[data-testid='new-task-title']").type(title);
-  cy.get("[data-testid='new-task-note']").type(note);
+  if (note && note !== "") {
+    cy.get("[data-testid='new-task-note']").type(note);
+  }
   if (priority) {
     cy.get("[data-testid='new-task-priority']").click();
   }
