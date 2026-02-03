@@ -33,6 +33,14 @@ Cypress.Commands.add("completeTask", (title) => {
   });
 });
 
+Cypress.Commands.add("showCompletedTasks", () => {
+  cy.get("[title*='Show completed tasks']").click();
+});
+
+Cypress.Commands.add("hideCompletedTasks", () => {
+  cy.get("[title*='Hide completed tasks']").click();
+});
+
 Cypress.Commands.add("isTaskCompleted", (title, completed) => {
   const taskItem = "[data-testid='task-item-" + title + "']";
   if (completed) {

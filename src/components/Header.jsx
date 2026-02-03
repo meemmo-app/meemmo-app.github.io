@@ -50,8 +50,9 @@ export const Header = ({
 
       <div className="flex gap-3 items-center">
         <button
+          title={`${showCompleted ? "Hide completed tasks" : "Show completed tasks"}`}
           onClick={() => setShowCompleted(!showCompleted)}
-          className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all font-bold text-xs uppercase tracking-wider ${
+          className={`cursor-pointer flex items-center gap-2 px-4 py-2 rounded-full border transition-all font-bold text-xs uppercase tracking-wider ${
             showCompleted
               ? "bg-white border-orange-200 text-orange-600"
               : "bg-orange-500 text-white shadow-lg shadow-orange-200"
