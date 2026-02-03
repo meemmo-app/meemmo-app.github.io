@@ -19,7 +19,7 @@ export function useTasks() {
       const tagRegex = /#(\w+)/g;
       const tags = [];
       let clean = text.replace(tagRegex, (match, p1) => {
-        tags.push(p1);
+        tags.push(p1.toLowerCase());
         return "";
       });
       return { clean: clean.trim(), tags };

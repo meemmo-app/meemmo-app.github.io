@@ -43,7 +43,7 @@ export const TaskModal = ({
 
       <ModalHeader title={title} onClose={onClose}></ModalHeader>
 
-      <p className="text-[10px] font-black text-white/50 mb-4 uppercase tracking-widest flex items-center gap-2">
+      <p className="text-xs font-black text-white/40 mb-4 uppercase tracking-wide flex items-center gap-2">
         Sezione:{" "}
         <span className="text-orange-400 bg-orange-400/10 px-2 py-0.5 rounded-md border border-orange-400/40">
           {sectionLabel}
