@@ -37,7 +37,7 @@ const Backlog = ({ isOpen, onClose, children }) => {
       </div>
 
       {/* Backlog Content */}
-      <div className="flex-1 overflow-y-scroll h-[30vh] pb-8">
+      <div className="flex-1 overflow-y-scroll h-[30vh] pb-8 custom-scrollbar scroll-smooth">
         {React.Children.count(children) === 0 ? (
           <BacklogEmptyMessage />
         ) : (

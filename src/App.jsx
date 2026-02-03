@@ -134,7 +134,11 @@ export default function App() {
   const [isBacklogOver, setIsBacklogOver] = useState(false);
 
   // Filter tasks that are in backlog (sectionId is null or undefined)
-  const backlogTasks = tasks.filter((task) => task.sectionId === null);
+  const backlogTasks = tasks.filter(
+    (task) =>
+      task.sectionId === null &&
+      (!selectedTag || (task.tags && task.tags.includes(selectedTag))),
+  );
 
   // Handle backlog drag and drop
   const handleBacklogDrop = (e) => {
@@ -293,30 +297,12 @@ export default function App() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   });
 
-  const getAllTagsOld = () => {
-    let fetched = new Set();
-    tasks.map((t) => {
-      if (t.tags && t.tags.length > 0) {
-        if (t.tags.length > 1) {
-          t.tags.map((tag) => {
-            fetched.add(tag);
-          });
-        } else {
-          fetched.add(t.tags);
-        }
-      }
-    });
-    let uniq = [...fetched];
-    return uniq;
-  };
   const getAllTags = () => {
     // flatMap estrae tutti i tag e crea un unico array piatto
     // Se t.tags è undefined, ritorniamo un array vuoto [] per evitare errori
     const allTags = tasks.flatMap((t) => t.tags || []);
-
     // Set rimuove i duplicati, poi convertiamo di nuovo in array
     const uniq = [...new Set(allTags)];
-
     return uniq;
   };
 

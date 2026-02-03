@@ -120,7 +120,7 @@ export const SettingsModal = ({
   return (
     <div
       data-testid="settings-modal"
-      className={`${GLASSBASE} rounded-3xl p-8 max-h-[85vh] overflow-y-scroll overflow-x-hidden`}
+      className={`${GLASSBASE} rounded-3xl p-8 max-h-[85vh] overflow-y-scroll overflow-x-hidden custom-scrollbar scroll-smooth`}
     >
       {/* Header */}
       <ModalHeader
