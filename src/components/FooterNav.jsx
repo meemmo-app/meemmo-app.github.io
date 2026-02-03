@@ -1,18 +1,12 @@
 import { useState, useEffect } from "react";
-import { Keyboard, X, Mic } from "lucide-react";
+import { Keyboard, X, Mic, Plus } from "lucide-react";
 import { GLASSBASE } from "../constants/styles";
 import { VoiceWaveform } from "./ui/VoiceWaveform";
 import { useSpeechToText } from "../hooks/useSpeechToText";
 
-const FooterItem = ({ keys, description, onHover, onClick, dataTestId }) => {
+const FooterItem = ({ keys, description }) => {
   return (
-    <div
-      data-testid={dataTestId}
-      className={`flex gap-2 items-center
-      ${onHover ? "cursor-pointer hover:text-white hover:scale-105 transition-all" : ""}
-      `}
-      onClick={onClick}
-    >
+    <div className="flex gap-2 items-center">
       <span className="bg-white/10 px-1.5 py-0.5 rounded text-[10px] font-black text-slate-300 border border-white/10">
         {keys}
       </span>
@@ -70,6 +64,25 @@ const TextToSpeechButton = ({ startListening, isListening }) => {
   );
 };
 
+const NewTaskButton = ({ onClick }) => {
+  return (
+    <button
+      onClick={onClick}
+      className={`
+        ${GLASSBASE}
+        rounded-full flex items-center justify-center
+        cursor-pointer
+        transition-all duration-300 hover:scale-105 active:scale-90
+        text-white/80 hover:text-white w-12 h-12
+      `}
+      title="Crea un nuovo task"
+      data-testid="create-new-task-button"
+    >
+      <Plus size={22} />
+    </button>
+  );
+};
+
 export const FooterNav = ({
   isModalOpen,
   setIsModalOpen,
@@ -118,23 +131,19 @@ export const FooterNav = ({
       `}
         >
           <div className="flex gap-6 items-center whitespace-nowrap text-white/90 text-xs font-medium">
-            <FooterItem
-              keys={"Space"}
-              description={"Crea"}
-              onHover={true}
-              onClick={() => setIsModalOpen(true)}
-              dataTestId={"create-new-task-button"}
-            ></FooterItem>
-            <FooterItem keys={"J/K"} description={"Scorri Tasks"}></FooterItem>
-            <FooterItem keys={"H/L"} description={"Scorri Quarti"}></FooterItem>
-            <FooterItem keys={"E"} description={"Modifica"}></FooterItem>
-            <FooterItem keys={"D"} description={"Completa"}></FooterItem>
-            <FooterItem keys={"X"} description={"Elimina"}></FooterItem>
+            <FooterItem keys={"Space"} description={"Crea"} />
+            <FooterItem keys={"J/K"} description={"Scorri Tasks"} />
+            <FooterItem keys={"H/L"} description={"Scorri Quarti"} />
+            <FooterItem keys={"E"} description={"Modifica"} />
+            <FooterItem keys={"D"} description={"Completa"} />
+            <FooterItem keys={"X"} description={"Elimina"} />
           </div>
         </div>
 
         {/* Bolla Indipendente (Pulsante Toggle) */}
         <ToggleButton isOpen={isOpen} setIsOpen={setIsOpen} />
+
+        <NewTaskButton onClick={() => setIsModalOpen(true)} />
 
         {/* Speech control */}
         <TextToSpeechButton
