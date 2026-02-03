@@ -49,3 +49,29 @@ Cypress.Commands.add("isTaskCompleted", (title, completed) => {
     cy.get(taskItem).find("h3").should("not.have.class", "line-through");
   }
 });
+
+Cypress.Commands.add("dragTaskToSection", (title, targetSectionLabel) => {
+  const taskItem = `[data-testid='task-item-${title}']`;
+  const targetSection = `[data-testid='section-${targetSectionLabel}']`;
+
+  // Utilizziamo dataTransfer perché molti listener si aspettano l'oggetto evento completo
+  const dataTransfer = new DataTransfer();
+
+  cy.get(taskItem).first().trigger("dragstart", { dataTransfer });
+
+  cy.get(targetSection)
+    .trigger("dragover", { dataTransfer })
+    .trigger("drop", { dataTransfer });
+
+  // Opzionale: chiudere formalmente l'azione
+  cy.get(taskItem).first().trigger("dragend", { force: true });
+});
+
+Cypress.Commands.add("isTaskInSection", (title, sectionLabel) => {
+  const taskItem = `[data-testid='task-item-${title}']`;
+  const section = `[data-testid='section-${sectionLabel}']`;
+
+  cy.get(section).within(() => {
+    cy.get(taskItem).should("exist").should("be.visible");
+  });
+});

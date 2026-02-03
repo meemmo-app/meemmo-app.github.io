@@ -95,6 +95,7 @@ export const SectionCard = ({
       onDragOver={(e) => e.preventDefault()}
       onDrop={onDrop}
       onClick={onFocus}
+      data-testid={`section-${section.label}`}
       className={`
         relative flex flex-col min-w-3xs rounded-3xl transition-all duration-500 overflow-hidden cursor-pointer
         ${isDynamicColumns ? "h-fit" : ""}
