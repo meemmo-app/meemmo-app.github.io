@@ -4,7 +4,7 @@ describe("Settings modal", () => {
   });
 
   it("Should open the settings modal when the button is clicked", () => {
-    cy.get("[name='Settings']").click();
+    cy.get("[title='Settings']").click();
     cy.get("[data-testid='settings-modal']")
       .should("exist")
       .should("contain.text", "Scarica dati")
@@ -12,7 +12,7 @@ describe("Settings modal", () => {
   });
 
   it("Should close the settings modal when the X button is clicked", () => {
-    cy.get("[name='Settings']").click();
+    cy.get("[title='Settings']").click();
     cy.get("[data-testid='settings-modal']")
       .should("exist")
       .get("[data-testid='close-settings-modal']")
