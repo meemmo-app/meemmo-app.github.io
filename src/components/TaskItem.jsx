@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { CheckCircle2, AlertCircle, Trash2, Edit3 } from "lucide-react";
+import { TagSection } from "./TagSection";
 
 export const TaskItem = ({
   task,
@@ -126,6 +127,9 @@ export const TaskItem = ({
                 {task.note}
               </p>
             )}
+            <div className="mt-2 text-[9px]">
+              <TagSection tags={task.tags} />
+            </div>
           </div>
 
           {task.priority && !task.completed && (

@@ -52,7 +52,9 @@ export const TaskModal = ({
 
       <div className="space-y-5">
         {/* Tag display */}
-        <TagSection tags={newTask.tags} />
+        <div className="text-xs">
+          <TagSection tags={newTask.tags} />
+        </div>
         {/* Input Titolo - Contrasto Aumentato */}
         <div className="space-y-1">
           <input
