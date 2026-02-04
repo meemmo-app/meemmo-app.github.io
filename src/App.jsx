@@ -62,7 +62,9 @@ export default function App() {
     let oldTags = updatedData.tags;
     deleteTask(updatedData.id);
     // Inject old tags to be parsed along with new ones
-    updatedData.note = updatedData.note + " #" + oldTags.join(" #");
+    if (oldTags && oldTags.length > 0) {
+      updatedData.note = updatedData.note + " #" + oldTags.join(" #");
+    }
     createTask(updatedData, sectionId);
     setIsModalOpen(false);
     setEditingTask(null);
