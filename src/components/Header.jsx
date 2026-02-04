@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Keyboard, Eye, EyeOff, Settings, Trash, Filter } from "lucide-react";
 import { ConfirmModal } from "./ConfirmModal";
 import { Dialog } from "./ui/Dialog";
+import { TagFilter } from "./TagFilter";
 
 const HeaderIcon = ({ icon, onClick, title }) => {
   return (
@@ -15,27 +16,20 @@ const HeaderIcon = ({ icon, onClick, title }) => {
   );
 };
 
-const TagFilter = ({ selectedTag, setSelectedTag, tags }) => {
+const ToggleCompleteTaskVisibility = ({ showCompleted, setShowCompleted }) => {
   return (
-    <div
-      className={`flex items-center px-3 py-1.5 rounded-full border
-      ${selectedTag === "" || selectedTag === null ? "bg-white border-orange-200 text-orange-600" : "bg-orange-500 text-white shadow-lg shadow-orange-200"}
-      `}
+    <button
+      title={`${showCompleted ? "Hide completed tasks" : "Show completed tasks"}`}
+      onClick={() => setShowCompleted(!showCompleted)}
+      className={`cursor-pointer flex items-center gap-2 px-4 py-2 rounded-full border transition-all font-bold text-xs uppercase tracking-wider ${
+        showCompleted
+          ? "bg-white border-orange-200 text-orange-600"
+          : "bg-orange-500 text-white shadow-lg shadow-orange-200"
+      }`}
     >
-      <Filter size={16} className="mr-2" />
-      <select
-        value={selectedTag || ""}
-        onChange={(e) => setSelectedTag(e.target.value)}
-        className="bg-transparent border-none uppercase outline-none text-xs font-bold cursor-pointer focus:ring-0"
-      >
-        <option value="">Tutti i tag</option>
-        {tags.map((tag) => (
-          <option key={tag} value={tag}>
-            {tag}
-          </option>
-        ))}
-      </select>
-    </div>
+      {showCompleted ? <Eye size={14} /> : <EyeOff size={14} />}
+      {showCompleted ? "Nascondi completati" : "Mostra completati"}
+    </button>
   );
 };
 
@@ -84,18 +78,10 @@ export const Header = ({
           setSelectedTag={setSelectedTag}
           tags={tags}
         />
-        <button
-          title={`${showCompleted ? "Hide completed tasks" : "Show completed tasks"}`}
-          onClick={() => setShowCompleted(!showCompleted)}
-          className={`cursor-pointer flex items-center gap-2 px-4 py-2 rounded-full border transition-all font-bold text-xs uppercase tracking-wider ${
-            showCompleted
-              ? "bg-white border-orange-200 text-orange-600"
-              : "bg-orange-500 text-white shadow-lg shadow-orange-200"
-          }`}
-        >
-          {showCompleted ? <Eye size={14} /> : <EyeOff size={14} />}
-          {showCompleted ? "Nascondi completati" : "Mostra completati"}
-        </button>
+        <ToggleCompleteTaskVisibility
+          showCompleted={showCompleted}
+          setShowCompleted={setShowCompleted}
+        />
         <HeaderIcon
           icon={<Trash size={22} className="text-slate-400" />}
           onClick={() => setDeleteCompleted(true)}
