@@ -26,6 +26,7 @@ export default function App() {
     moveTask,
     setTasks,
     deleteCompletedTasks,
+    deleteTask,
   } = useTasks();
 
   const {
@@ -57,10 +58,12 @@ export default function App() {
     setIsModalOpen(true);
   };
   // Funzione per salvare le modifiche (nell'hook useTasks o App)
-  const updateTask = (updatedData) => {
-    setTasks((prev) =>
-      prev.map((t) => (t.id === editingTask.id ? { ...t, ...updatedData } : t)),
-    );
+  const handleUpdateTask = (updatedData, sectionId) => {
+    let oldTags = updatedData.tags;
+    deleteTask(updatedData.id);
+    // Inject old tags to be parsed along with new ones
+    updatedData.note = updatedData.note + " #" + oldTags.join(" #");
+    createTask(updatedData, sectionId);
     setIsModalOpen(false);
     setEditingTask(null);
   };
@@ -429,7 +432,10 @@ export default function App() {
           setNewTask={editingTask ? setEditingTask : setNewTask}
           editingTask={editingTask}
           onSave={
-            editingTask ? () => updateTask(editingTask) : handleCreateTask
+            editingTask
+              ? () =>
+                  handleUpdateTask(editingTask, sections[activeQuarterIndex].id)
+              : handleCreateTask
           }
           sectionLabel={sections[activeQuarterIndex].label}
           onClose={() => {
