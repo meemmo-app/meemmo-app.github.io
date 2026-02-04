@@ -185,12 +185,14 @@ export const SettingsModal = ({
       <div className="mt-8"></div>
       <ButtonPrimary text={"Salva e Chiudi"} onClick={onClose}></ButtonPrimary>
       <div className="flex gap-2 w-full justify-between">
-        <ButtonSecondary
-          text={"Scarica dati"}
-          icon={<Download size={16} />}
-          onClick={exportLocalStorageData}
-        ></ButtonSecondary>
-        <div className="relative">
+        <div className="grow">
+          <ButtonSecondary
+            text={"Scarica dati"}
+            icon={<Download size={16} />}
+            onClick={exportLocalStorageData}
+          />
+        </div>
+        <div className="relative grow">
           <input
             type="file"
             accept=".json"
@@ -202,7 +204,7 @@ export const SettingsModal = ({
             text={"Carica dati"}
             icon={<Upload size={16} />}
             onClick={() => document.getElementById("import-file").click()}
-          ></ButtonSecondary>
+          />
         </div>
       </div>
     </div>
