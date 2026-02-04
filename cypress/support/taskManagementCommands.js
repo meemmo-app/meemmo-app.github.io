@@ -12,6 +12,25 @@ Cypress.Commands.add("createTask", (title, note = "", priority = false) => {
   cy.get(newTaskModal).type("{enter}");
 });
 
+Cypress.Commands.add(
+  "createTaskInSection",
+  (title, note = "", priority = false, sectionLabel) => {
+    const newTaskModal = "[data-testid='new-task-modal']";
+    cy.get(`[data-testid='section-${sectionLabel}']`)
+      .find("[data-testid='create-new-task-button']")
+      .click();
+    cy.get(newTaskModal).should("exist");
+    cy.get("[data-testid='new-task-title']").type(title);
+    if (note && note !== "") {
+      cy.get("[data-testid='new-task-note']").type(note);
+    }
+    if (priority) {
+      cy.get("[data-testid='new-task-priority']").click();
+    }
+    cy.get(newTaskModal).type("{enter}");
+  },
+);
+
 Cypress.Commands.add("deleteTask", (title) => {
   const taskItem = "[data-testid='task-item-" + title + "']";
   cy.get(taskItem).rightclick();

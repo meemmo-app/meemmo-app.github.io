@@ -64,25 +64,6 @@ const TextToSpeechButton = ({ startListening, isListening }) => {
   );
 };
 
-const NewTaskButton = ({ onClick }) => {
-  return (
-    <button
-      onClick={onClick}
-      className={`
-        ${GLASSBASE}
-        rounded-full flex items-center justify-center
-        cursor-pointer
-        transition-all duration-300 hover:scale-105 active:scale-90
-        text-white/80 hover:text-white w-12 h-12
-      `}
-      title="Crea un nuovo task"
-      data-testid="create-new-task-button"
-    >
-      <Plus size={22} />
-    </button>
-  );
-};
-
 export const FooterNav = ({
   isModalOpen,
   setIsModalOpen,
@@ -142,8 +123,6 @@ export const FooterNav = ({
 
         {/* Bolla Indipendente (Pulsante Toggle) */}
         <ToggleButton isOpen={isOpen} setIsOpen={setIsOpen} />
-
-        <NewTaskButton onClick={() => setIsModalOpen(true)} />
 
         {/* Speech control */}
         <TextToSpeechButton

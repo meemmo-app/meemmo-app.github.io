@@ -1,12 +1,26 @@
 import React from "react";
-import { Clock, Layout, Hash, Shrimp } from "lucide-react";
+import { Clock, Layout, Hash, Shrimp, Plus } from "lucide-react";
 import { ACCENT_COLOR } from "../constants/sections";
 
-const TaskCount = ({ count }) => {
+const NewTaskButton = ({ onAddTask, isFocused, sectionId, sectionLabel }) => {
   return (
-    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1">
-      <Hash size={12} /> {count}
-    </span>
+    <button
+      onClick={(e) => {
+        e.stopPropagation(); // Prevent card onFocus trigger
+        onAddTask(sectionId);
+      }}
+      data-testid="create-new-task-button"
+      className={`
+        cursor-pointer p-3 rounded-full transition-all active:scale-90 shadow-sm
+        ${
+          isFocused
+            ? "bg-orange-500 text-white hover:bg-orange-600"
+            : "bg-orange-500/20 text-orange-600 hover:bg-orange-500/30"
+        }
+      `}
+    >
+      <Plus size={18} strokeWidth={3} />
+    </button>
   );
 };
 
@@ -87,9 +101,10 @@ export const SectionCard = ({
   onDrop,
   isDynamicColumns,
   taskCounter,
+  onAddTask, // Nuova prop per gestire il click sul +
 }) => {
-  // Calculate productivity for this section
   const productivity = calculateSectionProductivity(section.id);
+
   return (
     <div
       onDragOver={(e) => e.preventDefault()}
@@ -107,15 +122,18 @@ export const SectionCard = ({
       <div
         className={`p-6 flex items-center justify-between ${isCurrentTime ? "bg-orange-50/50" : ""}`}
       >
-        <div>
-          <h2
-            className={`text-xl inline-flex items-baseline gap-2 font-bold ${isFocused ? "text-orange-600/90" : "text-slate-700"}`}
-          >
-            {section.label}
-            <span className="inline-flex items-baseline text-lg font-normal">
-              <Hash size={12} /> {taskCounter}
-            </span>
-          </h2>
+        <div className="flex-1">
+          <div className="flex items-center justify-between">
+            <h2
+              className={`text-xl inline-flex items-baseline gap-2 font-bold ${isFocused ? "text-orange-600/90" : "text-slate-700"}`}
+            >
+              {section.label}
+              <span className="inline-flex items-baseline text-lg font-normal">
+                <Hash size={12} /> {taskCounter}
+              </span>
+            </h2>
+          </div>
+
           <div className="flex flex-col gap-1 mt-1">
             <SectionHours sectionHours={section.hours}></SectionHours>
             <div className="flex items-center justify-between">
@@ -127,19 +145,33 @@ export const SectionCard = ({
             </div>
           </div>
         </div>
-        {isCurrentTime && <CurrentSectionMarker></CurrentSectionMarker>}
+        {isCurrentTime && (
+          <div className="ml-2">
+            <CurrentSectionMarker />
+          </div>
+        )}
       </div>
 
       {/* Lista Task (Children) */}
       <div className="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar scroll-smooth">
         {React.Children.count(children) === 0 ? (
-          <div className="h-full flex flex-col items-center justify-center text-slate-300 opacity-50 space-y-2">
+          <div className="h-full flex flex-col items-center justify-center text-slate-300 opacity-50 space-y-2 py-8">
             <Layout size={40} strokeWidth={1} />
             <p className="text-sm font-medium italic">Nessun task 🦐</p>
           </div>
         ) : (
           children
         )}
+      </div>
+
+      {/* Section footer */}
+      <div className="cursor-default absolute bottom-0 right-0 z-20 p-3">
+        <NewTaskButton
+          onAddTask={onAddTask}
+          isFocused={isFocused}
+          sectionId={section.id}
+          sectionLabel={section.label}
+        />
       </div>
     </div>
   );

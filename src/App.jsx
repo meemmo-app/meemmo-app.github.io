@@ -95,23 +95,23 @@ export default function App() {
   });
 
   // Gestione Salvataggio Task (wrapper per l'hook)
-  const handleCreateTask = (voiceTask = null) => {
-    // Se passiamo un voiceTask usiamo quello, altrimenti usiamo lo stato newTask
+  const handleCreateTask = (voiceTask = null, forcedSectionId = null) => {
     const taskToSave = voiceTask || newTask;
 
     if (!taskToSave.title.trim()) {
-      console.log("WARN Task not created, title empty");
+      // Se il titolo è vuoto, apriamo la modale invece di creare un task fantasma
+      setIsModalOpen(true);
       return;
     }
 
-    // Usiamo la sezione attiva
-    const targetSectionId = sections[activeQuarterIndex].id;
+    // Priorità: 1. ID forzato dal pulsante, 2. ID dalla voce, 3. Sezione attiva
+    const targetSectionId =
+      forcedSectionId ||
+      voiceTask?.sectionId ||
+      sections[activeQuarterIndex].id;
 
     createTask(taskToSave, targetSectionId);
 
-    console.log("Created task:", taskToSave.title);
-
-    // Reset e chiusura
     setNewTask({ title: "", note: "", priority: false });
     setIsModalOpen(false);
   };
@@ -341,6 +341,10 @@ export default function App() {
               key={section.id}
               section={section}
               isFocused={isFocused}
+              onAddTask={() => {
+                setActiveQuarterIndex(idx);
+                setIsModalOpen(true);
+              }}
               isCurrentTime={section.id === currentSectionId}
               onFocus={() => setActiveQuarterIndex(idx)}
               onDrop={(e) => onDrop(e, section.id)}
