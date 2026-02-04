@@ -1,6 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Filter, ChevronDown, Check } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { Filter, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { GLASSBASE } from "../constants/styles";
 
 export const TagFilter = ({ selectedTag, setSelectedTag, tags }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,13 +51,16 @@ export const TagFilter = ({ selectedTag, setSelectedTag, tags }) => {
             animate={{ opacity: 1, y: 5, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            className="absolute right-0 mt-2 w-56 p-1.5 z-[100] bg-slate-900/90 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] overflow-hidden"
+            className={`
+              ${GLASSBASE} rounded-3xl
+              absolute right-0 mt-2 min-w-56 p-1.5 z-50 overflow-hidden
+              `}
           >
             <div className="flex flex-col gap-0.5">
               {/* Option: All Tags */}
               <button
                 onClick={() => handleSelect("all")}
-                className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition-colors
+                className={`flex items-center justify-between px-3 py-2 rounded-full text-xs font-bold transition-colors
                   ${!selectedTag ? "bg-orange-500 text-white" : "text-white/60 hover:bg-white/10 hover:text-white"}
                 `}
               >
@@ -71,7 +75,7 @@ export const TagFilter = ({ selectedTag, setSelectedTag, tags }) => {
                 <button
                   key={tag}
                   onClick={() => handleSelect(tag)}
-                  className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold transition-colors
+                  className={`flex items-center justify-between px-3 py-2 rounded-full text-xs font-bold transition-colors
                     ${selectedTag === tag ? "bg-orange-500 text-white" : "text-white/60 hover:bg-white/10 hover:text-white"}
                   `}
                 >
