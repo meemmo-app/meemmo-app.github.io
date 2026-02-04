@@ -90,6 +90,8 @@ export const SettingsModal = ({
   isDynamicColumns,
   setIsDynamicColumns,
   onClose,
+  activeQuarterIndex,
+  setActiveQuarterIndex,
 }) => {
   const addSection = () => {
     const newSection = {
@@ -101,7 +103,23 @@ export const SettingsModal = ({
   };
 
   const removeSection = (id) => {
-    setSections(sections.filter((s) => s.id !== id));
+    // 1. Trova l'indice della sezione che stiamo rimuovendo
+    const indexToRemove = sections.findIndex((s) => s.id === id);
+
+    // 2. Crea la nuova lista
+    const newSections = sections.filter((s) => s.id !== id);
+
+    // 3. Se stiamo eliminando la sezione attiva o l'ultima
+    if (activeQuarterIndex >= newSections.length) {
+      // Sposta il focus sull'ultima sezione disponibile (o 0)
+      setActiveQuarterIndex(Math.max(0, newSections.length - 1));
+    } else if (indexToRemove === activeQuarterIndex && activeQuarterIndex > 0) {
+      // Opzionale: se eliminiamo proprio quella selezionata,
+      // possiamo decidere di scalare a quella precedente
+      setActiveQuarterIndex(activeQuarterIndex - 1);
+    }
+
+    setSections(newSections);
   };
 
   const updateSectionLabel = (id, label) => {
@@ -159,6 +177,7 @@ export const SettingsModal = ({
             section={section}
             updateSectionLabel={updateSectionLabel}
             updateSectionHours={updateSectionHours}
+            removeSection={removeSection}
           ></Section>
         ))}
       </div>

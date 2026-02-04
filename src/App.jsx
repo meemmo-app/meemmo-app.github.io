@@ -442,6 +442,8 @@ export default function App() {
           isDynamicColumns={isDynamicColumns}
           setIsDynamicColumns={setIsDynamicColumns}
           onClose={() => setIsSettingsOpen(false)}
+          activeQuarterIndex={activeQuarterIndex}
+          setActiveQuarterIndex={setActiveQuarterIndex}
         />
       </Dialog>
       {/* Modale di Conferma Eliminazione */}
