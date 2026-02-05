@@ -84,6 +84,13 @@ export const TaskModal = ({
   const togglePriority = () =>
     setNewTask((prev) => ({ ...prev, priority: !prev.priority }));
 
+  const removeTag = (tagToRemove) => {
+    setNewTask(prev => ({
+      ...prev,
+      tags: prev.tags.filter(tag => tag !== tagToRemove)
+    }));
+  };
+
   return (
     <div
       className={`${GLASSBASE} rounded-3xl p-8`}
@@ -96,7 +103,7 @@ export const TaskModal = ({
       </div>
 
       {/* Modal Header */}
-      <ModalHeader title={title} onClose={onClose} />
+      <ModalHeader title={title} onClose={onClose} dataTestId="modal-close" />
 
       {/* Section Label */}
       <p className="text-xs font-black text-white/40 mb-4 uppercase tracking-wide flex items-center gap-2">
@@ -109,7 +116,7 @@ export const TaskModal = ({
       <div className="space-y-5">
         {/* Tag Section */}
         <div className="text-xs">
-          <TagSection tags={newTask.tags} />
+          <TagSection tags={newTask.tags} onRemoveTag={removeTag} />
         </div>
 
         {/* Task Title Input */}

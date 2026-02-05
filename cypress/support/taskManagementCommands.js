@@ -94,3 +94,8 @@ Cypress.Commands.add("isTaskInSection", (title, sectionLabel) => {
     cy.get(taskItem).should("exist").should("be.visible");
   });
 });
+
+Cypress.Commands.add("deleteTaskTag", (title) => {
+  const tag = `[data-testid='remove-tag-${title}']`;
+  cy.get(tag).click();
+});
