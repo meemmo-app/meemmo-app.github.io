@@ -7,5 +7,16 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities({
+        '.image-rendering-pixelated': {
+          'image-rendering': 'pixelated',
+          '-ms-interpolation-mode': 'nearest-neighbor',
+          'image-rendering': '-moz-crisp-edges',
+          'image-rendering': '-webkit-optimize-contrast',
+        },
+      })
+    },
+  ],
 }

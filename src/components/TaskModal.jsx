@@ -2,6 +2,7 @@ import React from "react";
 import { GLASSBASE } from "../constants/styles";
 import ModalHeader from "./ui/ModalHeader";
 import { TagSection } from "./TagSection";
+import PixelSprite from "./PixelSprite";
 
 // --- InputField Component ---
 const InputField = ({ value, onChange, placeholder, autoFocus, testId }) => (
@@ -64,6 +65,7 @@ export const TaskModal = ({
   sectionLabel,
   onClose,
   editingTask,
+  spriteExperimental,
 }) => {
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -85,9 +87,9 @@ export const TaskModal = ({
     setNewTask((prev) => ({ ...prev, priority: !prev.priority }));
 
   const removeTag = (tagToRemove) => {
-    setNewTask(prev => ({
+    setNewTask((prev) => ({
       ...prev,
-      tags: prev.tags.filter(tag => tag !== tagToRemove)
+      tags: prev.tags.filter((tag) => tag !== tagToRemove),
     }));
   };
 
@@ -98,9 +100,24 @@ export const TaskModal = ({
       data-testid="new-task-modal"
     >
       {/* Animated Shrimp Badge */}
-      <div className="absolute z-50 -top-5 -left-5 text-6xl animate-[bounce_3s_ease-in-out_infinite] drop-shadow-2xl">
-        🦐
-      </div>
+      {!spriteExperimental && (
+        <div className="hidden absolute z-50 -top-5 -left-5 text-6xl animate-[bounce_3s_ease-in-out_infinite] drop-shadow-2xl">
+          🦐
+        </div>
+      )}
+
+      {spriteExperimental && (
+        <div className="absolute scale-20 z-50 -top-130 -left-65 transition-all">
+          <PixelSprite
+            imagePath={"/image.png"}
+            frameWidth={514}
+            frameHeight={1024}
+            columns={3}
+            rows={1}
+            frames={3}
+          />
+        </div>
+      )}
 
       {/* Modal Header */}
       <ModalHeader title={title} onClose={onClose} dataTestId="modal-close" />

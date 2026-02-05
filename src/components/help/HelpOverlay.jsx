@@ -94,7 +94,7 @@ const HelpOverlay = ({ isOpen, onClose }) => {
         className={`relative ${GLASSBASE} rounded-3xl w-full max-h-[90vh] overflow-y-scroll custom-scrollbar p-6`}
       >
         <ModalHeader
-          title="Comandi & Funzionalità"
+          title="Comandi e Funzionalità"
           subtitle="Scorciatoie da tastiera e funzionalità dell'app"
           onClose={onClose}
           icon={<Command size={32} className="text-white/90" />}

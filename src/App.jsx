@@ -5,6 +5,7 @@ import { Settings, Keyboard, Eye, EyeOff } from "lucide-react";
 import { useTasks } from "./hooks/useTasks";
 import { useSections } from "./hooks/useSections";
 import { ACCENT_COLOR } from "./constants/sections";
+import { useExperimental } from "./hooks/useExperimental";
 
 // Componenti
 import { SectionCard } from "./components/SectionCard";
@@ -37,6 +38,8 @@ export default function App() {
     isDynamicColumns,
     setIsDynamicColumns,
   } = useSections();
+
+  const { getSpriteExperimental, setSpriteExperimental } = useExperimental();
 
   // State UI locale
   const [activeQuarterIndex, setActiveQuarterIndex] = useState(0);
@@ -444,6 +447,7 @@ export default function App() {
             setIsModalOpen(false);
             setEditingTask(null);
           }}
+          spriteExperimental={() => getSpriteExperimental()}
         />
       </Dialog>
       {/* Settings Modal */}
