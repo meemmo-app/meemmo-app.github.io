@@ -1,10 +1,22 @@
 import { motion } from "framer-motion";
 
-export const Dialog = ({ isOpen, onClose, children }) => {
+export const Dialog = ({ isOpen, onClose, children, size = "md" }) => {
   if (!isOpen) return null;
+
+  // Define size classes
+  const sizeClasses = {
+    sm: "max-w-md",
+    md: "max-w-lg",
+    lg: "max-w-2xl",
+    xl: "max-w-4xl",
+    full: "max-w-full",
+  };
+
+  const sizeClass = sizeClasses[size] || sizeClasses.md;
+
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center backdrop-blur-sm p-4 ">
-      {/*<div className="rounded-3xl shadow-2xl w-full max-w-md ">{children}</div>*/}
+    <div className="fixed inset-0 z-40 flex items-center justify-center backdrop-blur-sm p-4">
+      <div className="absolute inset-0" onClick={onClose} />
 
       <motion.div
         // Entrata: da piccolo e basso verso il centro
@@ -18,7 +30,7 @@ export const Dialog = ({ isOpen, onClose, children }) => {
           damping: 28,
           mass: 0.8,
         }}
-        className="rounded-3xl shadow-2xl w-full max-w-md "
+        className={`rounded-3xl shadow-2xl w-full ${sizeClass} max-h-[90vh] `}
       >
         {children}
       </motion.div>

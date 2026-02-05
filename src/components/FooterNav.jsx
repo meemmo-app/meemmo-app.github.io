@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
-import { Keyboard, X, Mic, Plus } from "lucide-react";
+import { Keyboard, X, Mic, Plus, HelpCircle } from "lucide-react";
 import { GLASSBASE } from "../constants/styles";
 import { VoiceWaveform } from "./ui/VoiceWaveform";
 import { useSpeechToText } from "../hooks/useSpeechToText";
+import HelpOverlay from "./help/HelpOverlay";
+import { Dialog } from "./ui/Dialog";
 
 const FooterItem = ({ keys, description }) => {
   return (
@@ -33,7 +35,7 @@ const ToggleButton = ({ isOpen, setIsOpen }) => {
       ) : (
         <div
           className="flex items-center gap-1"
-          title="Digita ? per aprire le scorciatoie"
+          title="Chiudi/apri scorciatoie"
         >
           <Keyboard size={22} className="transition-transform duration-500" />
         </div>
@@ -64,6 +66,25 @@ const TextToSpeechButton = ({ startListening, isListening }) => {
   );
 };
 
+const HelpButton = ({ isHelpOpen, setIsHelpOpen }) => {
+  return (
+    <button
+      onClick={() => setIsHelpOpen(!isHelpOpen)}
+      className={`
+        ${GLASSBASE}
+        rounded-full flex items-center justify-center
+        cursor-pointer
+        transition-all duration-300 hover:scale-105 active:scale-90
+        text-white/80 hover:text-white
+        w-12 h-12
+      `}
+      title="Apri la guida delle funzionalità (? per aprire)"
+    >
+      <HelpCircle size={22} className="transition-transform duration-500" />
+    </button>
+  );
+};
+
 export const FooterNav = ({
   isModalOpen,
   setIsModalOpen,
@@ -74,6 +95,7 @@ export const FooterNav = ({
   setNewTask,
 }) => {
   const [isOpen, setIsOpen] = useState(true);
+  const [isHelpOpen, setIsHelpOpen] = useState(false);
 
   const { isListening, startListening } = useSpeechToText(
     newTask,
@@ -86,7 +108,8 @@ export const FooterNav = ({
     if (!isModalOpen && !isSettingsOpen) {
       const handleKeyDown = (e) => {
         if (e.key === "?") {
-          setIsOpen((prev) => !prev);
+          // Toggle help overlay instead of footer shortcuts
+          setIsHelpOpen((prev) => !prev);
         }
       };
       window.addEventListener("keydown", handleKeyDown);
@@ -99,9 +122,10 @@ export const FooterNav = ({
       <div
         className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-3 ${isModalOpen || isSettingsOpen || isBacklogOpen ? "hidden" : ""}`}
       >
-        {/* Container Principale con Transizione Fluida */}
+        {/* Container Principale con Transizione Fluida NASCOSTO PER NUOVI SVILUPPI */}
         <div
           className={`
+            hidden
         ${GLASSBASE}
         flex items-center overflow-hidden transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1)
         ${
@@ -121,8 +145,13 @@ export const FooterNav = ({
           </div>
         </div>
 
-        {/* Bolla Indipendente (Pulsante Toggle) */}
-        <ToggleButton isOpen={isOpen} setIsOpen={setIsOpen} />
+        {/* Bolla Indipendente (Pulsante Toggle) NASCOSTO PER NUOVI SVILUPPI*/}
+        <div className="hidden">
+          <ToggleButton isOpen={isOpen} setIsOpen={setIsOpen} />
+        </div>
+
+        {/* Help Button */}
+        <HelpButton isHelpOpen={isHelpOpen} setIsHelpOpen={setIsHelpOpen} />
 
         {/* Speech control */}
         <TextToSpeechButton
@@ -130,6 +159,9 @@ export const FooterNav = ({
           isListening={isListening}
         />
       </div>
+
+      {/* Help Overlay */}
+      <HelpOverlay isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} />
     </>
   );
 };
