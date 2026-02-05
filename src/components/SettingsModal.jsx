@@ -92,6 +92,8 @@ export const SettingsModal = ({
   onClose,
   activeQuarterIndex,
   setActiveQuarterIndex,
+  getSpriteExperimental,
+  setSpriteExperimental,
 }) => {
   const addSection = () => {
     const newSection = {
@@ -156,6 +158,15 @@ export const SettingsModal = ({
         iconOff={<ZapOff size={20} />}
         title={"Sezioni Dinamiche"}
         subtitle={"Altezza delle sezioni in base ai task"}
+      ></Switch>
+
+      <Switch
+        option={getSpriteExperimental()}
+        setOption={setSpriteExperimental}
+        iconOn={<Zap size={20} />}
+        iconOff={<ZapOff size={20} />}
+        title={"Experimental Features"}
+        subtitle={"Sprite sheet mascotte"}
       ></Switch>
 
       {/* Lista Sezioni */}

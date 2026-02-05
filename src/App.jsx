@@ -39,7 +39,8 @@ export default function App() {
     setIsDynamicColumns,
   } = useSections();
 
-  const { getSpriteExperimental, setSpriteExperimental } = useExperimental();
+  const { experimental, getSpriteExperimental, setSpriteExperimental } =
+    useExperimental();
 
   // State UI locale
   const [activeQuarterIndex, setActiveQuarterIndex] = useState(0);
@@ -447,7 +448,7 @@ export default function App() {
             setIsModalOpen(false);
             setEditingTask(null);
           }}
-          spriteExperimental={() => getSpriteExperimental()}
+          spriteExperimental={getSpriteExperimental()}
         />
       </Dialog>
       {/* Settings Modal */}
@@ -460,6 +461,8 @@ export default function App() {
           onClose={() => setIsSettingsOpen(false)}
           activeQuarterIndex={activeQuarterIndex}
           setActiveQuarterIndex={setActiveQuarterIndex}
+          getSpriteExperimental={getSpriteExperimental}
+          setSpriteExperimental={setSpriteExperimental}
         />
       </Dialog>
       {/* Modale di Conferma Eliminazione */}

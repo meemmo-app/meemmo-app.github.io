@@ -101,7 +101,7 @@ export const TaskModal = ({
     >
       {/* Animated Shrimp Badge */}
       {!spriteExperimental && (
-        <div className="hidden absolute z-50 -top-5 -left-5 text-6xl animate-[bounce_3s_ease-in-out_infinite] drop-shadow-2xl">
+        <div className="absolute z-50 -top-5 -left-5 text-6xl animate-[bounce_3s_ease-in-out_infinite] drop-shadow-2xl">
           🦐
         </div>
       )}

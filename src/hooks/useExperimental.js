@@ -19,7 +19,7 @@ export function useExperimental() {
   };
 
   useEffect(() => {
-    localStorage.setItem("meemmo-sections", JSON.stringify(experimental));
+    localStorage.setItem("meemmo-experimental", JSON.stringify(experimental));
   }, [experimental]);
 
   return {
