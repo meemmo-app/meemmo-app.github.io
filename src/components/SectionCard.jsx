@@ -123,7 +123,7 @@ export const SectionCard = ({
       onClick={onFocus}
       data-testid={`section-${section.label}`}
       className={`
-        relative flex flex-col min-w-3xs rounded-3xl transition-all duration-500 overflow-hidden cursor-pointer
+        relative flex flex-col grow min-w-3xs rounded-3xl transition-all duration-500 overflow-hidden cursor-pointer
         ${isDynamicColumns ? "h-fit" : ""}
         ${isFocused ? "scale-[1.02] shadow-2xl shadow-slate-300" : "opacity-80 scale-100"}
       `}

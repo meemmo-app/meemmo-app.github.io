@@ -54,7 +54,7 @@ export const Header = ({
   const tags = allTags();
 
   return (
-    <header className="p-6 flex justify-between items-center max-w-7xl mx-auto">
+    <header className="p-6 md:px-18 flex justify-between items-center max-w-full mx-auto">
       <div className="flex items-center gap-3">
         <div className="bg-white p-2 rounded-2xl shadow-sm border border-orange-100 rotate-12 text-3xl">
           🦐
