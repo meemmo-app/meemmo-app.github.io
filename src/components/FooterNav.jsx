@@ -4,7 +4,7 @@ import { GLASSBASE } from "../constants/styles";
 import { VoiceWaveform } from "./ui/VoiceWaveform";
 import { useSpeechToText } from "../hooks/useSpeechToText";
 import HelpOverlay from "./help/HelpOverlay";
-import { Dialog } from "./ui/Dialog";
+import { handleKeyBindings } from "../utils/handleKeyBindings";
 
 const FooterItem = ({ keys, description }) => {
   return (
@@ -103,14 +103,17 @@ export const FooterNav = ({
     handleCreateTask,
   );
 
-  // Listener per il tasto "?"
+  // Added listener for the key "?"
   useEffect(() => {
     if (!isModalOpen && !isSettingsOpen) {
       const handleKeyDown = (e) => {
-        if (e.key === "?") {
-          // Toggle help overlay instead of footer shortcuts
-          setIsHelpOpen((prev) => !prev);
-        }
+        handleKeyBindings(e, {
+          "?": {
+            action: () => {
+              setIsHelpOpen((prev) => !prev);
+            },
+          },
+        });
       };
       window.addEventListener("keydown", handleKeyDown);
       return () => window.removeEventListener("keydown", handleKeyDown);

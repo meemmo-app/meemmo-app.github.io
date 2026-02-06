@@ -68,24 +68,6 @@ export const TaskModal = ({
   editingTask,
   spriteExperimental,
 }) => {
-  /*
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      onSave();
-    }
-
-    if (
-      e.key.toLowerCase() === "p" &&
-      document.activeElement.tagName !== "INPUT" &&
-      document.activeElement.tagName !== "TEXTAREA"
-    ) {
-      e.preventDefault();
-      togglePriority();
-    }
-  };
-  */
-
   const togglePriority = () =>
     setNewTask((prev) => ({ ...prev, priority: !prev.priority }));
 
