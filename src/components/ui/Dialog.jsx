@@ -19,15 +19,15 @@ export const Dialog = ({ isOpen, onClose, children, size = "md" }) => {
       <div className="absolute inset-0" onClick={onClose} />
 
       <motion.div
-        // Entrata: da piccolo e basso verso il centro
-        initial={{ opacity: 0.7, scale: 0.9, y: 0 }}
+        // Apple-style entrance: smooth scale up with subtle fade
+        initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        // Uscita: torna piccolo e scivola verso il basso
-        exit={{ opacity: 0.7, scale: 0.9, y: 0 }}
+        // Apple-style exit: smooth scale down with fade and slight movement
+        exit={{ opacity: 0, scale: 0.8, y: 20 }}
         transition={{
           type: "spring",
-          stiffness: 600,
-          damping: 28,
+          stiffness: 400,
+          damping: 30,
           mass: 0.8,
         }}
         className={`rounded-3xl shadow-2xl w-full ${sizeClass} max-h-[90vh] `}
