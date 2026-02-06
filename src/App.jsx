@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Settings, Keyboard, Eye, EyeOff } from "lucide-react";
 
 // Hook e Costanti
@@ -8,16 +8,17 @@ import { ACCENT_COLOR } from "./constants/sections";
 import { useExperimental } from "./hooks/useExperimental";
 
 // Componenti
-import { SectionCard } from "./components/SectionCard";
-import { TaskItem } from "./components/TaskItem";
 import { TaskModal } from "./components/TaskModal";
 import { Dialog } from "./components/ui/Dialog";
 import { FooterNav } from "./components/footerNav";
 import { SettingsModal } from "./components/SettingsModal";
 import { Header } from "./components/Header";
 import { ConfirmModal } from "./components/ConfirmModal";
-import Backlog, { BacklogIcon } from "./components/Backlog";
-import { handleKeyBindings } from "./utils/handleKeyBindings";
+import MainGrid from "./components/MainGrid";
+import BacklogComponent from "./components/BacklogComponent";
+import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
+import { useDragAndDrop } from "./hooks/useDragAndDrop";
+import { useTaskOperations } from "./hooks/useTaskOperations";
 
 export default function App() {
   // Logic & State da Hook personalizzato
@@ -50,31 +51,30 @@ export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [showCompleted, setShowCompleted] = useState(true);
-  const [newTask, setNewTask] = useState({
-    title: "",
-    note: "",
-    priority: false,
-    tags: [],
-  });
-  const [editingTask, setEditingTask] = useState(null);
   const [selectedTag, setSelectedTag] = useState(null);
+  const [isBacklogOpen, setIsBacklogOpen] = useState(false);
+  const [taskToDelete, setTaskToDelete] = useState(null);
 
-  const handleEditOpen = (task) => {
-    setEditingTask(task);
-    setIsModalOpen(true);
-  };
-  // Funzione per salvare le modifiche (nell'hook useTasks o App)
-  const handleUpdateTask = (updatedData, sectionId) => {
-    let oldTags = updatedData.tags;
-    deleteTask(updatedData.id);
-    // Inject old tags to be parsed along with new ones
-    if (oldTags && oldTags.length > 0) {
-      updatedData.note = updatedData.note + " #" + oldTags.join(" #");
-    }
-    createTask(updatedData, sectionId);
-    setIsModalOpen(false);
-    setEditingTask(null);
-  };
+  const {
+    newTask,
+    setNewTask,
+    editingTask,
+    setEditingTask,
+    handleEditOpen,
+    handleUpdateTask,
+    handleCreateTask,
+  } = useTaskOperations(createTask, deleteTask);
+
+  const {
+    onDragStart,
+    onDrop,
+    handleBacklogDrop,
+    handleBacklogDragOver,
+    handleBacklogDragLeave,
+    handleIconDrop,
+    isBacklogOver,
+    setIsBacklogOver,
+  } = useDragAndDrop(tasks, setTasks, moveTask);
 
   const taskRefs = useRef({});
   const currentSectionId = getActiveSectionId();
@@ -101,48 +101,30 @@ export default function App() {
           block: "nearest",
         });
       }
-      return;
+    }
+  }, [focusedTaskIndex, activeQuarterIndex, tasks, sections, showCompleted]);
+
+  // Use keyboard shortcuts hook
+  useKeyboardShortcuts({
+    isModalOpen,
+    isSettingsOpen,
+    tasks,
+    sections,
+    activeQuarterIndex,
+    sectionCount,
+    showCompleted,
+    focusedTaskIndex,
+    setActiveQuarterIndex,
+    setFocusedTaskIndex,
+    setIsModalOpen,
+    setIsSettingsOpen,
+    requestDelete: (id) => setTaskToDelete(id),
+    toggleComplete,
+    handleEditOpen: (task) => {
+      setEditingTask(task);
+      setIsModalOpen(true);
     }
   });
-
-  // Gestione Salvataggio Task (wrapper per l'hook)
-  const handleCreateTask = (voiceTask = null, forcedSectionId = null) => {
-    const taskToSave = voiceTask || newTask;
-
-    if (!taskToSave.title.trim()) {
-      // Se il titolo è vuoto, apriamo la modale invece di creare un task fantasma
-      setIsModalOpen(true);
-      return;
-    }
-
-    // Priorità: 1. ID forzato dal pulsante, 2. ID dalla voce, 3. Sezione attiva
-    const targetSectionId =
-      forcedSectionId ||
-      voiceTask?.sectionId ||
-      sections[activeQuarterIndex].id;
-
-    createTask(taskToSave, targetSectionId);
-
-    setNewTask({ title: "", note: "", priority: false });
-    setIsModalOpen(false);
-  };
-
-  // Drag and Drop
-  const onDragStart = (e, id) => {
-    e.dataTransfer.setData("taskId", id);
-  };
-
-  /*
-  const onDrop = (e, sectionId) => {
-    const id = e.dataTransfer.getData("taskId");
-    moveTask(id, sectionId);
-  };*/
-
-  const [taskToDelete, setTaskToDelete] = useState(null);
-
-  // Backlog state and logic
-  const [isBacklogOpen, setIsBacklogOpen] = useState(false);
-  const [isBacklogOver, setIsBacklogOver] = useState(false);
 
   // Filter tasks that are in backlog (sectionId is null or undefined)
   const backlogTasks = tasks.filter(
@@ -151,67 +133,12 @@ export default function App() {
       (!selectedTag || (task.tags && task.tags.includes(selectedTag))),
   );
 
-  // Handle backlog drag and drop
-  const handleBacklogDrop = (e) => {
-    e.preventDefault();
-    setIsBacklogOver(false);
-
-    const id = e.dataTransfer.getData("taskId");
-    // Move task to backlog by setting sectionId to null
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === id ? { ...task, sectionId: null } : task,
-      ),
-    );
-  };
-
-  const handleBacklogDragOver = (e) => {
-    e.preventDefault();
-    setIsBacklogOver(true);
-  };
-
-  const handleBacklogDragLeave = () => {
-    setIsBacklogOver(false);
-  };
-
   const openBacklog = () => {
     setIsBacklogOpen(true);
   };
 
   const closeBacklog = () => {
     setIsBacklogOpen(false);
-  };
-
-  // Handle drop from sections to backlog icon
-  const handleIconDrop = (e) => {
-    e.preventDefault();
-    setIsBacklogOver(false);
-
-    const id = e.dataTransfer.getData("taskId");
-    // Move task to backlog by setting sectionId to null
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === id ? { ...task, sectionId: null } : task,
-      ),
-    );
-
-    // Open backlog after drop
-    //setIsBacklogOpen(true);
-  };
-
-  // Update onDrop function to handle both section and backlog drops
-  const onDrop = (e, sectionId) => {
-    const id = e.dataTransfer.getData("taskId");
-    if (sectionId === "backlog") {
-      // Move task to backlog by setting sectionId to null
-      setTasks((prev) =>
-        prev.map((task) =>
-          task.id === id ? { ...task, sectionId: null } : task,
-        ),
-      );
-    } else {
-      moveTask(id, sectionId);
-    }
   };
 
   // Questa funzione ora si limita ad aprire la modale di conferma
@@ -226,221 +153,6 @@ export default function App() {
       setTaskToDelete(null); // Chiude la modale
     }
   };
-
-  // Keyboard Shortcuts
-  /*
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (isModalOpen) {
-        if (e.key === "Escape") {
-          e.stopPropagation();
-          setIsModalOpen(false);
-        }
-        return;
-      }
-
-      if (isSettingsOpen) {
-        if (e.key === "Escape") {
-          e.stopPropagation();
-          setIsSettingsOpen(false);
-        }
-        return;
-      }
-
-      const visibleTasks = tasks.filter(
-        (t) =>
-          t.sectionId === sections[activeQuarterIndex].id &&
-          (showCompleted || !t.completed),
-      );
-
-      switch (e.key.toLowerCase()) {
-        case " ":
-          e.preventDefault();
-          setIsModalOpen(true);
-          break;
-        case "h":
-        case "arrowleft":
-          setActiveQuarterIndex((prev) => (prev > 0 ? prev - 1 : sectionCount));
-          setFocusedTaskIndex(-1);
-          break;
-        case "l":
-        case "arrowright":
-          setActiveQuarterIndex((prev) => (prev < sectionCount ? prev + 1 : 0));
-          setFocusedTaskIndex(-1);
-          break;
-        case "j":
-        case "arrowdown":
-          if (visibleTasks.length > 0) {
-            setFocusedTaskIndex((prev) =>
-              prev < visibleTasks.length - 1 ? prev + 1 : 0,
-            );
-          }
-          break;
-        case "k":
-        case "arrowup":
-          if (visibleTasks.length > 0) {
-            setFocusedTaskIndex((prev) =>
-              prev > 0 ? prev - 1 : visibleTasks.length - 1,
-            );
-          }
-          break;
-        case "x":
-          if (focusedTaskIndex !== -1 && visibleTasks[focusedTaskIndex]) {
-            requestDelete(visibleTasks[focusedTaskIndex].id);
-            setFocusedTaskIndex(-1);
-          }
-          break;
-        case "d":
-          if (focusedTaskIndex !== -1 && visibleTasks[focusedTaskIndex]) {
-            toggleComplete(visibleTasks[focusedTaskIndex].id);
-          }
-          break;
-        case "e":
-          if (visibleTasks[focusedTaskIndex]) {
-            handleEditOpen(visibleTasks[focusedTaskIndex]);
-          }
-          break;
-        default:
-          break;
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  });
-  */
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (isModalOpen) {
-        handleKeyBindings(e, {
-          Escape: {
-            action: () => {
-              e.stopPropagation();
-              setIsModalOpen(false);
-            },
-          },
-        });
-        return;
-      }
-
-      if (isSettingsOpen) {
-        handleKeyBindings(e, {
-          Escape: {
-            action: () => {
-              e.stopPropagation();
-              setIsSettingsOpen(false);
-            },
-          },
-        });
-        return;
-      }
-
-      const visibleTasks = tasks.filter(
-        (t) =>
-          t.sectionId === sections[activeQuarterIndex].id &&
-          (showCompleted || !t.completed),
-      );
-      handleKeyBindings(e, {
-        " ": {
-          action: () => {
-            setIsModalOpen(true);
-          },
-        },
-        h: {
-          action: () => {
-            setActiveQuarterIndex((prev) =>
-              prev > 0 ? prev - 1 : sectionCount,
-            );
-            setFocusedTaskIndex(-1);
-          },
-        },
-        arrowleft: {
-          action: () => {
-            setActiveQuarterIndex((prev) =>
-              prev > 0 ? prev - 1 : sectionCount,
-            );
-            setFocusedTaskIndex(-1);
-          },
-        },
-        l: {
-          action: () => {
-            setActiveQuarterIndex((prev) =>
-              prev < sectionCount ? prev + 1 : 0,
-            );
-            setFocusedTaskIndex(-1);
-          },
-        },
-        arrowright: {
-          action: () => {
-            setActiveQuarterIndex((prev) =>
-              prev < sectionCount ? prev + 1 : 0,
-            );
-            setFocusedTaskIndex(-1);
-          },
-        },
-        j: {
-          action: () => {
-            if (visibleTasks.length > 0) {
-              setFocusedTaskIndex((prev) =>
-                prev < visibleTasks.length - 1 ? prev + 1 : 0,
-              );
-            }
-          },
-        },
-        arrowdown: {
-          action: () => {
-            if (visibleTasks.length > 0) {
-              setFocusedTaskIndex((prev) =>
-                prev < visibleTasks.length - 1 ? prev + 1 : 0,
-              );
-            }
-          },
-        },
-        k: {
-          action: () => {
-            if (visibleTasks.length > 0) {
-              setFocusedTaskIndex((prev) =>
-                prev > 0 ? prev - 1 : visibleTasks.length - 1,
-              );
-            }
-          },
-        },
-        arrowup: {
-          action: () => {
-            if (visibleTasks.length > 0) {
-              setFocusedTaskIndex((prev) =>
-                prev > 0 ? prev - 1 : visibleTasks.length - 1,
-              );
-            }
-          },
-        },
-        x: {
-          action: () => {
-            if (focusedTaskIndex !== -1 && visibleTasks[focusedTaskIndex]) {
-              requestDelete(visibleTasks[focusedTaskIndex].id);
-              setFocusedTaskIndex(-1);
-            }
-          },
-        },
-        d: {
-          action: () => {
-            if (focusedTaskIndex !== -1 && visibleTasks[focusedTaskIndex]) {
-              toggleComplete(visibleTasks[focusedTaskIndex].id);
-            }
-          },
-        },
-        e: {
-          action: () => {
-            if (visibleTasks[focusedTaskIndex]) {
-              handleEditOpen(visibleTasks[focusedTaskIndex]);
-            }
-          },
-        },
-      });
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  });
 
   const getAllTags = () => {
     // flatMap estrae tutti i tag e crea un unico array piatto
@@ -466,52 +178,27 @@ export default function App() {
       ></Header>
 
       {/* Main Grid */}
-      <main className="max-w-full mx-auto p-4 md:p-6 md:px-18 flex flex-col md:flex-row overflow-x-scroll gap-6 h-[calc(100vh-160px)]">
-        {sections.map((section, idx) => {
-          const isFocused = activeQuarterIndex === idx;
-          const sectionTasks = tasks.filter((t) => {
-            // 1. Filtro per sezione
-            const isInSection = t.sectionId === section.id;
-            // 2. Filtro per completamento
-            const matchesCompletion = showCompleted || !t.completed;
-            // 3. Filtro per Tag selezionato
-            // Se è impostato, controlla se t.tags esiste e include il tag
-            const matchesTag =
-              !selectedTag || (t.tags && t.tags.includes(selectedTag));
-            return isInSection && matchesCompletion && matchesTag;
-          });
-
-          return (
-            <SectionCard
-              key={section.id}
-              section={section}
-              isFocused={isFocused}
-              onAddTask={() => {
-                setActiveQuarterIndex(idx);
-                setIsModalOpen(true);
-              }}
-              isCurrentTime={section.id === currentSectionId}
-              onFocus={() => setActiveQuarterIndex(idx)}
-              onDrop={(e) => onDrop(e, section.id)}
-              isDynamicColumns={isDynamicColumns}
-              taskCounter={sectionTasks.length}
-            >
-              {sectionTasks.map((task, tIdx) => (
-                <TaskItem
-                  key={task.id}
-                  task={task}
-                  isFocused={isFocused && focusedTaskIndex === tIdx}
-                  onToggle={toggleComplete}
-                  onEdit={handleEditOpen}
-                  onDelete={requestDelete}
-                  onDragStart={onDragStart}
-                  innerRef={(el) => (taskRefs.current[task.id] = el)}
-                />
-              ))}
-            </SectionCard>
-          );
-        })}
-      </main>
+      <MainGrid
+        sections={sections}
+        tasks={tasks}
+        activeQuarterIndex={activeQuarterIndex}
+        showCompleted={showCompleted}
+        selectedTag={selectedTag}
+        setActiveQuarterIndex={setActiveQuarterIndex}
+        setIsModalOpen={setIsModalOpen}
+        toggleComplete={toggleComplete}
+        handleEditOpen={(task) => {
+          setEditingTask(task);
+          setIsModalOpen(true);
+        }}
+        requestDelete={requestDelete}
+        onDragStart={onDragStart}
+        onDrop={onDrop}
+        isDynamicColumns={isDynamicColumns}
+        currentSectionId={currentSectionId}
+        taskRefs={taskRefs}
+        focusedTaskIndex={focusedTaskIndex}
+      />
 
       {/* Footer Nav */}
       <FooterNav
@@ -519,45 +206,43 @@ export default function App() {
         setIsModalOpen={setIsModalOpen}
         isSettingsOpen={isSettingsOpen}
         isBacklogOpen={isBacklogOpen}
-        handleCreateTask={handleCreateTask}
+        handleCreateTask={(voiceTask = null, forcedSectionId = null) => {
+          const result = handleCreateTask(
+            voiceTask,
+            forcedSectionId,
+            sections[activeQuarterIndex].id,
+          );
+          if (result) {
+            setIsModalOpen(false); // Close modal after successful creation
+          } else {
+            setIsModalOpen(true);
+          }
+        }}
         setNewTask={setNewTask}
         newTask={newTask}
       ></FooterNav>
 
-      {/* Backlog Icon */}
-      <BacklogIcon
-        onDrop={handleIconDrop}
-        onDragOver={handleBacklogDragOver}
-        onDragLeave={handleBacklogDragLeave}
-        isOver={isBacklogOver}
-        onClick={openBacklog}
-        count={backlogTasks.length}
-      />
-
-      {/* Backlog Drawer */}
-      <Backlog
+      {/* Backlog Component */}
+      <BacklogComponent
         isOpen={isBacklogOpen}
         onClose={closeBacklog}
-        onDrop={handleBacklogDrop}
-        onDragOver={handleBacklogDragOver}
-        onDragLeave={handleBacklogDragLeave}
-        isOver={isBacklogOver}
-      >
-        {backlogTasks.map((task) => {
-          return (
-            <TaskItem
-              key={task.id}
-              task={task}
-              isFocused={false}
-              onToggle={toggleComplete}
-              onEdit={handleEditOpen}
-              onDelete={requestDelete}
-              onDragStart={onDragStart}
-              innerRef={(el) => (taskRefs.current[task.id] = el)}
-            />
-          );
-        })}
-      </Backlog>
+        tasks={tasks}
+        selectedTag={selectedTag}
+        toggleComplete={toggleComplete}
+        handleEditOpen={(task) => {
+          setEditingTask(task);
+          setIsModalOpen(true);
+        }}
+        requestDelete={requestDelete}
+        onDragStart={onDragStart}
+        taskRefs={taskRefs}
+        handleBacklogDrop={handleBacklogDrop}
+        handleBacklogDragOver={handleBacklogDragOver}
+        handleBacklogDragLeave={handleBacklogDragLeave}
+        isBacklogOver={isBacklogOver}
+        openBacklog={openBacklog}
+        backlogTasks={backlogTasks}
+      />
 
       {/* Modale */}
       <Dialog
@@ -577,7 +262,14 @@ export default function App() {
             editingTask
               ? () =>
                   handleUpdateTask(editingTask, sections[activeQuarterIndex].id)
-              : handleCreateTask
+              : (voiceTask = null, forcedSectionId = null) => {
+                  const result = handleCreateTask(voiceTask, forcedSectionId, sections[activeQuarterIndex].id);
+                  if (result) {
+                    setIsModalOpen(false); // Close modal after successful creation
+                  } else {
+                    setIsModalOpen(true); // Keep modal open if task wasn't created due to empty title
+                  }
+                }
           }
           sectionLabel={sections[activeQuarterIndex].label}
           onClose={() => {
