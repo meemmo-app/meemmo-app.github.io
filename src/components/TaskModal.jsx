@@ -3,6 +3,7 @@ import { GLASSBASE } from "../constants/styles";
 import ModalHeader from "./ui/ModalHeader";
 import { TagSection } from "./TagSection";
 import PixelSprite from "./PixelSprite";
+import { handleKeyBindings } from "../utils/handleKeyBindings";
 
 // --- InputField Component ---
 const InputField = ({ value, onChange, placeholder, autoFocus, testId }) => (
@@ -67,6 +68,7 @@ export const TaskModal = ({
   editingTask,
   spriteExperimental,
 }) => {
+  /*
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -82,6 +84,7 @@ export const TaskModal = ({
       togglePriority();
     }
   };
+  */
 
   const togglePriority = () =>
     setNewTask((prev) => ({ ...prev, priority: !prev.priority }));
@@ -93,6 +96,17 @@ export const TaskModal = ({
     }));
   };
 
+  const handleKeyDown = (e) => {
+    handleKeyBindings(e, {
+      Enter: {
+        action: () => {
+          onSave();
+        },
+        runInInputFields: true,
+      },
+      p: { action: togglePriority },
+    });
+  };
   return (
     <div
       className={`${GLASSBASE} rounded-3xl p-8`}
