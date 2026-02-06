@@ -38,9 +38,14 @@ const SectionHours = ({ sectionHours }) => {
   );
 };
 
-const CurrentSectionMarker = () => {
+const CurrentSectionMarker = ({ color }) => {
   return (
-    <span className="bg-orange-500 text-white text-[10px] px-2 py-1 rounded-full font-black animate-pulse">
+    <span
+      className={`bg-orange-500 text-white text-[10px] px-2 py-1 rounded-full font-black`}
+      style={{
+        backgroundColor: color ? color : "",
+      }}
+    >
       ORA
     </span>
   );
@@ -159,7 +164,7 @@ export const SectionCard = ({
         </div>
         {isCurrentTime && (
           <div className="ml-2">
-            <CurrentSectionMarker />
+            <CurrentSectionMarker color={section.color} />
           </div>
         )}
       </div>
