@@ -3,6 +3,56 @@ import { Filter, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { GLASSBASE } from "../constants/styles";
 
+const TagFilterButton = ({ onClick, selectedTag }) => {
+  return (
+    <button
+      onClick={onClick}
+      data-testid="tag-filter-trigger"
+      className={`cursor-pointer flex items-center px-4 py-2 rounded-full border transition-all duration-300 active:scale-95
+        ${
+          !selectedTag
+            ? "bg-white border-orange-200 text-orange-600"
+            : "bg-orange-500 border-orange-400 text-white shadow-lg shadow-orange-500/30"
+        }
+      `}
+    >
+      <Filter size={14} className="mr-2" />
+      <span className="text-xs font-bold uppercase">
+        {selectedTag || "Tutti i tag"}
+      </span>
+    </button>
+  );
+};
+
+const AllTagOption = ({ onClick, selectedTag }) => {
+  return (
+    <button
+      onClick={onClick}
+      className={`flex items-center justify-between px-3 py-2 rounded-full text-xs font-bold transition-colors
+        ${!selectedTag ? "bg-orange-500 text-white" : "text-white/60 hover:bg-white/10 hover:text-white"}
+      `}
+    >
+      TUTTI I TAG
+      {!selectedTag && <Check size={14} />}
+    </button>
+  );
+};
+
+const TagOption = ({ tag, onClick, selectedTag }) => {
+  return (
+    <button
+      key={tag}
+      onClick={onClick}
+      className={`flex items-center justify-between px-3 py-2 rounded-full text-xs font-bold transition-colors
+        ${selectedTag === tag ? "bg-orange-500 text-white" : "text-white/60 hover:bg-white/10 hover:text-white"}
+      `}
+    >
+      {tag.toUpperCase()}
+      {selectedTag === tag && <Check size={14} />}
+    </button>
+  );
+};
+
 export const TagFilter = ({ selectedTag, setSelectedTag, tags }) => {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef(null);
@@ -26,22 +76,10 @@ export const TagFilter = ({ selectedTag, setSelectedTag, tags }) => {
   return (
     <div className="relative" ref={containerRef}>
       {/* Trigger Button */}
-      <button
+      <TagFilterButton
         onClick={() => setIsOpen(!isOpen)}
-        data-testid="tag-filter-trigger"
-        className={`cursor-pointer flex items-center px-4 py-2 rounded-full border transition-all duration-300 active:scale-95
-          ${
-            !selectedTag
-              ? "bg-white border-orange-200 text-orange-600"
-              : "bg-orange-500 border-orange-400 text-white shadow-lg shadow-orange-500/30"
-          }
-        `}
-      >
-        <Filter size={14} className="mr-2" />
-        <span className="text-xs font-bold uppercase">
-          {selectedTag || "Tutti i tag"}
-        </span>
-      </button>
+        selectedTag={selectedTag}
+      />
 
       {/* Dropdown Menu */}
       <AnimatePresence>
@@ -58,30 +96,20 @@ export const TagFilter = ({ selectedTag, setSelectedTag, tags }) => {
           >
             <div className="flex flex-col gap-0.5">
               {/* Option: All Tags */}
-              <button
+              <AllTagOption
                 onClick={() => handleSelect("all")}
-                className={`flex items-center justify-between px-3 py-2 rounded-full text-xs font-bold transition-colors
-                  ${!selectedTag ? "bg-orange-500 text-white" : "text-white/60 hover:bg-white/10 hover:text-white"}
-                `}
-              >
-                TUTTI I TAG
-                {!selectedTag && <Check size={14} />}
-              </button>
+                selectedTag={selectedTag}
+              />
 
               <div className="h-[1px] bg-white/5 my-1" />
 
               {/* Tag Options */}
               {tags.map((tag) => (
-                <button
-                  key={tag}
+                <TagOption
                   onClick={() => handleSelect(tag)}
-                  className={`flex items-center justify-between px-3 py-2 rounded-full text-xs font-bold transition-colors
-                    ${selectedTag === tag ? "bg-orange-500 text-white" : "text-white/60 hover:bg-white/10 hover:text-white"}
-                  `}
-                >
-                  {tag.toUpperCase()}
-                  {selectedTag === tag && <Check size={14} />}
-                </button>
+                  tag={tag}
+                  selectedTag={selectedTag}
+                />
               ))}
             </div>
           </motion.div>
