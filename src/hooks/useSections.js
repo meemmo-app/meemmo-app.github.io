@@ -1,10 +1,21 @@
 import { useState, useEffect } from "react";
 import { SECTIONS } from "../constants/sections";
+import { ACCENT_COLOR } from "../constants/sections";
+
+const ORANGE_COLOR = "#ed8936";
 
 export function useSections() {
   const [sections, setSections] = useState(() => {
     const saved = localStorage.getItem("meemmo-sections");
-    return saved ? JSON.parse(saved) : SECTIONS; // DEFAULT_SECTIONS è il tuo array originale
+    let parsedSections = saved ? JSON.parse(saved) : SECTIONS;
+
+    // Add default color to sections if they don't have one
+    parsedSections = parsedSections.map((section) => ({
+      ...section,
+      color: section.color || ORANGE_COLOR,
+    }));
+
+    return parsedSections;
   });
 
   const [isDynamicColumns, setIsDynamicColumns] = useState(() => {
@@ -24,6 +35,12 @@ export function useSections() {
     localStorage.setItem("meemmo-dynamic", JSON.stringify(isDynamicColumns));
   }, [sections, isDynamicColumns]);
 
+  const resetSectionColor = (id) => {
+    setSections(
+      sections.map((s) => (s.id === id ? { ...s, color: ORANGE_COLOR } : s)),
+    );
+  };
+
   return {
     sections,
     setSections,
@@ -31,5 +48,6 @@ export function useSections() {
     sectionCount,
     isDynamicColumns,
     setIsDynamicColumns,
+    resetSectionColor,
   };
 }

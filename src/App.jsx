@@ -38,6 +38,7 @@ export default function App() {
     sectionCount,
     isDynamicColumns,
     setIsDynamicColumns,
+    resetSectionColor,
   } = useSections();
 
   const { experimental, getSpriteExperimental, setSpriteExperimental } =
@@ -598,6 +599,7 @@ export default function App() {
           setActiveQuarterIndex={setActiveQuarterIndex}
           getSpriteExperimental={getSpriteExperimental}
           setSpriteExperimental={setSpriteExperimental}
+          resetSectionColor={resetSectionColor}
         />
       </Dialog>
       {/* Modale di Conferma Eliminazione */}

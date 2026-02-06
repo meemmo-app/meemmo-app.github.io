@@ -1,8 +1,13 @@
 import React from "react";
 import { Clock, Layout, Hash, Shrimp, Plus } from "lucide-react";
-import { ACCENT_COLOR } from "../constants/sections";
 
-const NewTaskButton = ({ onAddTask, isFocused, sectionId, sectionLabel }) => {
+const NewTaskButton = ({
+  section,
+  onAddTask,
+  isFocused,
+  sectionId,
+  sectionLabel,
+}) => {
   return (
     <button
       onClick={(e) => {
@@ -11,13 +16,13 @@ const NewTaskButton = ({ onAddTask, isFocused, sectionId, sectionLabel }) => {
       }}
       data-testid="create-new-task-button"
       className={`
-        cursor-pointer p-3 rounded-full transition-all active:scale-90 shadow-sm
-        ${
-          isFocused
-            ? "bg-orange-500 text-white hover:bg-orange-600"
-            : "bg-orange-500/20 text-orange-600 hover:bg-orange-500/30"
-        }
+        cursor-pointer p-3 rounded-full transition-all active:scale-90 shadow-sm hover:opacity-90
+        ${isFocused ? "text-white hover:text-white" : ""}
       `}
+      style={{
+        backgroundColor: isFocused ? section.color : `${section.color}20`, // 20 for 12% opacity
+        color: isFocused ? "white" : section.color,
+      }}
     >
       <Plus size={18} strokeWidth={3} />
     </button>
@@ -41,7 +46,7 @@ const CurrentSectionMarker = () => {
   );
 };
 
-const ProductivityIndicator = ({ percentage, completed, total }) => {
+const ProductivityIndicator = ({ section, percentage, completed, total }) => {
   // Create shrimp emoji visualization (5 shrimp total)
   const TOTAL_SHRIMP = 5;
   const filledShrimp = Math.round((percentage / 100) * TOTAL_SHRIMP);
@@ -54,9 +59,10 @@ const ProductivityIndicator = ({ percentage, completed, total }) => {
           {Array.from({ length: TOTAL_SHRIMP }).map((_, index) => (
             <Shrimp
               size={14}
-              className={
-                index < filledShrimp ? "text-orange-500" : "text-gray-400"
-              }
+              className="text-gray-400"
+              style={{
+                color: index < filledShrimp ? section.color : undefined,
+              }}
             />
           ))}
         </div>
@@ -114,9 +120,13 @@ export const SectionCard = ({
       className={`
         relative flex flex-col min-w-3xs rounded-3xl transition-all duration-500 overflow-hidden cursor-pointer
         ${isDynamicColumns ? "h-fit" : ""}
-        ${isFocused ? "ring-3 scale-[1.02] shadow-2xl shadow-slate-300 z-10 ring-orange-200" : "ring-1 ring-slate-200 opacity-80 scale-100"}
+        ${isFocused ? "scale-[1.02] shadow-2xl shadow-slate-300" : "opacity-80 scale-100"}
       `}
-      style={{ borderColor: isFocused ? ACCENT_COLOR : "transparent" }}
+      style={{
+        borderWidth: isFocused ? "3px" : "1px",
+        borderColor: isFocused ? section.color + "40" : "#e2e8f0", // slate-200
+        borderRadius: "1.5rem", // rounded-3xl
+      }}
     >
       {/* Header della Sezione */}
       <div
@@ -125,7 +135,8 @@ export const SectionCard = ({
         <div className="flex-1">
           <div className="flex items-center justify-between">
             <h2
-              className={`text-xl inline-flex items-baseline gap-2 font-bold ${isFocused ? "text-orange-600/90" : "text-slate-700"}`}
+              className={`text-xl inline-flex items-baseline gap-2 font-bold ${isFocused ? "text-slate-700" : "text-slate-700"}`}
+              style={{ color: isFocused ? section.color : undefined }}
             >
               {section.label}
               <span className="inline-flex items-baseline text-lg font-normal">
@@ -138,6 +149,7 @@ export const SectionCard = ({
             <SectionHours sectionHours={section.hours}></SectionHours>
             <div className="flex items-center justify-between">
               <ProductivityIndicator
+                section={section}
                 percentage={productivity.percentage}
                 completed={productivity.completed}
                 total={productivity.total}
@@ -167,6 +179,7 @@ export const SectionCard = ({
       {/* Section footer */}
       <div className="cursor-default absolute bottom-0 right-0 z-20 p-3">
         <NewTaskButton
+          section={section}
           onAddTask={onAddTask}
           isFocused={isFocused}
           sectionId={section.id}

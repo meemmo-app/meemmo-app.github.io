@@ -8,8 +8,10 @@ import {
   ZapOff,
   Download,
   Upload,
+  RotateCcw,
 } from "lucide-react";
 import { GLASSBASE } from "../constants/styles";
+import { ACCENT_COLOR } from "../constants/sections";
 import ModalHeader from "./ui/ModalHeader";
 import { ButtonPrimary, ButtonSecondary } from "./ui/Button";
 import {
@@ -49,6 +51,8 @@ const Section = ({
   section,
   updateSectionHours,
   updateSectionLabel,
+  updateSectionColor,
+  resetSectionColor,
   removeSection,
 }) => {
   return (
@@ -80,6 +84,23 @@ const Section = ({
           placeholder="Ore (es: 9, 10, 11)"
         />
       </div>
+
+      <div className="flex items-center gap-2 bg-black/50 p-2 px-3 rounded-xl">
+        <div className="w-4 h-4 rounded-full" style={{ backgroundColor: section.color }} />
+        <input
+          type="color"
+          value={section.color}
+          onChange={(e) => updateSectionColor(section.id, e.target.value)}
+          className="w-full h-6 cursor-pointer bg-transparent"
+        />
+        <button
+          onClick={() => resetSectionColor(section.id)}
+          className="text-white/50 hover:text-orange-500 cursor-pointer transition-colors"
+          title="Reset to default color"
+        >
+          <RotateCcw size={16} />
+        </button>
+      </div>
     </div>
   );
 };
@@ -94,12 +115,14 @@ export const SettingsModal = ({
   setActiveQuarterIndex,
   getSpriteExperimental,
   setSpriteExperimental,
+  resetSectionColor,
 }) => {
   const addSection = () => {
     const newSection = {
       id: `custom-${Date.now()}`,
       label: "Nuova Sezione",
       hours: [12], // Default mezzogiorno
+      color: ACCENT_COLOR, // Default color
     };
     setSections([...sections, newSection]);
   };
@@ -135,6 +158,10 @@ export const SettingsModal = ({
       .map((h) => parseInt(h.trim()))
       .filter((h) => !isNaN(h));
     setSections(sections.map((s) => (s.id === id ? { ...s, hours } : s)));
+  };
+
+  const updateSectionColor = (id, color) => {
+    setSections(sections.map((s) => (s.id === id ? { ...s, color } : s)));
   };
 
   return (
@@ -188,6 +215,8 @@ export const SettingsModal = ({
             section={section}
             updateSectionLabel={updateSectionLabel}
             updateSectionHours={updateSectionHours}
+            updateSectionColor={updateSectionColor}
+            resetSectionColor={resetSectionColor}
             removeSection={removeSection}
           ></Section>
         ))}
