@@ -9,9 +9,22 @@ export function useTasks() {
     return saved ? JSON.parse(saved) : [];
   });
 
+  // Track total tasks ever completed
+  const [totalEverCompletedTasks, setTotalEverCompletedTasks] = useState(() => {
+    const saved = localStorage.getItem("meemmo-total-completed-tasks");
+    return saved ? parseInt(saved, 10) : 0;
+  });
+
   useEffect(() => {
     localStorage.setItem("meemmo-tasks", JSON.stringify(tasks));
   }, [tasks]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "meemmo-total-completed-tasks",
+      totalEverCompletedTasks.toString(),
+    );
+  }, [totalEverCompletedTasks]);
 
   const createTask = (newTask, sectionId) => {
     // Ensure tags array exists and extract tags from title and note
@@ -61,6 +74,14 @@ export function useTasks() {
               colors: ["#ff6347", "#ffa500", "#ffffff"],
               zIndex: 9999, // Assicura che siano sopra le modali
             });
+
+            // Increment the total completed tasks counter
+            let newCount = totalEverCompletedTasks + 1;
+            setTotalEverCompletedTasks(newCount);
+          } else {
+            // Decrement the total completed tasks counter
+            let newCount = totalEverCompletedTasks - 1;
+            setTotalEverCompletedTasks(newCount);
           }
           return { ...t, completed: !t.completed };
         }
@@ -77,6 +98,7 @@ export function useTasks() {
 
   return {
     tasks,
+    totalEverCompletedTasks,
     createTask,
     deleteTask,
     toggleComplete,

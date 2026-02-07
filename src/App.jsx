@@ -30,6 +30,7 @@ export default function App() {
     setTasks,
     deleteCompletedTasks,
     deleteTask,
+    totalEverCompletedTasks,
   } = useTasks();
 
   const {
@@ -123,7 +124,7 @@ export default function App() {
     handleEditOpen: (task) => {
       setEditingTask(task);
       setIsModalOpen(true);
-    }
+    },
   });
 
   // Filter tasks that are in backlog (sectionId is null or undefined)
@@ -163,6 +164,16 @@ export default function App() {
     return uniq;
   };
 
+  // Calculate completed tasks count (this only counts currently completed tasks)
+  /*
+  const currentCompletedTasksCount = tasks.filter(
+    (task) => task.completed,
+  ).length;
+   */
+
+  // Get the total ever completed tasks from the useTasks hook
+  // const { totalEverCompletedTasks } = useTasks();
+
   return (
     <div className="min-h-screen bg-[#fff9f5] text-slate-900 font-sans selection:bg-orange-200">
       {/* Header */}
@@ -175,6 +186,7 @@ export default function App() {
         setShowCompleted={setShowCompleted}
         setIsSettingsModalOpen={setIsSettingsOpen}
         deleteCompletedTasks={deleteCompletedTasks}
+        completedTasksCount={totalEverCompletedTasks}
       ></Header>
 
       {/* Main Grid */}
@@ -263,7 +275,11 @@ export default function App() {
               ? () =>
                   handleUpdateTask(editingTask, sections[activeQuarterIndex].id)
               : (voiceTask = null, forcedSectionId = null) => {
-                  const result = handleCreateTask(voiceTask, forcedSectionId, sections[activeQuarterIndex].id);
+                  const result = handleCreateTask(
+                    voiceTask,
+                    forcedSectionId,
+                    sections[activeQuarterIndex].id,
+                  );
                   if (result) {
                     setIsModalOpen(false); // Close modal after successful creation
                   } else {

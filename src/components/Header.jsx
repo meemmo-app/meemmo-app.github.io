@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Keyboard, Eye, EyeOff, Settings, Trash, Filter } from "lucide-react";
+import { Keyboard, Eye, EyeOff, Settings, Trash, Filter, Shrimp } from "lucide-react";
 import { ConfirmModal } from "./ConfirmModal";
 import { Dialog } from "./ui/Dialog";
 import { TagFilter } from "./TagFilter";
@@ -13,6 +13,54 @@ const HeaderIcon = ({ icon, onClick, title }) => {
     >
       {icon}
     </button>
+  );
+};
+
+const ExperienceLevel = ({ completedTasks }) => {
+  // Calculate level and progress using a balanced formula
+  // Each level requires (level * 5) tasks to advance (level 1: 5 tasks, level 2: 10 tasks, etc.)
+  const calculateLevelAndProgress = (tasks) => {
+    let level = 1;
+    let totalExpForCurrentLevel = 0;
+    let expNeededForNextLevel = 5; // Base amount for level 1
+    
+    // Calculate which level the user is currently at
+    while (tasks >= totalExpForCurrentLevel + expNeededForNextLevel) {
+      totalExpForCurrentLevel += expNeededForNextLevel;
+      level++;
+      expNeededForNextLevel = level * 5; // Each level requires level * 5 tasks
+    }
+    
+    const currentLevelExp = tasks - totalExpForCurrentLevel;
+    const progressPercentage = Math.min((currentLevelExp / expNeededForNextLevel) * 100, 100);
+    
+    return {
+      level,
+      progress: progressPercentage,
+      currentExp: currentLevelExp,
+      expNeeded: expNeededForNextLevel,
+      totalExp: tasks
+    };
+  };
+
+  const { level, progress, currentExp, expNeeded } = calculateLevelAndProgress(completedTasks);
+
+  return (
+    <div className="flex items-center gap-3 bg-white p-3 rounded-xl shadow-sm border border-orange-100">
+      <Shrimp size={24} className="text-orange-500" />
+      <div className="flex flex-col">
+        <div className="flex items-center gap-2">
+          <span className="font-bold text-sm">Lvl {level}</span>
+          <span className="text-xs text-slate-500">{currentExp}/{expNeeded} XP</span>
+        </div>
+        <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div 
+            className="h-full bg-gradient-to-r from-orange-400 to-orange-500 transition-all duration-300"
+            style={{ width: `${progress}%` }}
+          ></div>
+        </div>
+      </div>
+    </div>
   );
 };
 
@@ -43,6 +91,7 @@ export const Header = ({
   setShowCompleted,
   setIsSettingsModalOpen,
   deleteCompletedTasks,
+  completedTasksCount, // Pass the completed tasks count as a prop
 }) => {
   const [deleteCompleted, setDeleteCompleted] = useState(false);
 
@@ -73,6 +122,7 @@ export const Header = ({
       </div>
 
       <div className="flex gap-3 items-center">
+        <ExperienceLevel completedTasks={completedTasksCount} />
         <TagFilter
           selectedTag={selectedTag}
           setSelectedTag={setSelectedTag}
