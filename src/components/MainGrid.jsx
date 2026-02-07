@@ -1,6 +1,6 @@
 import React from "react";
 import SectionCard from "../components/section-card/SectionCard";
-import { TaskItem } from "../components/TaskItem";
+import TaskItem from "../components/task/TaskItem";
 
 const MainGrid = ({
   sections,

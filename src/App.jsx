@@ -8,7 +8,7 @@ import { ACCENT_COLOR } from "./constants/sections";
 import { useExperimental } from "./hooks/useExperimental";
 
 // Componenti
-import { TaskModal } from "./components/TaskModal";
+import TaskModal from "./components/task/TaskModal";
 import { Dialog } from "./components/ui/Dialog";
 import FooterNav from "./components/footer-nav/footerNav";
 import SettingsModal from "./components/settings/SettingsModal";

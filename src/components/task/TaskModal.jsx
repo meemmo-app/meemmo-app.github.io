@@ -1,71 +1,16 @@
 import React from "react";
-import { GLASSBASE } from "../constants/styles";
-import ModalHeader from "./ui/ModalHeader";
-import { TagSection } from "./TagSection";
-import PixelSprite from "./PixelSprite";
-import { handleKeyBindings } from "../utils/handleKeyBindings";
-
-// --- InputField Component ---
-const InputField = ({ value, onChange, placeholder, autoFocus, testId }) => (
-  <input
-    autoFocus={autoFocus}
-    className="w-full text-xl font-bold bg-black/40 border border-white/10 rounded-2xl p-4 text-white focus:ring-2 focus:ring-orange-500 focus:bg-black/60 outline-none placeholder:text-white/40 transition-all shadow-inner"
-    placeholder={placeholder}
-    value={value}
-    onChange={onChange}
-    data-testid={testId}
-  />
-);
-
-// --- TextAreaField Component ---
-const TextAreaField = ({ value, onChange, placeholder, testId }) => (
-  <textarea
-    className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 text-white focus:ring-2 focus:ring-orange-500 focus:bg-black/60 outline-none placeholder:text-white/40 resize-none h-28 transition-all shadow-inner"
-    placeholder={placeholder}
-    value={value}
-    onChange={onChange}
-    data-testid={testId}
-  />
-);
-
-// --- PriorityButton Component ---
-const PriorityButton = ({ isPriority, togglePriority }) => (
-  <button
-    type="button"
-    tabIndex="0"
-    onClick={togglePriority}
-    className={`px-4 py-2 rounded-xl text-xs font-black transition-all border-2 focus:ring-2 focus:ring-orange-500 outline-none ${
-      isPriority
-        ? "bg-orange-500 text-white border-orange-400 shadow-lg shadow-orange-500/40 scale-105 focus:bg-orange-600"
-        : "bg-white/5 text-white/50 border-white/10 hover:border-white/30 focus:bg-white/4"
-    }`}
-    data-testid="new-task-priority"
-  >
-    {isPriority ? "Priorità Alta (P)" : "Priorità Normale (P)"}
-  </button>
-);
-
-// --- SaveButton Component ---
-const SaveButton = ({ onSave, onClose }) => {
-  const handleClick = () => {
-    onSave();
-    onClose(); // Close the modal after saving
-  };
-
-  return (
-    <button
-      onClick={handleClick}
-      tabIndex="0"
-      data-testid="new-task-save"
-      className="w-full py-5 bg-orange-500 hover:bg-orange-400 text-white rounded-2xl font-black text-xl transition-all shadow-2xl shadow-orange-500/30 focus:ring-2 focus:ring-orange-500 focus:bg-orange-600 outline-none active:scale-95 border-t border-white/20"
-    >
-      SALVA TASK 🦐
-    </button>
-  );
-};
+import { GLASSBASE } from "../../constants/styles";
+import ModalHeader from "../ui/ModalHeader";
+import { TagSection } from "../TagSection";
+import PixelSprite from "../PixelSprite";
+import { handleKeyBindings } from "../../utils/handleKeyBindings";
+import InputField from "./InputField";
+import TextAreaField from "./TextAreaField";
+import PriorityButton from "./PriorityButton";
+import SaveButton from "./SaveButton";
 
 // --- TaskModal Component ---
-export const TaskModal = ({
+const TaskModal = ({
   title,
   newTask,
   setNewTask,
@@ -182,3 +127,5 @@ export const TaskModal = ({
     </div>
   );
 };
+
+export default TaskModal;

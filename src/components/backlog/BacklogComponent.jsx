@@ -1,7 +1,7 @@
-import React from 'react';
-import { TaskItem } from '../TaskItem';
-import BacklogDrawer from './BacklogDrawer';
-import BacklogIcon from './BacklogIcon';
+import React from "react";
+import TaskItem from "../task/TaskItem";
+import BacklogDrawer from "./BacklogDrawer";
+import BacklogIcon from "./BacklogIcon";
 
 const BacklogComponent = ({
   isOpen,
@@ -16,7 +16,7 @@ const BacklogComponent = ({
   handleBacklogDragLeave,
   isBacklogOver,
   openBacklog,
-  backlogTasks
+  backlogTasks,
 }) => {
   return (
     <>
@@ -31,10 +31,7 @@ const BacklogComponent = ({
       />
 
       {/* Backlog Drawer */}
-      <BacklogDrawer
-        isOpen={isOpen}
-        onClose={onClose}
-      >
+      <BacklogDrawer isOpen={isOpen} onClose={onClose}>
         {backlogTasks.map((task) => {
           return (
             <TaskItem

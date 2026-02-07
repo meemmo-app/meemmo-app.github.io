@@ -1,6 +1,7 @@
 import { Edit3, Trash2 } from "lucide-react";
+
 // --- TaskActions Component ---
-export const TaskActions = ({ task, onCloseSwipe, onEdit, onDelete }) => {
+const TaskActions = ({ task, onCloseSwipe, onEdit, onDelete }) => {
   const handleEditClick = (e) => {
     e.stopPropagation();
     onEdit(task);
@@ -32,3 +33,5 @@ export const TaskActions = ({ task, onCloseSwipe, onEdit, onDelete }) => {
     </div>
   );
 };
+
+export default TaskActions;
