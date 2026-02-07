@@ -15,7 +15,7 @@ import SettingsModal from "./components/settings/SettingsModal";
 import Header from "./components/header/Header";
 import { ConfirmModal } from "./components/ConfirmModal";
 import MainGrid from "./components/MainGrid";
-import BacklogComponent from "./components/BacklogComponent";
+import BacklogComponent from "./components/backlog/BacklogComponent";
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
 import { useDragAndDrop } from "./hooks/useDragAndDrop";
 import { useTaskOperations } from "./hooks/useTaskOperations";
@@ -232,8 +232,6 @@ export default function App() {
       <BacklogComponent
         isOpen={isBacklogOpen}
         onClose={closeBacklog}
-        tasks={tasks}
-        selectedTag={selectedTag}
         toggleComplete={toggleComplete}
         handleEditOpen={(task) => {
           setEditingTask(task);

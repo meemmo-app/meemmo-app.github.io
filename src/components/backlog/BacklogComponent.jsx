@@ -1,16 +1,15 @@
 import React from 'react';
-import { TaskItem } from '../components/TaskItem';
-import Backlog, { BacklogIcon } from './Backlog';
+import { TaskItem } from '../TaskItem';
+import BacklogDrawer from './BacklogDrawer';
+import BacklogIcon from './BacklogIcon';
 
-const BacklogComponent = ({ 
-  isOpen, 
-  onClose, 
-  tasks, 
-  selectedTag, 
-  toggleComplete, 
-  handleEditOpen, 
-  requestDelete, 
-  onDragStart, 
+const BacklogComponent = ({
+  isOpen,
+  onClose,
+  toggleComplete,
+  handleEditOpen,
+  requestDelete,
+  onDragStart,
   taskRefs,
   handleBacklogDrop,
   handleBacklogDragOver,
@@ -32,13 +31,9 @@ const BacklogComponent = ({
       />
 
       {/* Backlog Drawer */}
-      <Backlog
+      <BacklogDrawer
         isOpen={isOpen}
         onClose={onClose}
-        onDrop={handleBacklogDrop}
-        onDragOver={handleBacklogDragOver}
-        onDragLeave={handleBacklogDragLeave}
-        isOver={isBacklogOver}
       >
         {backlogTasks.map((task) => {
           return (
@@ -54,7 +49,7 @@ const BacklogComponent = ({
             />
           );
         })}
-      </Backlog>
+      </BacklogDrawer>
     </>
   );
 };
