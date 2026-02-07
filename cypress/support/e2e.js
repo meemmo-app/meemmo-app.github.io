@@ -18,6 +18,7 @@ import "./commands";
 import "./taskManagementCommands";
 import "./confirmModalCommands";
 import "./sectionCommands";
+import "./backlogCommands";
 
 Cypress.Commands.add("openWebApp", (title, completed) => {
   cy.visit("http://localhost:5173/");

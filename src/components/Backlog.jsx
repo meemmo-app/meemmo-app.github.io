@@ -6,7 +6,10 @@ import Badge from "./ui/Badge";
 
 const BacklogEmptyMessage = () => {
   return (
-    <div className="flex flex-col items-center justify-center text-white/90 space-y-4">
+    <div
+      className="flex flex-col items-center justify-center text-white/90 space-y-4"
+      data-testid="backlog-empty-message"
+    >
       <Layout size={60} strokeWidth={1} />
       <p className="text-lg font-medium">Backlog vuoto</p>
       <p className="text-sm text-white/80 max-w text-center">
@@ -25,6 +28,7 @@ const Backlog = ({ isOpen, onClose, children }) => {
       fixed bottom-0 left-50 right-50 w-2/3 z-40 transition-all duration-300
       ${isOpen ? "h-[40vh] translate-y-0" : "h-16 translate-y-[calc(40vh-4rem)]"}
     `}
+      data-testid="backlog-drawer"
     >
       {/* Backlog Header */}
       <div className="px-0">
@@ -33,15 +37,21 @@ const Backlog = ({ isOpen, onClose, children }) => {
           subtitle={"Task in attesa...trascinali nelle varie sezioni"}
           onClose={onClose}
           icon={<Layout size={42} className="text-white/90" />}
+          dataTestId="backlog-header-close-button"
         ></ModalHeader>
       </div>
 
       {/* Backlog Content */}
-      <div className="flex-1 overflow-y-scroll h-[30vh] pb-8 custom-scrollbar scroll-smooth">
+      <div
+        className="flex-1 overflow-y-scroll h-[30vh] pb-8 custom-scrollbar scroll-smooth"
+        data-testid="backlog-content"
+      >
         {React.Children.count(children) === 0 ? (
           <BacklogEmptyMessage />
         ) : (
-          <div className="space-y-3">{children}</div>
+          <div className="space-y-3" data-testid="backlog-tasks-container">
+            {children}
+          </div>
         )}
       </div>
     </div>
@@ -69,10 +79,11 @@ export const BacklogIcon = ({
       onDragLeave={onDragLeave}
       onClick={onClick}
       title="Open the Backlog or Drag & Drop a Task to put it into the Backlog"
+      data-testid="backlog-icon"
     >
       {count !== 0 && (
         <div className="absolute -top-1 -right-1">
-          <Badge number={count} />
+          <Badge number={count} dataTestid="backlog-badge" />
         </div>
       )}
       <div
