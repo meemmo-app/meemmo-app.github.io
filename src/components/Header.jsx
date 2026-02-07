@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { Keyboard, Eye, EyeOff, Settings, Trash, Filter, Shrimp } from "lucide-react";
+import {
+  Keyboard,
+  Eye,
+  EyeOff,
+  Settings,
+  Trash,
+  Filter,
+  Shrimp,
+} from "lucide-react";
 import { ConfirmModal } from "./ConfirmModal";
 import { Dialog } from "./ui/Dialog";
 import { TagFilter } from "./TagFilter";
@@ -17,47 +25,52 @@ const HeaderIcon = ({ icon, onClick, title }) => {
 };
 
 const ExperienceLevel = ({ completedTasks }) => {
-  // Calculate level and progress using a balanced formula
   // Each level requires (level * 5) tasks to advance (level 1: 5 tasks, level 2: 10 tasks, etc.)
   const calculateLevelAndProgress = (tasks) => {
     let level = 1;
     let totalExpForCurrentLevel = 0;
     let expNeededForNextLevel = 5; // Base amount for level 1
-    
+
     // Calculate which level the user is currently at
     while (tasks >= totalExpForCurrentLevel + expNeededForNextLevel) {
       totalExpForCurrentLevel += expNeededForNextLevel;
       level++;
       expNeededForNextLevel = level * 5; // Each level requires level * 5 tasks
     }
-    
+
     const currentLevelExp = tasks - totalExpForCurrentLevel;
-    const progressPercentage = Math.min((currentLevelExp / expNeededForNextLevel) * 100, 100);
-    
+    const progressPercentage = Math.min(
+      (currentLevelExp / expNeededForNextLevel) * 100,
+      100,
+    );
+
     return {
       level,
       progress: progressPercentage,
       currentExp: currentLevelExp,
       expNeeded: expNeededForNextLevel,
-      totalExp: tasks
+      totalExp: tasks,
     };
   };
 
-  const { level, progress, currentExp, expNeeded } = calculateLevelAndProgress(completedTasks);
+  const { level, progress, currentExp, expNeeded } =
+    calculateLevelAndProgress(completedTasks);
 
   return (
-    <div className="flex items-center gap-3 bg-white p-3 rounded-xl shadow-sm border border-orange-100">
-      <Shrimp size={24} className="text-orange-500" />
+    <div className="flex items-center gap-3 bg-white px-4 py-2 rounded-full shadow-none shadow-orange-200 border border-orange-200 text-xs">
+      <Shrimp size={16} className="text-orange-500 hide" />
       <div className="flex flex-col">
         <div className="flex items-center gap-2">
-          <span className="font-bold text-sm">Lvl {level}</span>
-          <span className="text-xs text-slate-500">{currentExp}/{expNeeded} XP</span>
-        </div>
-        <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
-          <div 
-            className="h-full bg-gradient-to-r from-orange-400 to-orange-500 transition-all duration-300"
-            style={{ width: `${progress}%` }}
-          ></div>
+          <span className="font-bold ">Lvl {level}</span>
+          <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-linear-to-r from-orange-400 to-orange-500 transition-all duration-300"
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
+          <span className="text-xs text-slate-500">
+            {currentExp}/{expNeeded} XP
+          </span>
         </div>
       </div>
     </div>
@@ -72,11 +85,10 @@ const ToggleCompleteTaskVisibility = ({ showCompleted, setShowCompleted }) => {
       className={`cursor-pointer flex items-center gap-2 px-4 py-2 rounded-full border transition-all font-bold text-xs uppercase tracking-wider ${
         showCompleted
           ? "bg-white border-orange-200 text-orange-600"
-          : "bg-orange-500 text-white shadow-lg shadow-orange-200"
+          : "bg-orange-500 border-orange-400 text-white shadow-lg shadow-orange-200"
       }`}
     >
       {showCompleted ? <Eye size={14} /> : <EyeOff size={14} />}
-      {showCompleted ? "Nascondi completati" : "Mostra completati"}
     </button>
   );
 };
@@ -85,7 +97,6 @@ export const Header = ({
   selectedTag,
   setSelectedTag,
   allTags,
-
   ACCENT_COLOR,
   showCompleted,
   setShowCompleted,
@@ -121,8 +132,8 @@ export const Header = ({
         </div>
       </div>
 
+      <ExperienceLevel completedTasks={completedTasksCount} />
       <div className="flex gap-3 items-center">
-        <ExperienceLevel completedTasks={completedTasksCount} />
         <TagFilter
           selectedTag={selectedTag}
           setSelectedTag={setSelectedTag}
