@@ -39,10 +39,10 @@ const Switch = ({ option, setOption, iconOn, iconOff, title, subtitle }) => {
       </div>
       <button
         onClick={() => setOption(!option)}
-        className={`cursor-pointer w-12 h-6 rounded-full transition-all relative ${option ? "bg-orange-500" : "bg-slate-300"}`}
+        className={`cursor-pointer w-12 h-6 rounded-full transition-all relative ${option ? "bg-orange-500" : "bg-slate-300 dark:bg-slate-700"}`}
       >
         <div
-          className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${option ? "left-7" : "left-1"}`}
+          className={`absolute top-1 w-4 h-4 bg-white dark:bg-slate-50 rounded-full transition-all ${option ? "left-7" : "left-1"}`}
         />
       </button>
     </div>
