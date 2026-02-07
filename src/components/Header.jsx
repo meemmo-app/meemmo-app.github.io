@@ -88,7 +88,7 @@ const ToggleCompleteTaskVisibility = ({ showCompleted, setShowCompleted }) => {
           : "bg-orange-500 border-orange-400 text-white shadow-lg shadow-orange-200"
       }`}
     >
-      {showCompleted ? <Eye size={14} /> : <EyeOff size={14} />}
+      {showCompleted ? <Eye size={16} /> : <EyeOff size={16} />}
     </button>
   );
 };
@@ -144,12 +144,12 @@ export const Header = ({
           setShowCompleted={setShowCompleted}
         />
         <HeaderIcon
-          icon={<Trash size={22} className="text-slate-400" />}
+          icon={<Trash size={22} className="text-slate-500" />}
           onClick={() => setDeleteCompleted(true)}
           title="Delete completed tasks"
         ></HeaderIcon>
         <HeaderIcon
-          icon={<Settings size={22} className="text-slate-400" />}
+          icon={<Settings size={22} className="text-slate-500" />}
           onClick={() => setIsSettingsModalOpen(true)}
           title="Settings"
         ></HeaderIcon>
