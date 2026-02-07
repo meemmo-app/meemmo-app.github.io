@@ -24,3 +24,10 @@
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #ffc2b3;
 }
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #4a4a4a; /* Colore scuro per il thumb */
+}
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #666666; /* Colore scuro al passaggio del mouse */
+}
