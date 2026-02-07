@@ -14,7 +14,7 @@ export const TaskActions = ({ task, onCloseSwipe, onEdit, onDelete }) => {
   };
 
   return (
-    <div className="absolute inset-0 flex justify-end items-center gap-2 px-4 bg-white/80 dark:bg-slate-700/80 backdrop-blur-sm">
+    <div className="absolute inset-0 flex justify-end items-center gap-2 px-4 bg-white/80 dark:bg-slate-700/80 backdrop-blur-sm z-0">
       <button
         onClick={handleEditClick}
         data-testid="task-item-edit-button"

@@ -157,13 +157,14 @@ export const TaskItem = ({
       className="relative overflow-hidden rounded-2xl mb-2 group select-none"
       data-testid={`task-item-${task.title}`}
     >
-      <TaskActions
-        task={task}
-        controls={controls}
-        onCloseSwipe={closeSwipe}
-        onEdit={onEdit}
-        onDelete={onDelete}
-      />
+      {isOpen && (
+        <TaskActions
+          task={task}
+          onCloseSwipe={closeSwipe}
+          onEdit={onEdit}
+          onDelete={onDelete}
+        />
+      )}
       <TaskCard
         task={task}
         isFocused={isFocused}
