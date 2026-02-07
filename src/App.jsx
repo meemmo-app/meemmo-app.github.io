@@ -10,7 +10,7 @@ import { useExperimental } from "./hooks/useExperimental";
 // Componenti
 import { TaskModal } from "./components/TaskModal";
 import { Dialog } from "./components/ui/Dialog";
-import { FooterNav } from "./components/footerNav";
+import FooterNav from "./components/footer-nav/footerNav";
 import SettingsModal from "./components/settings/SettingsModal";
 import Header from "./components/header/Header";
 import { ConfirmModal } from "./components/ConfirmModal";
