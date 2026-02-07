@@ -86,7 +86,10 @@ const Section = ({
       </div>
 
       <div className="flex items-center gap-2 bg-black/50 p-2 px-3 rounded-xl">
-        <div className="w-4 h-4 rounded-full" style={{ backgroundColor: section.color }} />
+        <div
+          className="w-4 h-4 rounded-full"
+          style={{ backgroundColor: section.color }}
+        />
         <input
           type="color"
           value={section.color}
@@ -192,8 +195,8 @@ export const SettingsModal = ({
         setOption={setSpriteExperimental}
         iconOn={<Zap size={20} />}
         iconOff={<ZapOff size={20} />}
-        title={"Experimental Features"}
-        subtitle={"Sprite sheet mascotte"}
+        title={"Experimental Mascotte"}
+        subtitle={"Attiva / disattiva mascotte"}
       ></Switch>
 
       {/* Lista Sezioni */}

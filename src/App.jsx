@@ -164,16 +164,6 @@ export default function App() {
     return uniq;
   };
 
-  // Calculate completed tasks count (this only counts currently completed tasks)
-  /*
-  const currentCompletedTasksCount = tasks.filter(
-    (task) => task.completed,
-  ).length;
-   */
-
-  // Get the total ever completed tasks from the useTasks hook
-  // const { totalEverCompletedTasks } = useTasks();
-
   return (
     <div className="min-h-screen bg-[#fff9f5] text-slate-900 font-sans selection:bg-orange-200">
       {/* Header */}
@@ -187,6 +177,7 @@ export default function App() {
         setIsSettingsModalOpen={setIsSettingsOpen}
         deleteCompletedTasks={deleteCompletedTasks}
         completedTasksCount={totalEverCompletedTasks}
+        mascotteExperimental={getSpriteExperimental()}
       ></Header>
 
       {/* Main Grid */}

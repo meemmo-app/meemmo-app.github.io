@@ -103,6 +103,7 @@ export const Header = ({
   setIsSettingsModalOpen,
   deleteCompletedTasks,
   completedTasksCount, // Pass the completed tasks count as a prop
+  mascotteExperimental,
 }) => {
   const [deleteCompleted, setDeleteCompleted] = useState(false);
 
@@ -116,9 +117,15 @@ export const Header = ({
   return (
     <header className="p-6 md:px-18 flex justify-between items-center max-w-full mx-auto">
       <div className="flex items-center gap-3">
-        <div className="bg-white p-2 rounded-2xl shadow-sm border border-orange-100 rotate-12 text-3xl">
-          🦐
-        </div>
+        {mascotteExperimental ? (
+          <div className="bg-white p-0 flex items-center justify-center rounded-2xl w-13 h-13 shadow-sm border border-orange-100 text-3xl">
+            <img src="/meemmo_mascotte.png"></img>
+          </div>
+        ) : (
+          <div className="bg-white p-2 rounded-2xl shadow-sm border border-orange-100 rotate-12 text-3xl">
+            🦐
+          </div>
+        )}
         <div>
           <h1
             className="text-3xl font-black tracking-tight"
