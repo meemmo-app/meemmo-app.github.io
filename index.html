@@ -6,14 +6,19 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Meemmo App</title>
         <script>
-            //localStorage.setItem("theme", "dark");
-            let theme = localStorage.getItem("dark");
+            document.addEventListener("DOMContentLoaded", () => {
+                //localStorage.setItem("theme", "dark");
+                let theme = localStorage.getItem("dark");
+                console.log("TEMA INDEX " + theme);
 
-            if (theme == true) {
-                document.body.classList.add("dark");
-            } else {
-                document.body.classList.remove("dark");
-            }
+                if (theme == true) {
+                    document.body.classList.add("dark");
+                    console.log("TEMA INDEX aggiunta classe dark");
+                } else {
+                    document.body.classList.remove("dark");
+                    console.log("TEMA INDEX rimossa classe dark");
+                }
+            });
         </script>
     </head>
     <body>
