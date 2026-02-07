@@ -11,7 +11,7 @@ import { useExperimental } from "./hooks/useExperimental";
 import { TaskModal } from "./components/TaskModal";
 import { Dialog } from "./components/ui/Dialog";
 import { FooterNav } from "./components/footerNav";
-import { SettingsModal } from "./components/SettingsModal";
+import SettingsModal from "./components/settings/SettingsModal";
 import { Header } from "./components/Header";
 import { ConfirmModal } from "./components/ConfirmModal";
 import MainGrid from "./components/MainGrid";
