@@ -125,7 +125,7 @@ export const SectionCard = ({
       className={`
         relative flex flex-col grow min-w-3xs rounded-3xl transition-all duration-500 overflow-hidden cursor-pointer
         ${isDynamicColumns ? "h-fit" : ""}
-        ${isFocused ? "scale-[1.02] shadow-2xl shadow-slate-300" : "opacity-80 scale-100"}
+        ${isFocused ? "scale-[1.02] shadow-2xl shadow-slate-300 dark:shadow-slate-800" : "opacity-80 scale-100"}
       `}
       style={{
         borderWidth: isFocused ? "3px" : "1px",
@@ -135,12 +135,12 @@ export const SectionCard = ({
     >
       {/* Header della Sezione */}
       <div
-        className={`p-6 flex items-center justify-between ${isCurrentTime ? "bg-orange-50/50" : ""}`}
+        className={`p-6 flex items-center justify-between ${isCurrentTime ? "bg-orange-50/50 dark:bg-slate-800/50" : ""}`}
       >
         <div className="flex-1">
           <div className="flex items-center justify-between">
             <h2
-              className={`text-xl inline-flex items-baseline gap-2 font-bold ${isFocused ? "text-slate-700" : "text-slate-700"}`}
+              className="text-xl inline-flex items-baseline gap-2 font-bold not-dark:text-slate-700 dark:text-slate-100"
               style={{ color: isFocused ? section.color : undefined }}
             >
               {section.label}

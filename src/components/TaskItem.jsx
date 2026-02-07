@@ -39,7 +39,7 @@ const TaskCompletionToggle = ({ completed, priority, onToggle }) => {
         <div
           className={`w-4.5 h-4.5 rounded-full border-2 transition-colors ${
             priority
-              ? "border-orange-500 bg-orange-50 shadow-sm"
+              ? "border-orange-500 bg-orange-50 dark:bg-transparent shadow-sm"
               : "border-slate-200"
           }`}
         />
@@ -54,13 +54,15 @@ const TaskContent = ({ task }) => {
     <div className="flex-1">
       <h3
         className={`font-bold leading-tight transition-all ${
-          task.completed ? "line-through text-slate-400" : "text-slate-800"
+          task.completed
+            ? "line-through text-slate-400"
+            : "text-slate-800 dark:text-slate-100"
         }`}
       >
         {task.title}
       </h3>
       {task.note && (
-        <p className="text-xs text-slate-500 mt-1 line-clamp-2 italic opacity-80">
+        <p className="text-xs text-slate-500 dark:text-slate-300 mt-1 line-clamp-2 italic opacity-80">
           {task.note}
         </p>
       )}
@@ -104,8 +106,8 @@ const TaskCard = ({
       }
       onClick={() => isOpen && onSwipeClose()}
       className={`relative p-4 transition-all duration-200 cursor-grab active:cursor-grabbing z-10
-        ${task.completed ? "bg-slate-100" : "bg-white shadow-sm border border-slate-100"}
-        ${isFocused ? "translate-x-1 ring-2 ring-orange-200 border-orange-300" : ""}`}
+        ${task.completed ? "bg-slate-100 dark:bg-slate-800" : "bg-white dark:bg-slate-700 shadow-sm border border-slate-100 dark:border-slate-600"}
+        ${isFocused ? "translate-x-1 ring-2 ring-orange-200 dark:ring-orange-200/50 border-orange-300 dark:border-orange-300/50" : ""}`}
     >
       <div className="flex gap-3">
         <TaskCompletionToggle
@@ -117,7 +119,7 @@ const TaskCard = ({
         <TaskPriorityIndicator isPriority={!task.completed && task.priority} />
       </div>
 
-      <div className="absolute right-1 top-1/2 -translate-y-1/2 w-1 h-8 bg-slate-100 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
+      <div className="absolute right-1 top-1/2 -translate-y-1/2 w-1 h-8 bg-slate-100 dark:bg-slate-800 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
     </motion.div>
   );
 };

@@ -165,7 +165,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fff9f5] text-slate-900 font-sans selection:bg-orange-200">
+    <div className="min-h-screen bg-[#fff9f5] dark:bg-slate-900 text-slate-900 dark:text-slate-50 font-sans selection:bg-orange-200 ">
       {/* Header */}
       <Header
         selectedTag={selectedTag}
