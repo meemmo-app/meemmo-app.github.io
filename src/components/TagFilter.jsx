@@ -11,7 +11,7 @@ const TagFilterButton = ({ onClick, selectedTag }) => {
       className={`cursor-pointer flex items-center px-4 py-2 rounded-full border transition-all duration-300 active:scale-95
         ${
           !selectedTag
-            ? "bg-white dark:bg-slate-900 border-orange-200 dark:border-slate-700 text-orange-600"
+            ? "bg-white dark:bg-slate-900 border-orange-200 dark:border-slate-700 text-orange-600 dark:text-orange-500"
             : "bg-orange-500 border-orange-400 text-white shadow-lg shadow-orange-500/30 dark:shadow-slate-800"
         }
       `}

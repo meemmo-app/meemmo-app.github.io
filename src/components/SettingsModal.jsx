@@ -9,6 +9,8 @@ import {
   Download,
   Upload,
   RotateCcw,
+  Moon,
+  Sun,
 } from "lucide-react";
 import { GLASSBASE } from "../constants/styles";
 import { ACCENT_COLOR } from "../constants/sections";
@@ -119,6 +121,8 @@ export const SettingsModal = ({
   getSpriteExperimental,
   setSpriteExperimental,
   resetSectionColor,
+  theme,
+  setTheme,
 }) => {
   const addSection = () => {
     const newSection = {
@@ -188,6 +192,15 @@ export const SettingsModal = ({
         iconOff={<ZapOff size={20} />}
         title={"Sezioni Dinamiche"}
         subtitle={"Altezza delle sezioni in base ai task"}
+      ></Switch>
+
+      <Switch
+        option={theme}
+        setOption={setTheme}
+        iconOn={<Moon size={20} />}
+        iconOff={<Sun size={20} />}
+        title={"Light / Dark mode"}
+        subtitle={"Modifica light / dark mode"}
       ></Switch>
 
       <Switch

@@ -19,6 +19,7 @@ import BacklogComponent from "./components/BacklogComponent";
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
 import { useDragAndDrop } from "./hooks/useDragAndDrop";
 import { useTaskOperations } from "./hooks/useTaskOperations";
+import { useTheme } from "./hooks/useTheme";
 
 export default function App() {
   // Logic & State da Hook personalizzato
@@ -45,6 +46,8 @@ export default function App() {
 
   const { experimental, getSpriteExperimental, setSpriteExperimental } =
     useExperimental();
+
+  const { theme, setTheme } = useTheme();
 
   // State UI locale
   const [activeQuarterIndex, setActiveQuarterIndex] = useState(0);
@@ -299,6 +302,8 @@ export default function App() {
           getSpriteExperimental={getSpriteExperimental}
           setSpriteExperimental={setSpriteExperimental}
           resetSectionColor={resetSectionColor}
+          theme={theme}
+          setTheme={setTheme}
         />
       </Dialog>
       {/* Modale di Conferma Eliminazione */}
