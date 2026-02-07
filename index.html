@@ -7,15 +7,14 @@
         <title>Meemmo App</title>
         <script>
             document.addEventListener("DOMContentLoaded", () => {
-                //localStorage.setItem("theme", "dark");
-                let theme = localStorage.getItem("dark");
+                const theme = localStorage.getItem("dark");
                 console.log("TEMA INDEX " + theme);
 
-                if (theme == true) {
-                    document.body.classList.add("dark");
+                if (theme === "true") {
+                    document.documentElement.classList.add("dark");
                     console.log("TEMA INDEX aggiunta classe dark");
                 } else {
-                    document.body.classList.remove("dark");
+                    document.documentElement.classList.remove("dark");
                     console.log("TEMA INDEX rimossa classe dark");
                 }
             });
