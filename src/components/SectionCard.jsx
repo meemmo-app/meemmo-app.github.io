@@ -123,13 +123,13 @@ export const SectionCard = ({
       onClick={onFocus}
       data-testid={`section-${section.label}`}
       className={`
-        relative flex flex-col grow min-w-3xs rounded-3xl transition-all duration-500 overflow-hidden cursor-pointer
+        relative flex flex-col grow min-w-3xs rounded-3xl transition-all border-slate-200 dark:border-slate-700 duration-500 overflow-hidden cursor-pointer
         ${isDynamicColumns ? "h-fit" : ""}
         ${isFocused ? "scale-[1.02] shadow-2xl shadow-slate-300 dark:shadow-slate-800" : "opacity-80 scale-100"}
       `}
       style={{
         borderWidth: isFocused ? "3px" : "1px",
-        borderColor: isFocused ? section.color + "40" : "#e2e8f0", // slate-200
+        borderColor: isFocused ? section.color + "40" : "",
         borderRadius: "1.5rem", // rounded-3xl
       }}
     >
