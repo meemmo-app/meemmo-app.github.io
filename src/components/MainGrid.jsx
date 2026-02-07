@@ -1,24 +1,24 @@
-import React from 'react';
-import { SectionCard } from '../components/SectionCard';
-import { TaskItem } from '../components/TaskItem';
+import React from "react";
+import SectionCard from "../components/section-card/SectionCard";
+import { TaskItem } from "../components/TaskItem";
 
-const MainGrid = ({ 
-  sections, 
-  tasks, 
-  activeQuarterIndex, 
-  showCompleted, 
-  selectedTag, 
-  setActiveQuarterIndex, 
-  setIsModalOpen, 
-  toggleComplete, 
-  handleEditOpen, 
-  requestDelete, 
-  onDragStart, 
-  onDrop, 
+const MainGrid = ({
+  sections,
+  tasks,
+  activeQuarterIndex,
+  showCompleted,
+  selectedTag,
+  setActiveQuarterIndex,
+  setIsModalOpen,
+  toggleComplete,
+  handleEditOpen,
+  requestDelete,
+  onDragStart,
+  onDrop,
   isDynamicColumns,
   currentSectionId,
   taskRefs,
-  focusedTaskIndex
+  focusedTaskIndex,
 }) => {
   return (
     <main className="max-w-full mx-auto p-4 md:p-6 md:px-18 flex flex-col md:flex-row overflow-x-scroll gap-6 h-[calc(100vh-160px)]">
