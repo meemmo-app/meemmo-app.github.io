@@ -65,7 +65,9 @@ const SectionCard = ({
       />
 
       {/* Lista Task (Children) */}
-      <SectionContent children={children} />
+      <SectionContent>
+        {children}
+      </SectionContent>
 
       {/* Section footer */}
       <div className="cursor-default absolute bottom-0 right-0 z-20 p-3">
