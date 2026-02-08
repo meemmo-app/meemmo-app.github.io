@@ -59,7 +59,7 @@ const TaskModal = ({
         <div className="absolute scale-20 z-50 -top-65 -left-55 transition-all">
           <PixelSprite
             imagePath={"/writing_sprite_inline.png"}
-            frameWidth={435}
+            frameWidth={437}
             frameHeight={480}
             columns={6}
             rows={1}
