@@ -1,6 +1,7 @@
 import React from "react";
 import SectionHeader from "./SectionHeader";
 import NewTaskButton from "./NewTaskButton";
+import { Layout } from "lucide-react";
 
 // Function to calculate productivity for a section
 const calculateSectionProductivity = (sectionId) => {
@@ -64,7 +65,9 @@ const SectionCard = ({
       />
 
       {/* Lista Task (Children) */}
-      {children}
+      <div className="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar scroll-smooth">
+        {children}
+      </div>
 
       {/* Section footer */}
       <div className="cursor-default absolute bottom-0 right-0 z-20 p-3">

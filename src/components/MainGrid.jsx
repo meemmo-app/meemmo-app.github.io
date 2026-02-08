@@ -2,6 +2,16 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SectionCard from "../components/section-card/SectionCard";
 import TaskItem from "../components/task/TaskItem";
+import { Layout } from "lucide-react";
+
+const EmptySection = () => {
+  return (
+    <div className="h-full flex flex-col items-center justify-center text-slate-300 opacity-50 space-y-2 py-8">
+      <Layout size={40} strokeWidth={1} />
+      <p className="text-sm font-medium italic">Nessun task</p>
+    </div>
+  );
+};
 
 const MainGrid = ({
   sections,
@@ -53,27 +63,31 @@ const MainGrid = ({
             taskCounter={sectionTasks.length}
           >
             <AnimatePresence>
-              {sectionTasks.map((task, tIdx) => (
-                <motion.div
-                  key={task.id}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 15 }}
-                  transition={{
-                    duration: 0.35,
-                  }}
-                >
-                  <TaskItem
-                    task={task}
-                    isFocused={isFocused && focusedTaskIndex === tIdx}
-                    onToggle={toggleComplete}
-                    onEdit={handleEditOpen}
-                    onDelete={requestDelete}
-                    onDragStart={onDragStart}
-                    innerRef={(el) => (taskRefs.current[task.id] = el)}
-                  />
-                </motion.div>
-              ))}
+              {sectionTasks < 1 ? (
+                <EmptySection />
+              ) : (
+                sectionTasks.map((task, tIdx) => (
+                  <motion.div
+                    key={task.id}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 15 }}
+                    transition={{
+                      duration: 0.35,
+                    }}
+                  >
+                    <TaskItem
+                      task={task}
+                      isFocused={isFocused && focusedTaskIndex === tIdx}
+                      onToggle={toggleComplete}
+                      onEdit={handleEditOpen}
+                      onDelete={requestDelete}
+                      onDragStart={onDragStart}
+                      innerRef={(el) => (taskRefs.current[task.id] = el)}
+                    />
+                  </motion.div>
+                ))
+              )}
             </AnimatePresence>
           </SectionCard>
         );
