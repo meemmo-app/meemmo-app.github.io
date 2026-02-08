@@ -32,7 +32,16 @@ const TaskItem = ({
   };
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8, y: 20 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.8, y: 0 }}
+      transition={{
+        type: "spring",
+        stiffness: 400,
+        damping: 30,
+        mass: 0.8,
+      }}
       className="relative overflow-hidden rounded-2xl mb-2 group select-none"
       data-testid={`task-item-${task.title}`}
     >
@@ -58,7 +67,7 @@ const TaskItem = ({
         setSwipeState={setIsOpen}
         innerRef={innerRef}
       />
-    </div>
+    </motion.div>
   );
 };
 
