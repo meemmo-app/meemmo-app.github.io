@@ -32,44 +32,39 @@ const TaskItem = ({
   };
 
   return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.8, y: 0 }}
-        transition={{
-          type: "spring",
-          stiffness: 400,
-          damping: 30,
-          mass: 0.8,
-        }}
-        className="relative overflow-hidden rounded-2xl mb-2 group select-none"
-        data-testid={`task-item-${task.title}`}
-      >
-        {isOpen && (
-          <TaskActions
-            task={task}
-            onCloseSwipe={closeSwipe}
-            onEdit={onEdit}
-            onDelete={onDelete}
-          />
-        )}
-        <TaskCard
+    <motion.div
+      initial={{ opacity: 0, y: 10, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: 10, scale: 0.98 }}
+      transition={{
+        duration: 0.35,
+      }}
+      className="relative overflow-hidden rounded-2xl mb-2 group select-none"
+      data-testid={`task-item-${task.title}`}
+    >
+      {isOpen && (
+        <TaskActions
           task={task}
-          isFocused={isFocused}
-          isOpen={isOpen}
-          onDragStart={onDragStart}
+          onCloseSwipe={closeSwipe}
           onEdit={onEdit}
           onDelete={onDelete}
-          onToggle={onToggle}
-          onSwipeOpen={openSwipe}
-          onSwipeClose={closeSwipe}
-          onContextMenu={handleContextMenu}
-          setSwipeState={setIsOpen}
-          innerRef={innerRef}
         />
-      </motion.div>
-    </AnimatePresence>
+      )}
+      <TaskCard
+        task={task}
+        isFocused={isFocused}
+        isOpen={isOpen}
+        onDragStart={onDragStart}
+        onEdit={onEdit}
+        onDelete={onDelete}
+        onToggle={onToggle}
+        onSwipeOpen={openSwipe}
+        onSwipeClose={closeSwipe}
+        onContextMenu={handleContextMenu}
+        setSwipeState={setIsOpen}
+        innerRef={innerRef}
+      />
+    </motion.div>
   );
 };
 

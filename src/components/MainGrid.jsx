@@ -1,4 +1,5 @@
 import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import SectionCard from "../components/section-card/SectionCard";
 import TaskItem from "../components/task/TaskItem";
 
@@ -51,18 +52,29 @@ const MainGrid = ({
             isDynamicColumns={isDynamicColumns}
             taskCounter={sectionTasks.length}
           >
-            {sectionTasks.map((task, tIdx) => (
-              <TaskItem
-                key={task.id}
-                task={task}
-                isFocused={isFocused && focusedTaskIndex === tIdx}
-                onToggle={toggleComplete}
-                onEdit={handleEditOpen}
-                onDelete={requestDelete}
-                onDragStart={onDragStart}
-                innerRef={(el) => (taskRefs.current[task.id] = el)}
-              />
-            ))}
+            <AnimatePresence>
+              {sectionTasks.map((task, tIdx) => (
+                <motion.div
+                  key={task.id}
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 15 }}
+                  transition={{
+                    duration: 0.35,
+                  }}
+                >
+                  <TaskItem
+                    task={task}
+                    isFocused={isFocused && focusedTaskIndex === tIdx}
+                    onToggle={toggleComplete}
+                    onEdit={handleEditOpen}
+                    onDelete={requestDelete}
+                    onDragStart={onDragStart}
+                    innerRef={(el) => (taskRefs.current[task.id] = el)}
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
           </SectionCard>
         );
       })}
