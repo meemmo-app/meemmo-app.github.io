@@ -56,14 +56,15 @@ const TaskModal = ({
       )}
 
       {spriteExperimental && (
-        <div className="absolute scale-20 z-50 -top-130 -left-65 transition-all">
+        <div className="absolute scale-20 z-50 -top-65 -left-55 transition-all">
           <PixelSprite
-            imagePath={"/image.png"}
-            frameWidth={514}
-            frameHeight={1024}
-            columns={3}
+            imagePath={"/writing_sprite_inline.png"}
+            frameWidth={435}
+            frameHeight={480}
+            columns={6}
             rows={1}
-            frames={3}
+            frames={6}
+            animationDuration={2.5}
           />
         </div>
       )}

@@ -20,6 +20,7 @@ import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
 import { useDragAndDrop } from "./hooks/useDragAndDrop";
 import { useTaskOperations } from "./hooks/useTaskOperations";
 import { useTheme } from "./hooks/useTheme";
+import PixelSprite from "./components/PixelSprite";
 
 export default function App() {
   // Logic & State da Hook personalizzato
