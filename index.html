@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/meemmo-icon.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Meemmo App</title>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const theme = localStorage.getItem("dark");
+
+                if (theme === "true") {
+                    document.documentElement.classList.add("dark");
+                } else {
+                    document.documentElement.classList.remove("dark");
+                }
+            });
+        </script>
+      <script type="module" crossorigin src="/assets/index-CSHqvdr0.js"></script>
+      <link rel="stylesheet" crossorigin href="/assets/index-CL_zUaG5.css">
+    </head>
+    <body>
+        <div id="root"></div>
+    </body>
+</html>
