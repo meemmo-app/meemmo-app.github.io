@@ -19,14 +19,14 @@ const TaskActions = ({ task, onCloseSwipe, onEdit, onDelete }) => {
       <button
         onClick={handleEditClick}
         data-testid="task-item-edit-button"
-        className="p-2.5 bg-white/80 hover:bg-white text-slate-600 rounded-xl transition-all shadow-sm"
+        className="cursor-pointer p-2.5 bg-white/80 hover:bg-white text-slate-600 rounded-xl transition-all shadow-sm"
       >
         <Edit3 size={18} />
       </button>
       <button
         onClick={handleDeleteClick}
         data-testid="task-item-delete-button"
-        className="p-2.5 bg-red-500 hover:bg-red-600 text-white rounded-xl transition-all shadow-lg shadow-red-500/30"
+        className="cursor-pointer p-2.5 bg-red-500 hover:bg-red-600 text-white rounded-xl transition-all shadow-lg shadow-red-500/30"
       >
         <Trash2 size={18} />
       </button>
