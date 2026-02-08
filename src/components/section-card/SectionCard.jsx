@@ -1,6 +1,5 @@
 import React from "react";
 import SectionHeader from "./SectionHeader";
-import SectionContent from "./SectionContent";
 import NewTaskButton from "./NewTaskButton";
 
 // Function to calculate productivity for a section
@@ -65,9 +64,7 @@ const SectionCard = ({
       />
 
       {/* Lista Task (Children) */}
-      <SectionContent>
-        {children}
-      </SectionContent>
+      {children}
 
       {/* Section footer */}
       <div className="cursor-default absolute bottom-0 right-0 z-20 p-3">
