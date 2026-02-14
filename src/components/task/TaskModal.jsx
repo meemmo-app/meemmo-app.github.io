@@ -39,6 +39,12 @@ const TaskModal = ({
         },
         runInInputFields: true,
       },
+      Escape: {
+        action: () => {
+          onClose();
+        },
+        runInInputFields: true,
+      },
       p: { action: togglePriority },
     });
   };
