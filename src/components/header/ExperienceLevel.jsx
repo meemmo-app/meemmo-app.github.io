@@ -21,7 +21,7 @@ const ExperienceLevel = ({ completedTasks }) => {
     const progressPercentage = Math.min(
       (currentLevelExp / expNeededForNextLevel) * 100,
       100,
-    );
+    ).toFixed(0);
 
     return {
       level,
