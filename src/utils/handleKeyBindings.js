@@ -7,7 +7,7 @@ export const handleKeyBindings = (event, keyActions = {}) => {
 
   Object.entries(keyActions).forEach(([key, action]) => {
     if (event.key.toLowerCase() === key.toLowerCase()) {
-      if (action.runInInputFields == true) {
+      if (action.runInInputFields == true && !event.shiftKey) {
         // bypass the check isInputField, the action can run even in an input field
         event.preventDefault();
         action.action(event);
